@@ -1923,11 +1923,18 @@ function renderProf(){
 
 // ── LIVE PARTNERSHIP NEWS FEED ────────────────────────────────────────────
 var _partnerNewsGen = 0;
+var _partnerNewsCache = {};
 async function fetchPartnershipNews(coId) {
   var co = COS.find(function(c){ return c.id===coId; });
   if(!co) return;
   var container = document.getElementById('ptnews-container');
   if(!container) return;
+  // Check cache first
+  if(_partnerNewsCache[coId]){
+    container.innerHTML = _partnerNewsCache[coId];
+    return;
+  }
+
   _partnerNewsGen++;
   var myGen = _partnerNewsGen;
 
@@ -1946,7 +1953,7 @@ async function fetchPartnershipNews(coId) {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1000,
+        max_tokens: 600,
         tools: [{"type":"web_search_20250305","name":"web_search"}],
         messages: [{role:'user', content: prompt}]
       })
@@ -1994,6 +2001,7 @@ async function fetchPartnershipNews(coId) {
     html += '</div>';
 
     container2.innerHTML = html;
+    _partnerNewsCache[coId] = html;
 
   } catch(e) {
     if(myGen !== _partnerNewsGen) return;
