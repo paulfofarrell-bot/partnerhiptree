@@ -389,7 +389,15 @@ footer{background:#0f2318;border-top:1px solid rgba(201,168,76,0.18);padding:44p
 <div class="page" id="page-search" style="background:var(--fog);min-height:100vh;">
   <div class="search-layout">
     <div>
-      <h1 class="s-heading">Your AI Powered Partner Search</h1>
+      <h1 class="s-heading">Your AI Powered Partner Search <span onclick="showKeySetup()" style="font-size:14px;cursor:pointer;opacity:0.4;font-family:sans-serif;" title="Set API key">⚙️</span></h1>
+    <div id="keySetup" style="display:none;margin-bottom:16px;padding:12px 16px;background:#fff8e1;border-radius:8px;border:1px solid #ffc107;max-width:600px;">
+      <div style="font-size:12px;font-weight:700;color:#856404;margin-bottom:8px;">Enter your Anthropic API key to run searches directly — saves server usage</div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input id="keyInp" type="password" placeholder="sk-ant-..." style="flex:1;padding:8px 12px;border:1px solid #ddd;border-radius:6px;font-size:12px;font-family:monospace;">
+        <button onclick="saveKey()" style="padding:8px 16px;background:#c9a84c;color:#1a3a2a;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;">Save</button>
+        <button onclick="document.getElementById('keySetup').style.display='none'" style="padding:8px 12px;background:#eee;color:#666;border:none;border-radius:6px;font-size:12px;cursor:pointer;">✕</button>
+      </div>
+    </div>
       <p class="s-sub">Describe your need in plain language. Our AI Partnership Consultant will run an AI powered search, finding matches for you, from our curated network of thousands of companies.</p>
       <div class="chat-card">
         <div class="chat-bar">
@@ -590,6 +598,7 @@ footer{background:#0f2318;border-top:1px solid rgba(201,168,76,0.18);padding:44p
 // ── STATE VARIABLES (declared first so onclick handlers never get ReferenceError) ──
 var selCo=1;
 var selTab='overview';
+var ANTHROPIC_KEY=sessionStorage.getItem('pt_api_key')||'';
 var lastSearchRank=[1,2,3];
 var isFirstSearch=true;
 var lastMatchedQuery='';
@@ -1574,9 +1583,13 @@ async function semanticSearch(query, previousQuery, previousIds) {
     } else {
       messages = [{role: 'user', content: query}];
     }
-    const response = await fetch('/.netlify/functions/claude', {
+    var apiKey = ANTHROPIC_KEY || sessionStorage.getItem('pt_api_key') || '';
+    var searchUrl = apiKey ? 'https://api.anthropic.com/v1/messages' : '/.netlify/functions/claude';
+    var searchHeaders = {'Content-Type': 'application/json'};
+    if(apiKey){ searchHeaders['x-api-key'] = apiKey; searchHeaders['anthropic-version'] = '2023-06-01'; }
+    const response = await fetch(searchUrl, {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: searchHeaders,
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 500,
@@ -1921,94 +1934,10 @@ function renderProf(){
 }
 
 
-// ── LIVE PARTNERSHIP NEWS FEED ────────────────────────────────────────────
-var _partnerNewsGen = 0;
-var _partnerNewsCache = {};
-async function fetchPartnershipNews(coId) {
-  var co = COS.find(function(c){ return c.id===coId; });
-  if(!co) return;
-  var container = document.getElementById('ptnews-container');
-  if(!container) return;
-  // Check cache first
-  if(_partnerNewsCache[coId]){
-    container.innerHTML = _partnerNewsCache[coId];
-    return;
-  }
-
-  _partnerNewsGen++;
-  var myGen = _partnerNewsGen;
-
-  container.innerHTML = '<div style="padding:10px 0 4px;">'
-    + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">'
-    + '<div class="live-badge"><span class="live-dot"></span><span class="live-txt">Live Partnership Intelligence</span></div>'
-    + '</div>'
-    + '<div style="font-size:12px;color:var(--sage);font-style:italic;">Searching for recent partnership news for '+co.name+'...</div>'
-    + '</div>';
-
-  try {
-    var prompt = 'Search the web for recent news (last 12 months) about '+co.name+' involving: partnerships, strategic alliances, collaborations, mergers, acquisitions, licensing deals, in-licensing, out-licensing, co-development agreements, or joint ventures. Return results as a JSON array only, no other text. Each item in the array should be an object with these fields: "date" (string, e.g. "March 2025"), "headline" (short title), "summary" (1-2 sentences), "source" (publication or website name), "url" (full URL of the source article if found, otherwise empty string). Return between 2 and 6 items. If no specific deals found, return 1 item describing the company typical partnership activity with source as "General" and url as empty. Return ONLY the JSON array, nothing else.';
-
-    var response = await fetch('/.netlify/functions/claude', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 600,
-        tools: [{"type":"web_search_20250305","name":"web_search"}],
-        messages: [{role:'user', content: prompt}]
-      })
-    });
-
-    var data = await response.json();
-    var rawText = (data.content||[])
-      .filter(function(b){ return b.type==='text'; })
-      .map(function(b){ return b.text; })
-      .join('').trim();
-
-    // Parse JSON array
-    var clean = rawText.replace(/^```json|^```|```$/gm,'').trim();
-    var items = JSON.parse(clean);
-
-    if(myGen !== _partnerNewsGen) return; // stale response — a newer fetch has started
-    var container2 = document.getElementById('ptnews-container');
-    if(!container2) return;
-
-    var html = '<div style="padding:6px 0 4px;">'
-      + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">'
-      + '<div class="live-badge"><span class="live-dot"></span><span class="live-txt">Live Partnership Intelligence</span></div>'
-      + '</div>';
-
-    items.forEach(function(item) {
-      html += '<div style="background:#fff;border:1.5px solid #d8e2da;border-radius:12px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(26,58,42,0.06);">';
-      html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;">';
-      html += '<div style="font-size:13px;font-weight:700;color:#1a3a2a;line-height:1.4;flex:1;">'+item.headline.replace(/</g,'&lt;')+'</div>';
-      if(item.date) html += '<div style="font-size:10px;color:var(--sage);white-space:nowrap;padding-top:2px;">'+item.date.replace(/</g,'&lt;')+'</div>';
-      html += '</div>';
-      html += '<div style="font-size:12px;color:#333;line-height:1.7;margin-bottom:8px;">'+item.summary.replace(/</g,'&lt;')+'</div>';
-      if(item.source || item.url) {
-        html += '<div style="font-size:10px;color:var(--sage);">Source: ';
-        if(item.url) {
-          html += '<a href="'+item.url+'" target="_blank" style="color:var(--gold);font-weight:600;text-decoration:none;">'+item.source.replace(/</g,'&lt;')+' &#8594;</a>';
-        } else {
-          html += item.source.replace(/</g,'&lt;');
-        }
-        html += '</div>';
-      }
-      html += '</div>';
-    });
-
-    html += '<div style="font-size:10px;color:var(--sage);font-style:italic;margin-top:4px;">✦ AI-sourced from public information. Verify before acting on partnership intelligence.</div>';
-    html += '</div>';
-
-    container2.innerHTML = html;
-    _partnerNewsCache[coId] = html;
-
-  } catch(e) {
-    if(myGen !== _partnerNewsGen) return;
-    var c2 = document.getElementById('ptnews-container');
-    if(c2) c2.innerHTML = '<div style="font-size:11px;color:var(--sage);font-style:italic;padding:8px 0;">Live partnership news unavailable. Please check the directory listings below.</div>';
-  }
+function fetchPartnershipNews(coId) {
+  // Removed - use directory link below for live partnership news
 }
+
 
 function renderProfContent(){
   var a=document.getElementById('profCA');
@@ -2023,10 +1952,10 @@ function renderProfContent(){
   a.innerHTML=''
     +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">'
     +'<div style="font-size:14px;font-weight:700;color:var(--forest);">'+tabLabel+' Intelligence</div>'
-    +'<div class="live-badge"><span class="live-dot"></span><span class="live-txt">AI Live Feed</span></div>'
+    +(isPartner?'':'<div class="live-badge"><span class="live-dot"></span><span class="live-txt">AI Compiled</span></div>')
     +'</div>'
     +'<div class="prof-text" id="ptxt"></div>'
-    +(isPartner?'<div id="ptnews-container" style="margin-top:16px;"></div>':'')
+    
     +'<div id="ptxt-dir"></div>'
     +(!isPartner?'<div class="prof-note">✦ AI-aggregated intelligence from public sources. Member verification recommended before partnership decisions.</div>':'');
 
@@ -2052,7 +1981,6 @@ function renderProfContent(){
       var pName=marker.substring(ns+1);
       var pUrl=marker.substring(0,ns);
       ptxt.textContent=mainText;
-      fetchPartnershipNews(selCo);
       var btn=document.createElement('div');
       btn.style.cssText='margin-top:20px;padding:14px 16px;background:rgba(26,58,42,0.04);border-radius:10px;border:1.5px solid rgba(201,168,76,0.4);';
       btn.innerHTML='<div style="font-size:11px;font-weight:700;color:var(--forest);margin-bottom:10px;">&#129309; PARTNERSHIPS &amp; LICENSING DIRECTORY</div>'
@@ -2062,14 +1990,12 @@ function renderProfContent(){
       if(nc) nc.parentNode.insertBefore(btn,nc.nextSibling);
     } else if(isPartner){
       ptxt.textContent=txt;
-      fetchPartnershipNews(selCo);
     } else {
       ptxt.textContent=txt;
     }
   } else {
     if(isPartner){
       var co2=COS.find(function(c){return c.id===selCo;});
-      fetchPartnershipNews(selCo);
       if(co2&&co2.dirUrl){
         var pUrl2=co2.dirUrl.replace('/company_profile/','/company_partnerships/');
         var btn2=document.createElement('div');
@@ -2087,6 +2013,14 @@ function renderProfContent(){
 }
 
 
+function saveKey(){
+  var k=document.getElementById('keyInp').value.trim();
+  if(k){sessionStorage.setItem('pt_api_key',k);ANTHROPIC_KEY=k;document.getElementById('keySetup').style.display='none';alert('API key saved for this session!');}
+}
+function showKeySetup(){
+  var ks=document.getElementById('keySetup');
+  if(ks){ks.style.display=ks.style.display==='none'?'block':'none';}
+}
 function setHeroSearch(term){
   showPage('search');
   setTimeout(function(){
