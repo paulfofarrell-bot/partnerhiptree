@@ -1552,7 +1552,7 @@ async function semanticSearch(query, previousQuery, previousIds) {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-5-20251001',
         max_tokens: 500,
         system: COMPANY_CATALOGUE,
         messages: messages
@@ -1919,7 +1919,7 @@ async function fetchPartnershipNews(coId) {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-5-20251001',
         max_tokens: 1000,
         tools: [{"type":"web_search_20250305","name":"web_search"}],
         messages: [{role:'user', content: prompt}]
