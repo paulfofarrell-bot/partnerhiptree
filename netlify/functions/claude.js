@@ -1,19 +1,39 @@
-javascriptexports.handler = async function(event) {
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'POST, OPTIONS' }, body: '' };
+export default async function(req) {
+  if (req.method === 'OPTIONS') {
+    return new Response('', {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+      }
+    });
   }
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ error: 'Method not allowed' }) };
-  }
+
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01', 'anthropic-beta': 'web-search-2025-03-05' },
-      body: event.body
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': Netlify.env.get('ANTHROPIC_API_KEY'),
+        'anthropic-version': '2023-06-01',
+        'anthropic-beta': 'web-search-2025-03-05'
+      },
+      body: await req.text()
     });
+
     const data = await response.json();
-    return { statusCode: 200, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify(data) };
+    return new Response(JSON.stringify(data), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
   } catch (err) {
-    return { statusCode: 500, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ error: err.message }) };
+    return new Response(JSON.stringify({ error: err.message }), {
+      statusCode: 500,
+      headers: { 'Access-Control-Allow-Origin': '*' }
+    });
   }
-};
+}
+
+export const config = { path: '/.netlify/functions/claude' };
