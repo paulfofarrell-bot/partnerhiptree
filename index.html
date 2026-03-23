@@ -1552,17 +1552,21 @@ async function semanticSearch(query, previousQuery, previousIds) {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5-20251001',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 500,
         system: COMPANY_CATALOGUE,
         messages: messages
       })
     });
     const data = await response.json();
+    console.log('[SEARCH] status:', response.status);
+    console.log('[SEARCH] data:', JSON.stringify(data).substring(0,300));
     const text = data.content && data.content[0] ? data.content[0].text : '{}';
     const clean = text.replace(/```json|```/g, '').trim();
+    console.log('[SEARCH] clean:', clean.substring(0,200));
     return JSON.parse(clean);
   } catch(e) {
+    console.log('[SEARCH] error:', e.message);
     return {ids: [], summary: 'Search unavailable. Please try again.'};
   }
 }
@@ -1919,7 +1923,7 @@ async function fetchPartnershipNews(coId) {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5-20251001',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 1000,
         tools: [{"type":"web_search_20250305","name":"web_search"}],
         messages: [{role:'user', content: prompt}]
