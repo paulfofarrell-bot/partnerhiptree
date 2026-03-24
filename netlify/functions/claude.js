@@ -1,27 +1,37 @@
-export default async function(req) {
-  if (req.method === 'OPTIONS') {
-    return new Response('', {
+export async function onRequest(context) {
+  const { request, env } = context;
+
+  // Handle CORS preflight
+  if (request.method === 'OPTIONS') {
+    return new Response(null, {
       headers: {
         'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS'
       }
     });
   }
 
+  if (request.method !== 'POST') {
+    return new Response('Method Not Allowed', { status: 405 });
+  }
+
   try {
+    const body = await request.text();
+
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': Netlify.env.get('ANTHROPIC_API_KEY'),
+        'x-api-key': env.ANTHROPIC_API_KEY,
         'anthropic-version': '2023-06-01',
         'anthropic-beta': 'web-search-2025-03-05'
       },
-      body: await req.text()
+      body: body
     });
 
     const data = await response.json();
+
     return new Response(JSON.stringify(data), {
       headers: {
         'Content-Type': 'application/json',
@@ -30,10 +40,11 @@ export default async function(req) {
     });
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), {
-      statusCode: 500,
-      headers: { 'Access-Control-Allow-Origin': '*' }
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
     });
   }
 }
-
-export const config = { path: '/.netlify/functions/claude' };
