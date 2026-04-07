@@ -144,7 +144,9 @@ Sitemap: https://thepartnershiptree.com/sitemap.xml`;
       });
     }
 
-    // Serve static assets
-    return env.ASSETS.fetch(request);
-  }
+    // Serve index.html for root path and SPA routing
+const assetUrl = (url.pathname === '/' || url.pathname === '') 
+  ? new Request(new URL('/index.html', request.url), request)
+  : request;
+return env.ASSETS.fetch(assetUrl);  }
 }
