@@ -1,0 +1,14 @@
+name = "partnerhiptree"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "."
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "pt-users"
+database_id = "cdf54e68-334c-41a2-a6c7-cc9db8caeedb"
