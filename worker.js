@@ -1,539 +1,415 @@
-import { SignJWT, jwtVerify } from 'https://esm.sh/jose@5.2.0';
+export default {
+  async fetch(request) {
+    const url = new URL(request.url);
+    if (url.pathname === '/robots.txt') {
+      return new Response('User-agent: *\nAllow: /\n', { headers: { 'Content-Type': 'text/plain' } });
+    }
+    if (url.pathname === '/sitemap.xml') {
+      return new Response(`<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://thepartnershiptree.com/</loc></url></urlset>`, { headers: { 'Content-Type': 'application/xml' } });
+    }
+    return new Response(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Partnership Tree | Life Science Platform Licensing Network</title>
+<meta name="description" content="A curated network connecting life science innovators with development partners. Browse proprietary platform technologies actively seeking licensing and co-development partnerships.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest: #1a3a2a;
+  --forest-deep: #0f2318;
+  --forest-mid: #2d5a3d;
+  --gold: #c9a84c;
+  --gold-light: #e8c96d;
+  --cream: #f5f0e8;
+  --fog: #f0ede6;
+  --mid: #6b7c6b;
+  --sage: #8aaa8a;
+  --white: #ffffff;
+  --card-border: #dde8de;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--forest);min-height:100vh;}
 
-const JWT_SECRET_KEY = async (secret) => {
-  const enc = new TextEncoder();
-  return crypto.subtle.importKey('raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign', 'verify']);
-};
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;background:var(--forest-deep);height:60px;display:flex;align-items:center;padding:0 40px;justify-content:space-between;z-index:100;border-bottom:1px solid rgba(201,168,76,0.2);}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:17px;color:var(--cream);font-weight:600;}
+.nav-logo-sub{font-size:9px;color:rgba(245,240,232,0.4);letter-spacing:.08em;text-transform:uppercase;margin-top:1px;}
+.nav-actions{display:flex;align-items:center;gap:24px;}
+.nav-link{font-size:12px;font-weight:700;color:rgba(245,240,232,0.6);text-decoration:none;letter-spacing:.04em;text-transform:uppercase;transition:color .2s;}
+.nav-link:hover{color:var(--gold);}
+.nav-cta{background:var(--gold);color:var(--forest-deep);font-size:11px;font-weight:900;padding:8px 18px;border-radius:6px;text-decoration:none;letter-spacing:.04em;text-transform:uppercase;}
+.nav-cta:hover{background:var(--gold-light);}
 
-async function hashPassword(password) {
-  const enc = new TextEncoder();
-  const data = enc.encode(password);
-  const hash = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+/* HERO */
+.hero{padding:120px 40px 80px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.hero-eyebrow{font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:52px;line-height:1.1;color:var(--forest-deep);margin-bottom:24px;font-weight:700;}
+.hero-title em{color:var(--forest-mid);font-style:italic;}
+.hero-body{font-size:16px;line-height:1.75;color:var(--mid);margin-bottom:36px;font-weight:300;}
+.hero-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+.btn-primary{background:var(--forest);color:var(--cream);font-size:13px;font-weight:800;padding:14px 28px;border-radius:8px;text-decoration:none;letter-spacing:.04em;display:inline-block;transition:all .2s;}
+.btn-primary:hover{background:var(--forest-mid);transform:translateY(-1px);}
+.btn-outline{border:2px solid var(--forest);color:var(--forest);font-size:13px;font-weight:700;padding:12px 24px;border-radius:8px;text-decoration:none;letter-spacing:.04em;display:inline-block;transition:all .2s;}
+.btn-outline:hover{background:var(--forest);color:var(--cream);}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.stat-card{background:var(--white);border:1.5px solid var(--card-border);border-radius:12px;padding:28px;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--forest),var(--gold));}
+.stat-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--forest);line-height:1;}
+.stat-label{font-size:12px;color:var(--mid);margin-top:6px;line-height:1.4;}
+
+/* PROPOSITION */
+.prop-strip{background:var(--forest-deep);padding:60px 40px;}
+.prop-inner{max-width:1200px;margin:0 auto;}
+.prop-title{font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:48px;}
+.prop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;}
+.prop-item{text-align:center;}
+.prop-icon{width:48px;height:48px;background:rgba(201,168,76,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px;}
+.prop-item h3{font-size:15px;font-weight:700;color:var(--cream);margin-bottom:8px;}
+.prop-item p{font-size:13px;color:rgba(245,240,232,0.55);line-height:1.65;font-weight:300;}
+
+/* SEARCH */
+.search-section{padding:60px 40px 24px;max-width:1200px;margin:0 auto;}
+.section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;}
+.section-title{font-family:'Playfair Display',serif;font-size:32px;color:var(--forest-deep);font-weight:700;}
+.section-sub{font-size:13px;color:var(--mid);margin-top:6px;}
+.section-count{font-size:12px;color:var(--mid);font-weight:700;letter-spacing:.04em;}
+.search-bar{display:flex;gap:12px;margin-bottom:20px;}
+.search-input{flex:1;padding:14px 20px;border:1.5px solid var(--card-border);border-radius:10px;font-size:14px;font-family:'Lato',sans-serif;color:var(--forest);background:var(--white);outline:none;transition:border-color .2s;}
+.search-input:focus{border-color:var(--gold);}
+.search-input::placeholder{color:var(--sage);}
+.search-btn{background:var(--forest);color:var(--cream);border:none;padding:14px 28px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Lato',sans-serif;letter-spacing:.04em;transition:all .2s;}
+.search-btn:hover{background:var(--forest-mid);}
+.filter-chips{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid var(--card-border);background:var(--white);color:var(--mid);transition:all .2s;letter-spacing:.03em;}
+.chip:hover,.chip.active{background:var(--forest);color:var(--cream);border-color:var(--forest);}
+
+/* RESULTS */
+.results-section{padding:24px 40px 80px;max-width:1200px;margin:0 auto;}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.company-card{background:var(--white);border:1.5px solid var(--card-border);border-radius:14px;padding:28px;cursor:pointer;transition:all .25s;position:relative;display:flex;flex-direction:column;}
+.company-card:hover{border-color:var(--forest);box-shadow:0 8px 32px rgba(26,58,42,0.12);transform:translateY(-2px);}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
+.card-logo{width:44px;height:44px;background:linear-gradient(135deg,var(--forest),var(--forest-mid));border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--gold);flex-shrink:0;}
+.badge{font-size:9px;font-weight:800;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;}
+.badge-ai{background:#f0e8ff;color:#4a1a8a;}
+.badge-cell{background:#e8fff0;color:#1a6b2a;}
+.badge-gene{background:#fff0e8;color:#8a4a1a;}
+.badge-rna{background:#ffe8e8;color:#8a1a1a;}
+.badge-antibody{background:#e8f8ff;color:#1a5a8a;}
+.card-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--forest-deep);margin-bottom:4px;line-height:1.2;}
+.card-location{font-size:11px;color:var(--mid);margin-bottom:10px;}
+.card-platform{font-size:11px;font-weight:800;color:var(--gold);letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px;}
+.card-summary{font-size:13px;color:var(--mid);line-height:1.6;flex:1;margin-bottom:16px;}
+.card-keywords{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.kw-tag{font-size:10px;padding:3px 8px;background:var(--fog);color:var(--forest);border-radius:4px;font-weight:600;}
+.card-footer{border-top:1px solid var(--fog);padding-top:14px;display:flex;align-items:center;justify-content:space-between;}
+.card-type{font-size:10px;font-weight:700;color:var(--mid);letter-spacing:.05em;text-transform:uppercase;}
+.card-arrow{font-size:16px;color:var(--gold);}
+.no-results{text-align:center;padding:60px 20px;color:var(--mid);}
+.no-results h3{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:12px;color:var(--forest);}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,35,24,0.75);z-index:200;backdrop-filter:blur(4px);padding:60px 20px;overflow-y:auto;}
+.modal-overlay.open{display:flex;align-items:flex-start;justify-content:center;}
+.modal{background:var(--white);border-radius:20px;max-width:720px;width:100%;position:relative;overflow:hidden;}
+.modal-hero{background:var(--forest-deep);padding:40px;position:relative;}
+.modal-close{position:absolute;top:16px;right:20px;font-size:28px;color:rgba(245,240,232,0.4);cursor:pointer;background:none;border:none;line-height:1;}
+.modal-close:hover{color:var(--cream);}
+.modal-eyebrow{font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.modal-company{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--cream);margin-bottom:6px;}
+.modal-platform-name{font-size:14px;color:rgba(245,240,232,0.6);margin-bottom:16px;}
+.modal-meta{font-size:12px;color:rgba(245,240,232,0.45);}
+.modal-body{padding:36px 40px;}
+.modal-section{margin-bottom:28px;}
+.modal-section-title{font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.modal-text{font-size:14px;line-height:1.75;color:var(--mid);}
+.modal-keywords{display:flex;gap:8px;flex-wrap:wrap;}
+.modal-kw{font-size:11px;padding:5px 12px;background:var(--fog);color:var(--forest);border-radius:6px;font-weight:600;}
+.modal-cta{background:var(--forest);padding:32px 40px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.modal-cta-text h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--cream);margin-bottom:6px;}
+.modal-cta-text p{font-size:13px;color:rgba(245,240,232,0.55);}
+.modal-cta-btn{background:var(--gold);color:var(--forest-deep);font-size:12px;font-weight:900;padding:12px 24px;border-radius:8px;text-decoration:none;white-space:nowrap;letter-spacing:.04em;}
+.modal-cta-btn:hover{background:var(--gold-light);}
+
+/* FOOTER */
+footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba(201,168,76,0.1);}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;}
+.footer-brand-name{font-family:'Playfair Display',serif;font-size:20px;color:var(--cream);margin-bottom:12px;}
+.footer-desc{font-size:13px;color:rgba(245,240,232,0.4);line-height:1.7;font-weight:300;}
+.footer-col h4{font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.footer-col a{display:block;font-size:13px;color:rgba(245,240,232,0.5);text-decoration:none;margin-bottom:10px;transition:color .2s;}
+.footer-col a:hover{color:var(--cream);}
+.footer-bottom{max-width:1200px;margin:40px auto 0;padding-top:24px;border-top:1px solid rgba(245,240,232,0.06);display:flex;align-items:center;justify-content:space-between;}
+.footer-copy{font-size:11px;color:rgba(245,240,232,0.25);}
+.footer-tagline{font-family:'Playfair Display',serif;font-size:12px;color:rgba(201,168,76,0.5);font-style:italic;}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;gap:48px;padding:100px 24px 60px;}
+  .hero-title{font-size:36px;}
+  .results-grid{grid-template-columns:1fr;}
+  .prop-grid{grid-template-columns:1fr;}
+  .footer-inner{grid-template-columns:1fr;}
+  nav{padding:0 20px;}
+  .nav-link{display:none;}
+  .search-section,.results-section{padding-left:20px;padding-right:20px;}
+  .modal-cta{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+      <circle cx="18" cy="18" r="18" fill="#2d5a3d"/>
+      <path d="M18 7C18 7 10 13 10 20C10 24.4 13.6 28 18 28C22.4 28 26 24.4 26 20C26 13 18 7 18 7Z" fill="#c9a84c" opacity="0.9"/>
+      <path d="M18 11C18 11 13 15 13 20C13 22.8 15.2 25 18 25C20.8 25 23 22.8 23 20C23 15 18 11 18 11Z" fill="#fff" opacity="0.12"/>
+    </svg>
+    <div>
+      <div class="nav-logo-text">The Partnership Tree</div>
+      <div class="nav-logo-sub">Life Science Partner Network</div>
+    </div>
+  </a>
+  <div class="nav-actions">
+    <a href="#platforms" class="nav-link">Browse Platforms</a>
+    <a href="mailto:paul@thepartnershiptree.com" class="nav-link">List Your Platform</a>
+    <a href="https://app.thepartnershiptree.com" class="nav-cta">Member Login →</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">Life Science Platform Licensing Network</div>
+    <h1 class="hero-title">Where proprietary platforms find their <em>ideal partners</em></h1>
+    <p class="hero-body">The Partnership Tree is a curated network where life science companies actively promote their proprietary technology platforms, IP and partnership opportunities to BD professionals worldwide. Every listing is verified, intentional, and actively seeking engagement.</p>
+    <div class="hero-actions">
+      <a href="#platforms" class="btn-primary">Browse Platforms →</a>
+      <a href="mailto:paul@thepartnershiptree.com" class="btn-outline">List Your Platform</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="stat-num">20</div>
+      <div class="stat-label">Curated platform technologies actively seeking partners</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">3,000+</div>
+      <div class="stat-label">Life science companies in our broader member network</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">12+</div>
+      <div class="stat-label">Countries represented across featured platforms</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Verified active partnership intent — no stale listings</div>
+    </div>
+  </div>
+</section>
+
+<div class="prop-strip">
+  <div class="prop-inner">
+    <div class="prop-title">Why The Partnership Tree</div>
+    <div class="prop-grid">
+      <div class="prop-item">
+        <div class="prop-icon">🎯</div>
+        <h3>Curated, not crawled</h3>
+        <p>Every platform here is hand-selected for clear partnership intent, proprietary IP, and verified profile completeness. No noise, no generic AI-scraped listings.</p>
+      </div>
+      <div class="prop-item">
+        <div class="prop-icon">🤝</div>
+        <h3>Intent, not just presence</h3>
+        <p>Companies declare exactly what they're seeking — licence partners, co-development, geographic rights — so BD professionals can act on the information immediately.</p>
+      </div>
+      <div class="prop-item">
+        <div class="prop-icon">🔍</div>
+        <h3>Found where it matters</h3>
+        <p>Your platform surfaces in precise keyword searches by life science BD professionals who know what they're looking for — not buried in generic search results.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="search-section" id="platforms">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Featured Platform Opportunities</h2>
+      <div class="section-sub">Proprietary technologies actively seeking licensing and co-development partners</div>
+    </div>
+    <div class="section-count" id="results-count">20 platforms</div>
+  </div>
+  <div class="search-bar">
+    <input type="text" class="search-input" id="search-input" placeholder="Search by technology, therapy area, or platform name…" oninput="filterCompanies()">
+    <button class="search-btn" onclick="filterCompanies()">Search</button>
+  </div>
+  <div class="filter-chips">
+    <span class="chip active" onclick="setFilter('all',this)">All Platforms</span>
+    <span class="chip" onclick="setFilter('AI',this)">AI Drug Discovery</span>
+    <span class="chip" onclick="setFilter('cell',this)">Cell Therapy</span>
+    <span class="chip" onclick="setFilter('gene',this)">Gene Therapy</span>
+    <span class="chip" onclick="setFilter('rna',this)">RNA Therapeutics</span>
+    <span class="chip" onclick="setFilter('antibody',this)">Antibody</span>
+    <span class="chip" onclick="setFilter('europe',this)">European Platforms</span>
+  </div>
+</section>
+
+<section class="results-section">
+  <div class="results-grid" id="results-grid"></div>
+  <div class="no-results" id="no-results" style="display:none;">
+    <h3>No platforms match your search</h3>
+    <p>Try different keywords or browse by category above.</p>
+  </div>
+</section>
+
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand-name">The Partnership Tree</div>
+      <p class="footer-desc">A curated network connecting life science platform innovators with the co-development and licensing partners they need to maximise the impact of their technology. Built on 20+ years of pharma partnership intelligence.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Network</h4>
+      <a href="#platforms">Browse Platforms</a>
+      <a href="https://app.thepartnershiptree.com">Member Login</a>
+      <a href="mailto:paul@thepartnershiptree.com">List Your Platform</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <a href="mailto:paul@thepartnershiptree.com">paul@thepartnershiptree.com</a>
+      <a href="https://pharmaservicesdirectory.com" target="_blank">Pharma Services Directory</a>
+      <a href="https://app.thepartnershiptree.com">Member Platform</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 The Partnership Tree. All rights reserved.</span>
+    <span class="footer-tagline">Where platforms find their partners.</span>
+  </div>
+</footer>
+
+<script data-cfasync="false">
+var COMPANIES = [
+  {id:793,name:"mAbsolve",location:"London, United Kingdom",platform:"Fc Silencing Technology",summary:"mAbsolve has developed proprietary technology to silence unwanted Fc-mediated effector functions in therapeutic antibodies — a critical capability for antibody engineering where immune activation must be precisely controlled.",description:"The need for silence in antibody therapeutics is clear: many of the most promising therapeutic targets require antibodies that can bind without triggering unwanted immune responses. mAbsolve's Fc silencing platform provides that precision control, offering a licensable solution that can be integrated into partners' antibody development programmes.",keywords:["Antibody Engineering","Fc Silencing","Biologics","Monoclonal Antibodies","Bi-specific Antibodies"],tags:["antibody"],badge:"Antibody Platform",badgeClass:"badge-antibody",seeking:"Licence OUT",geo:"europe"},
+  {id:825,name:"Receptor.AI",location:"London, United Kingdom",platform:"AI-Accelerated Multi-Platform Drug Design",summary:"A next-generation TechBio company with a multiplatform AI-powered ecosystem for designing small molecules, peptides, and drug conjugates — accelerating novel therapy development for challenging targets.",description:"Receptor.AI combines computational drug design with high-throughput screening and lead optimisation into a seamless AI-powered workflow. Their platform specialises in difficult targets where conventional approaches have failed, offering partners access to a validated ecosystem rather than a single tool.",keywords:["AI Drug Design","Small Molecules","Peptides","Drug Conjugates","High Throughput Screening"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Research",geo:"europe"},
+  {id:236,name:"Exscientia",location:"Oxford, United Kingdom",platform:"AI-Driven Precision Medicine Platform",summary:"Exscientia applies AI to precision engineer medicines more rapidly and efficiently. Their platform has already delivered programmes into clinical trials, demonstrating real-world validation of AI-directed drug discovery.",description:"Finding faster and smarter ways to discover new and better drugs drives Exscientia. By actively applying AI to precision engineer medicines, they enable people to live more healthy and productive lives. Partners access a battle-tested AI platform with a track record of advancing programmes from concept to clinic.",keywords:["AI Drug Discovery","Precision Medicine","Small Molecules","Immuno-Oncology","Drug Design"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Co-Development",geo:"europe"},
+  {id:677,name:"Sibylla Biotech",location:"Bresso, Italy",platform:"Oneiros AI Platform",summary:"The Oneiros platform deploys advanced machine learning to navigate and prioritise the most promising compounds from a vast chemical universe — with a focus on oncology and neurodegenerative diseases.",description:"Sibylla Biotech's Oneiros platform represents a fundamental shift in how compounds are selected for development. By mapping the protein folding landscape with AI, it identifies compounds that others miss — particularly relevant for CNS diseases and oncology where conventional approaches consistently fail.",keywords:["AI","Oncology","Neurodegeneration","Protein Degradation","Drug Discovery"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Research",geo:"europe"},
+  {id:352,name:"Molecure",location:"Warsaw, Poland",platform:"RNA-Targeting Small Molecule Platform",summary:"Molecure has developed a unique platform to discover small molecule compounds that interact directly with the mRNA of disease-related proteins — opening an entirely new class of drug targets.",description:"The ability to target RNA with small molecules represents one of the most exciting frontiers in drug discovery. Molecure's platform makes this tractable at scale, with applications across oncology and immuno-oncology where undruggable protein targets have long frustrated conventional approaches.",keywords:["RNA Platform","Small Molecules","mRNA Targeting","Oncology","Immuno-oncology"],tags:["rna"],badge:"RNA Platform",badgeClass:"badge-rna",seeking:"Licence OUT · Research",geo:"europe"},
+  {id:286,name:"Avectas",location:"Dublin, Ireland",platform:"SOLUPORE® Cell Engineering Platform",summary:"SOLUPORE® is a non-viral cell engineering solution for next-generation cell and gene therapies. Avectas actively seeks partners developing gene-modified cell therapy products.",description:"SOLUPORE® addresses one of the key bottlenecks in cell and gene therapy manufacturing — efficient, scalable, non-viral delivery of genetic cargo into cells. By eliminating the immunogenicity risks of viral vectors, the platform enables safer and more cost-effective production of advanced cell therapies.",keywords:["Cell Engineering","Non-Viral Delivery","Gene Therapy","Cell Therapy","Bioprocess"],tags:["cell","gene"],badge:"Cell & Gene Platform",badgeClass:"badge-cell",seeking:"Licence OUT · Research",geo:"europe"},
+  {id:698,name:"Circio",location:"Oslo, Norway",platform:"Circular RNA Therapeutics Platform",summary:"Circio is pioneering circular RNA as a novel therapeutic modality — offering enhanced stability and expression compared to linear mRNA, with applications in immunotherapy and oncology.",description:"Circular RNA represents the next evolution in RNA medicine. Unlike linear mRNA, circRNA resists degradation and provides sustained protein expression — key advantages for therapeutic applications. Circio's platform enables the design, production, and delivery of circRNA medicines across cancer and infectious disease.",keywords:["Circular RNA","RNA Therapeutics","Immunotherapy","Oncology","mRNA Alternative"],tags:["rna"],badge:"RNA Platform",badgeClass:"badge-rna",seeking:"Licence OUT · Co-Development",geo:"europe"},
+  {id:784,name:"Amarna Therapeutics",location:"Leiden, Netherlands",platform:"Nimvec™ Gene Delivery Platform",summary:"Nimvec™ is a non-immunogenic gene delivery vector derived from Simian Virus 40, offering high transduction efficiency across diverse cell types without the immunogenicity concerns of AAV.",description:"Amarna's Nimvec™ platform addresses a critical limitation of current gene therapy vectors — immune responses that limit repeat dosing and restrict patient populations. Nimvec™ vectors transduce a wide range of cell types and have demonstrated therapeutic potential in animal models across ophthalmology, diabetes, and autoimmune disease.",keywords:["Gene Delivery","Viral Vectors","Non-immunogenic","Ophthalmology","Gene Therapy"],tags:["gene"],badge:"Gene Therapy Platform",badgeClass:"badge-gene",seeking:"Licence OUT",geo:"europe"},
+  {id:697,name:"Excellgene",location:"Monthey, Switzerland",platform:"Superior Cell Host Platform",summary:"Excellgene offers out-licensing of proprietary superior cell hosts — state-of-the-art technology that revolutionises biologics development programmes from research through clinical manufacture.",description:"The quality and productivity of cell hosts fundamentally determines the economics of biologic drug manufacturing. Excellgene's proprietary cell host platform delivers superior expression levels, consistency, and scalability — licensable technology that partners can integrate directly into their development and manufacturing pipelines.",keywords:["Cell Culture","Biologics Manufacturing","Monoclonal Antibodies","Cell Banking","Bioprocess"],tags:["antibody","cell"],badge:"Biologics Platform",badgeClass:"badge-antibody",seeking:"Licence OUT · Co-Development",geo:"europe"},
+  {id:683,name:"Secarna Pharmaceuticals",location:"Planegg, Germany",platform:"LNAplus™ Antisense Discovery Platform",summary:"LNAplus™ is a proprietary drug discovery platform for discovering, testing, and selecting antisense oligonucleotides for pre-clinical and clinical development — with fully independent discovery capability.",description:"Antisense oligonucleotides represent a powerful and growing class of therapeutics. Secarna's LNAplus™ platform provides partners with an independent, validated route to ASO drug candidates — from target identification through lead selection. The platform's proprietary locked nucleic acid chemistry delivers superior affinity and selectivity.",keywords:["Antisense","Oligonucleotides","ASO","LNA Chemistry","Drug Discovery"],tags:["rna"],badge:"Oligonucleotide Platform",badgeClass:"badge-rna",seeking:"Licence OUT · Research",geo:"europe"},
+  {id:779,name:"Smart Immune",location:"Paris, France",platform:"ProTcell™ Allogeneic T-Cell Platform",summary:"ProTcell™ is a pioneering allogeneic T-cell therapy platform that leverages the patient's own thymus to rapidly re-arm the immune system against cancers and infections — without the limitations of autologous approaches.",description:"The ProTcell platform addresses the fundamental scalability and cost challenges of current cell therapies by creating an allogeneic, off-the-shelf solution. By harnessing thymic education, Smart Immune generates T-cells with genuine immunological memory — a qualitative advance over conventional allogeneic approaches.",keywords:["Allogeneic Cell Therapy","T-Cells","Immuno-oncology","Thymic Education","Off-the-Shelf"],tags:["cell"],badge:"Cell Therapy Platform",badgeClass:"badge-cell",seeking:"Licence OUT · Co-Development",geo:"europe"},
+  {id:558,name:"Denali Therapeutics",location:"San Francisco, USA",platform:"Transport Vehicle (TV) Platform",summary:"Denali's proprietary Transport Vehicle platform actively transports large molecule therapeutics across the blood-brain barrier — solving one of the most persistent challenges in CNS drug delivery.",description:"The blood-brain barrier has long prevented large molecules from reaching CNS targets. Denali's Transport Vehicle platform uses engineered proteins to actively carry biologics across the barrier, opening up entirely new treatment possibilities for neurodegenerative diseases including Alzheimer's, Parkinson's, and rare CNS disorders.",keywords:["Blood-Brain Barrier","CNS Drug Delivery","Large Molecules","Neuroscience","Platform Technology"],tags:["gene"],badge:"CNS Delivery Platform",badgeClass:"badge-gene",seeking:"Licence OUT · Co-Development",geo:""},
+  {id:443,name:"Intellia Therapeutics",location:"Cambridge, USA",platform:"CRISPR/Cas9 Gene Editing Platform",summary:"Intellia is focused on developing proprietary therapeutics using the CRISPR/Cas9 system — one of the most powerful and versatile gene editing tools available for therapeutic application.",description:"The CRISPR/Cas9 system represents a generational advance in the ability to precisely edit the human genome. Intellia's platform encompasses the IP, delivery systems, and manufacturing know-how to translate this technology into medicines — they actively seek partners for licensing and co-development in disease areas beyond their internal pipeline.",keywords:["CRISPR","Gene Editing","Gene Therapy","Biologics","Licensing"],tags:["gene"],badge:"Gene Editing Platform",badgeClass:"badge-gene",seeking:"Licence OUT · Research",geo:""},
+  {id:753,name:"MaxCyte",location:"Rockville, USA",platform:"ExPERT™ Electroporation Platform",summary:"MaxCyte's ExPERT™ platform has spent 20+ years refining the science of electroporation — offering scalable, GMP-compatible cell engineering for therapeutics from research through commercial manufacture.",description:"Electroporation is increasingly the method of choice for engineering cells for therapy — but scaling it reliably is technically demanding. MaxCyte's ExPERT™ platform provides a validated, GMP-compatible solution that works across cell types and scales seamlessly from research to commercial manufacture. Used in hundreds of programmes worldwide.",keywords:["Electroporation","Cell Engineering","GMP Manufacturing","Cell Therapy","Gene Therapy"],tags:["cell","gene"],badge:"Cell Engineering Platform",badgeClass:"badge-cell",seeking:"Licence OUT · Co-Development",geo:""},
+  {id:444,name:"Intellia Therapeutics",location:"Cambridge, USA",platform:"CRISPR/Cas9 Platform",summary:"Intellia is focused on the development of proprietary therapeutics using the CRISPR/Cas9 system — actively seeking licensing and co-development partners in disease areas beyond their core pipeline.",description:"The CRISPR/Cas9 system is the driving force behind Intellia's creation. Their platform encompasses comprehensive gene editing IP, validated delivery systems, and the manufacturing expertise needed to advance programmes from discovery to clinic.",keywords:["CRISPR/Cas9","Gene Editing","Gene Therapy","Licensing","Biologics"],tags:["gene"],badge:"Gene Editing Platform",badgeClass:"badge-gene",seeking:"Licence OUT",geo:""},
+  {id:740,name:"Sanyou Bio",location:"Cambridge, USA",platform:"Super Trillion Common Light Chain Platform",summary:"Sanyou's Common Light Chain Antibody Discovery Platform provides access to a super-trillion diverse antibody library — dramatically accelerating identification of development-ready bispecific candidates.",description:"The Super Trillion Common Light Chain platform addresses a key challenge in bispecific antibody development: manufacturing complexity. By engineering a common light chain across diverse heavy chains, Sanyou's platform enables discovery of bispecific antibodies that are inherently manufacturable — combining diversity with developability from the outset.",keywords:["Antibody Discovery","Bispecific Antibodies","Common Light Chain","ADC","Drug Discovery"],tags:["antibody"],badge:"Antibody Platform",badgeClass:"badge-antibody",seeking:"Licence OUT · Research",geo:""},
+  {id:821,name:"OBI Pharma",location:"Taipei, Taiwan",platform:"GlycOBI® Glycan ADC Platform",summary:"GlycOBI® is a unique glycan-based ADC platform delivering precise, site-specific conjugation of cytotoxic payloads to antibodies — improving therapeutic index and manufacturability of antibody-drug conjugates.",description:"Antibody-drug conjugates are one of the most exciting frontiers in oncology, but their manufacturing complexity limits their potential. OBI Pharma's GlycOBI® platform uses glycan engineering to achieve precise, homogeneous conjugation — resulting in ADCs with superior pharmacokinetics and a cleaner safety profile.",keywords:["ADC","Glycan Engineering","Site-Specific Conjugation","Oncology","Antibody Drug Conjugates"],tags:["antibody"],badge:"ADC Platform",badgeClass:"badge-antibody",seeking:"Licence OUT · Co-Development",geo:""},
+  {id:644,name:"Absci",location:"Vancouver, USA",platform:"Integrated Drug Creation™ Platform",summary:"Absci's Integrated Drug Creation™ platform enables simultaneous multi-parameter optimisation of affinity, specificity, manufacturability, and safety — de-risking biologic drug discovery from day one.",description:"Conventional biologic drug discovery optimises parameters sequentially — leading to late-stage failures. Absci's Integrated Drug Creation™ platform collapses this into a single AI-powered workflow, enabling partners to explore a broader solution space and select candidates that work on all dimensions simultaneously.",keywords:["AI Biologics","Drug Design","Antibody Discovery","Manufacturability","Immuno-oncology"],tags:["AI","antibody"],badge:"AI Biologics Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Co-Development",geo:""},
+  {id:492,name:"Schrödinger",location:"New York, USA",platform:"Physics-Based Computational Drug Design Platform",summary:"Schrödinger's leading computational platform for molecular discovery has enabled two FDA-approved drugs and multiple clinical programmes — available for research collaborations and licensing.",description:"Schrödinger's platform applies physics-based simulation to predict how molecules will behave in biological systems — with a level of accuracy that has transformed early drug discovery. Partners gain access to a validated platform that has already generated FDA-approved medicines, alongside a collaborative team with a track record of co-founding startups and partnering with leading global pharma companies.",keywords:["Computational Chemistry","Molecular Design","Small Molecules","Drug Discovery","AI"],tags:["AI"],badge:"Computational Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Research",geo:""},
+  {id:826,name:"Valo Health",location:"Boston, USA",platform:"Opal™ Computational Platform",summary:"Opal™ is a groundbreaking closed-loop AI platform combining multi-omic data, computational modelling, and experimental validation — driving next-generation drug discovery and development.",description:"Valo Health's Opal™ platform represents a fundamental reimagining of how drug discovery is conducted. By closing the loop between computation and experiment, Opal™ continuously learns and improves — enabling partners to identify and develop drug candidates faster and with higher probability of success than conventional approaches.",keywords:["AI Drug Discovery","Computational Platform","Multi-omic Data","Drug Development","Closed-Loop AI"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Research",geo:""}
+];
+
+// Remove duplicate Intellia (id 444 appears twice) 
+COMPANIES = COMPANIES.filter((c,i,a) => a.findIndex(x=>x.id===c.id)===i);
+
+var activeFilter = 'all';
+
+function setFilter(f, el) {
+  activeFilter = f;
+  document.querySelectorAll('.chip').forEach(function(c){c.classList.remove('active');});
+  el.classList.add('active');
+  render();
 }
 
-async function createToken(payload, secret) {
-  const key = await JWT_SECRET_KEY(secret);
-  return new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setExpirationTime('7d')
-    .sign(key);
-}
+function filterCompanies() { render(); }
 
-async function verifyToken(token, secret) {
-  try {
-    const key = await JWT_SECRET_KEY(secret);
-    const { payload } = await jwtVerify(token, key);
-    return payload;
-  } catch {
-    return null;
-  }
-}
-
-function getToken(request) {
-  const cookie = request.headers.get('Cookie') || '';
-  const match = cookie.match(/pt_session=([^;]+)/);
-  return match ? match[1] : null;
-}
-
-function redirectToLogin(message) {
-  const url = message ? `/login?error=${encodeURIComponent(message)}` : '/login';
-  return Response.redirect(url, 302);
-}
-
-function htmlResponse(html, status = 200, extraHeaders = {}) {
-  return new Response(html, {
-    status,
-    headers: { 'Content-Type': 'text/html; charset=utf-8', ...extraHeaders }
+function getFiltered() {
+  var q = document.getElementById('search-input').value.toLowerCase().trim();
+  return COMPANIES.filter(function(c) {
+    var matchFilter = activeFilter === 'all' ||
+      (activeFilter === 'europe' ? c.geo === 'europe' : c.tags.indexOf(activeFilter) !== -1);
+    var matchSearch = !q ||
+      c.name.toLowerCase().indexOf(q) !== -1 ||
+      c.platform.toLowerCase().indexOf(q) !== -1 ||
+      c.summary.toLowerCase().indexOf(q) !== -1 ||
+      c.keywords.some(function(k){return k.toLowerCase().indexOf(q) !== -1;});
+    return matchFilter && matchSearch;
   });
 }
 
-const LOGIN_PAGE = `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login — The Partnership Tree</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Lato',sans-serif;background:#0f2318;min-height:100vh;display:flex;align-items:center;justify-content:center;}
-.card{background:#fff;border-radius:16px;padding:48px;width:100%;max-width:420px;box-shadow:0 24px 80px rgba(0,0,0,0.4);}
-.logo{display:flex;align-items:center;gap:12px;margin-bottom:32px;}
-.logo-icon{width:36px;height:36px;}
-.logo-text{font-family:'Playfair Display',serif;font-size:18px;color:#1a3a2a;font-weight:600;}
-.logo-sub{font-size:10px;color:#6b7c6b;letter-spacing:.06em;text-transform:uppercase;margin-top:1px;}
-h1{font-family:'Playfair Display',serif;font-size:26px;color:#1a3a2a;margin-bottom:8px;}
-p{font-size:14px;color:#6b7c6b;margin-bottom:28px;line-height:1.6;}
-label{font-size:11px;font-weight:700;color:#1a3a2a;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px;}
-input{width:100%;padding:12px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:#1a3a2a;outline:none;margin-bottom:16px;transition:border-color .2s;}
-input:focus{border-color:#c9a84c;}
-.btn{width:100%;padding:14px;background:#1a3a2a;border:none;border-radius:8px;font-weight:800;font-size:15px;color:#fff;cursor:pointer;font-family:inherit;letter-spacing:.04em;margin-top:4px;}
-.btn:hover{background:#0f2318;}
-.error{background:#ffeaea;color:#c0392b;padding:12px;border-radius:8px;font-size:13px;font-weight:700;margin-bottom:20px;display:none;}
-.footer{margin-top:24px;text-align:center;font-size:12px;color:#6b7c6b;}
-.footer a{color:#1a3a2a;font-weight:700;text-decoration:none;}
-</style>
-</head>
-<body>
-<div class="card">
-  <div class="logo">
-    <svg class="logo-icon" viewBox="0 0 36 36" fill="none">
-      <circle cx="18" cy="18" r="18" fill="#1a3a2a"/>
-      <path d="M18 8 C18 8 10 14 10 20 C10 24.4 13.6 28 18 28 C22.4 28 26 24.4 26 20 C26 14 18 8 18 8Z" fill="#c9a84c" opacity="0.9"/>
-      <path d="M18 12 C18 12 13 16 13 20 C13 22.8 15.2 25 18 25 C20.8 25 23 22.8 23 20 C23 16 18 12 18 12Z" fill="#fff" opacity="0.15"/>
-    </svg>
-    <div>
-      <div class="logo-text">The Partnership Tree</div>
-      <div class="logo-sub">A Life Science Partner Network</div>
-    </div>
-  </div>
-  <h1>Welcome back</h1>
-  <p>Sign in to access the partner search platform.</p>
-  <div class="error" id="err">__ERROR__</div>
-  <form method="POST" action="/login">
-    <label>Email address</label>
-    <input type="email" name="email" placeholder="your@company.com" required autofocus/>
-    <label>Password</label>
-    <input type="password" name="password" placeholder="Your password" required/>
-    <button type="submit" class="btn">Sign In →</button>
-  </form>
-  <div class="footer">Need access? <a href="/#page-join" onclick="window.location.href='https://thepartnershiptree.com'">Request a demo</a></div>
-</div>
-<script>
-const p=new URLSearchParams(location.search);
-const e=p.get('error');
-if(e){const el=document.getElementById('err');el.textContent=e;el.style.display='block';}
-</script>
-</body>
-</html>`;
-
-const SET_PASSWORD_PAGE = `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Set Your Password — The Partnership Tree</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Lato',sans-serif;background:#0f2318;min-height:100vh;display:flex;align-items:center;justify-content:center;}
-.card{background:#fff;border-radius:16px;padding:48px;width:100%;max-width:420px;box-shadow:0 24px 80px rgba(0,0,0,0.4);}
-.logo{display:flex;align-items:center;gap:12px;margin-bottom:32px;}
-.logo-icon{width:36px;height:36px;}
-.logo-text{font-family:'Playfair Display',serif;font-size:18px;color:#1a3a2a;font-weight:600;}
-.logo-sub{font-size:10px;color:#6b7c6b;letter-spacing:.06em;text-transform:uppercase;margin-top:1px;}
-h1{font-family:'Playfair Display',serif;font-size:26px;color:#1a3a2a;margin-bottom:8px;}
-p{font-size:14px;color:#6b7c6b;margin-bottom:28px;line-height:1.6;}
-label{font-size:11px;font-weight:700;color:#1a3a2a;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px;}
-input{width:100%;padding:12px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:#1a3a2a;outline:none;margin-bottom:16px;transition:border-color .2s;}
-input:focus{border-color:#c9a84c;}
-.btn{width:100%;padding:14px;background:#1a3a2a;border:none;border-radius:8px;font-weight:800;font-size:15px;color:#fff;cursor:pointer;font-family:inherit;letter-spacing:.04em;margin-top:4px;}
-.btn:hover{background:#0f2318;}
-.error{background:#ffeaea;color:#c0392b;padding:12px;border-radius:8px;font-size:13px;font-weight:700;margin-bottom:20px;display:none;}
-.notice{background:#f0f8f0;color:#1a6b2a;padding:14px;border-radius:8px;font-size:13px;margin-bottom:24px;line-height:1.6;}
-</style>
-</head>
-<body>
-<div class="card">
-  <div class="logo">
-    <svg class="logo-icon" viewBox="0 0 36 36" fill="none">
-      <circle cx="18" cy="18" r="18" fill="#1a3a2a"/>
-      <path d="M18 8 C18 8 10 14 10 20 C10 24.4 13.6 28 18 28 C22.4 28 26 24.4 26 20 C26 14 18 8 18 8Z" fill="#c9a84c" opacity="0.9"/>
-      <path d="M18 12 C18 12 13 16 13 20 C13 22.8 15.2 25 18 25 C20.8 25 23 22.8 23 20 C23 16 18 12 18 12Z" fill="#fff" opacity="0.15"/>
-    </svg>
-    <div>
-      <div class="logo-text">The Partnership Tree</div>
-      <div class="logo-sub">A Life Science Partner Network</div>
-    </div>
-  </div>
-  <h1>Set your password</h1>
-  <div class="notice">Welcome! This is your first login. Please set a personal password to secure your account.</div>
-  <div class="error" id="err"></div>
-  <form method="POST" action="/set-password">
-    <label>New password</label>
-    <input type="password" name="password" id="pw" placeholder="Minimum 8 characters" required/>
-    <label>Confirm password</label>
-    <input type="password" name="confirm" id="pw2" placeholder="Repeat your password" required/>
-    <button type="submit" class="btn">Set Password & Continue →</button>
-  </form>
-</div>
-<script>
-document.querySelector('form').addEventListener('submit',function(e){
-  var p=document.getElementById('pw').value;
-  var p2=document.getElementById('pw2').value;
-  var err=document.getElementById('err');
-  if(p.length<8){e.preventDefault();err.textContent='Password must be at least 8 characters.';err.style.display='block';return;}
-  if(p!==p2){e.preventDefault();err.textContent='Passwords do not match.';err.style.display='block';return;}
-});
-</script>
-</body>
-</html>`;
-
-const ADMIN_PAGE = (users) => `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — The Partnership Tree</title>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Lato',sans-serif;background:#f5f5f0;min-height:100vh;padding:40px 24px;}
-.container{max-width:900px;margin:0 auto;}
-h1{font-size:24px;color:#1a3a2a;margin-bottom:6px;}
-.sub{font-size:14px;color:#6b7c6b;margin-bottom:32px;}
-.card{background:#fff;border-radius:12px;padding:28px;border:1.5px solid #dde8de;margin-bottom:24px;}
-h2{font-size:16px;color:#1a3a2a;margin-bottom:20px;font-weight:700;}
-label{font-size:11px;font-weight:700;color:#1a3a2a;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;}
-input{width:100%;padding:10px 12px;border:1.5px solid #dde8de;border-radius:7px;font-size:13px;font-family:inherit;color:#1a3a2a;outline:none;margin-bottom:12px;}
-input:focus{border-color:#c9a84c;}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.btn{padding:10px 20px;background:#1a3a2a;border:none;border-radius:7px;font-weight:700;font-size:13px;color:#fff;cursor:pointer;font-family:inherit;}
-.btn-red{background:#c0392b;}
-.msg{font-size:13px;font-weight:700;margin-top:12px;display:none;}
-table{width:100%;border-collapse:collapse;font-size:13px;}
-th{text-align:left;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6b7c6b;padding:8px 12px;border-bottom:2px solid #dde8de;}
-td{padding:10px 12px;border-bottom:1px solid #f0f0ea;color:#1a3a2a;vertical-align:middle;}
-.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;}
-.badge-green{background:#e8f5e9;color:#1a6b2a;}
-.badge-red{background:#ffeaea;color:#c0392b;}
-.badge-amber{background:#fff8e1;color:#8a6000;}
-.logout{float:right;font-size:13px;color:#c0392b;font-weight:700;text-decoration:none;}
-</style>
-</head>
-<body>
-<div class="container">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-    <h1>Platform Admin</h1>
-    <a href="/logout" class="logout">Log out</a>
-  </div>
-  <div class="sub">The Partnership Tree — User Management</div>
-
-  <div class="card">
-    <h2>Create New User</h2>
-    <form method="POST" action="/admin/create-user">
-      <div class="grid">
-        <div><label>Full Name *</label><input type="text" name="name" placeholder="Jane Smith" required/></div>
-        <div><label>Company *</label><input type="text" name="company" placeholder="Pharma Co Ltd" required/></div>
-      </div>
-      <div class="grid">
-        <div><label>Email *</label><input type="email" name="email" placeholder="jane@pharma.com" required/></div>
-        <div><label>Role</label><input type="text" name="role" placeholder="Head of Business Development"/></div>
-      </div>
-      <label>Temporary Password *</label>
-      <input type="text" name="temp_password" placeholder="e.g. Welcome2025" required style="margin-bottom:16px;"/>
-      <button type="submit" class="btn">Create User →</button>
-    </form>
-  </div>
-
-  <div class="card">
-    <h2>Current Users (${users.length})</h2>
-    <table>
-      <tr><th>Name</th><th>Company</th><th>Email</th><th>Role</th><th>Status</th><th>First Login</th><th>Created</th><th></th></tr>
-      ${users.map(u => `
-      <tr>
-        <td>${u.name}</td>
-        <td>${u.company}</td>
-        <td>${u.email}</td>
-        <td>${u.role || '—'}</td>
-        <td><span class="badge ${u.active ? 'badge-green' : 'badge-red'}">${u.active ? 'Active' : 'Inactive'}</span></td>
-        <td><span class="badge ${u.first_login ? 'badge-amber' : 'badge-green'}">${u.first_login ? 'Pending' : 'Set'}</span></td>
-        <td>${u.created_at ? u.created_at.substring(0,10) : '—'}</td>
-        <td>
-          <form method="POST" action="/admin/toggle-user" style="display:inline;">
-            <input type="hidden" name="id" value="${u.id}"/>
-            <input type="hidden" name="active" value="${u.active ? 0 : 1}"/>
-            <button type="submit" class="btn ${u.active ? 'btn-red' : ''}" style="padding:4px 10px;font-size:11px;">${u.active ? 'Deactivate' : 'Activate'}</button>
-          </form>
-        </td>
-      </tr>`).join('')}
-    </table>
-  </div>
-</div>
-</body>
-</html>`;
-
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-    const path = url.pathname;
-    const method = request.method;
-    const JWT_SECRET = env.JWT_SECRET || 'pt-secret-change-this';
-
-    // ── CORS preflight ──
-    if (method === 'OPTIONS') {
-      return new Response(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type',
-        }
-      });
-    }
-
-    // ── Redirect www to non-www ──
-    if (url.hostname === 'www.thepartnershiptree.com') {
-      return Response.redirect(url.href.replace('www.thepartnershiptree.com', 'thepartnershiptree.com'), 301);
-    }
-
-    // ── Public routes (no auth needed) ──
-
-    // Sitemap
-    if (path === '/sitemap.xml') {
-      const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://thepartnershiptree.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://thepartnershiptree.com/#about</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://thepartnershiptree.com/#faq</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://thepartnershiptree.com/#services</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://thepartnershiptree.com/#join</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://thepartnershiptree.com/#contact</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-</urlset>`;
-      return new Response(sitemap, { headers: { 'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': 'public, max-age=86400' } });
-    }
-
-    // Robots
-    if (path === '/robots.txt') {
-      const robots = `User-agent: *\nAllow: /\n\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: ClaudeBot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\n\nSitemap: https://thepartnershiptree.com/sitemap.xml`;
-      return new Response(robots, { headers: { 'Content-Type': 'text/plain', 'Cache-Control': 'public, max-age=86400' } });
-    }
-
-    // llms.txt
-    if (path === '/llms.txt') {
-      return env.ASSETS.fetch(request);
-    }
-
-    // Login page GET
-    if (path === '/login' && method === 'GET') {
-      return htmlResponse(LOGIN_PAGE);
-    }
-
-    // Login POST
-    if (path === '/login' && method === 'POST') {
-      const form = await request.formData();
-      const email = (form.get('email') || '').toLowerCase().trim();
-      const password = form.get('password') || '';
-
-      const user = await env.DB.prepare('SELECT * FROM users WHERE email = ? AND active = 1').bind(email).first();
-
-      if (!user) {
-        return redirectToLogin('Invalid email or password.');
-      }
-
-      // Check password - handle both plain temp passwords and hashed
-      const hashed = await hashPassword(password);
-      const validHash = user.password_hash === hashed;
-      const validTemp = user.password_hash === password; // plain temp password
-
-      if (!validHash && !validTemp) {
-        return redirectToLogin('Invalid email or password.');
-      }
-
-      // Create session token
-      const token = await createToken({ userId: user.id, email: user.email, name: user.name }, JWT_SECRET);
-
-      const headers = {
-        'Set-Cookie': `pt_session=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800`,
-        'Location': user.first_login ? '/set-password' : '/'
-      };
-
-      return new Response(null, { status: 302, headers });
-    }
-
-    // Logout
-    if (path === '/logout') {
-      return new Response(null, {
-        status: 302,
-        headers: {
-          'Set-Cookie': 'pt_session=; Path=/; HttpOnly; Secure; Max-Age=0',
-          'Location': '/login'
-        }
-      });
-    }
-
-    // Set password page GET
-    if (path === '/set-password' && method === 'GET') {
-      const token = getToken(request);
-      const payload = token ? await verifyToken(token, JWT_SECRET) : null;
-      if (!payload) return redirectToLogin('Please log in first.');
-      return htmlResponse(SET_PASSWORD_PAGE);
-    }
-
-    // Set password POST
-    if (path === '/set-password' && method === 'POST') {
-      const token = getToken(request);
-      const payload = token ? await verifyToken(token, JWT_SECRET) : null;
-      if (!payload) return redirectToLogin('Please log in first.');
-
-      const form = await request.formData();
-      const password = form.get('password') || '';
-      const confirm = form.get('confirm') || '';
-
-      if (password.length < 8 || password !== confirm) {
-        return htmlResponse(SET_PASSWORD_PAGE.replace('display:none', 'display:block').replace('</div>\n<form', 'Invalid password.</div>\n<form'));
-      }
-
-      const hashed = await hashPassword(password);
-      await env.DB.prepare('UPDATE users SET password_hash = ?, first_login = 0 WHERE id = ?').bind(hashed, payload.userId).run();
-
-      return new Response(null, { status: 302, headers: { 'Location': '/' } });
-    }
-
-    // ── Claude API proxy (auth required) ──
-    if (path === '/claude' && method === 'POST') {
-      const token = getToken(request);
-      const payload = token ? await verifyToken(token, JWT_SECRET) : null;
-      if (!payload) {
-        return new Response(JSON.stringify({ error: 'Unauthorised' }), { status: 401, headers: { 'Content-Type': 'application/json' } });
-      }
-
-      const body = await request.json();
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': env.ANTHROPIC_KEY,
-          'anthropic-version': '2023-06-01',
-        },
-        body: JSON.stringify(body)
-      });
-      const data = await response.json();
-      return new Response(JSON.stringify(data), {
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-      });
-    }
-
-    // ── AI Search with D1 companies (auth required) ──
-    if (path === '/search' && method === 'POST') {
-      const token = getToken(request);
-      const payload = token ? await verifyToken(token, JWT_SECRET) : null;
-      if (!payload) {
-        return new Response(JSON.stringify({ error: 'Unauthorised' }), { status: 401, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
-      }
-
-      const body = await request.json();
-
-      // Fetch all active companies from D1
-      const { results: companies } = await env.DB.prepare(
-        'SELECT id, company_name, website, directory_url, partnership_title, summary, description, licence_in, licence_out, distribution, research FROM companies WHERE status = ? ORDER BY company_name ASC'
-      ).bind('active').all();
-
-      // Build system prompt from D1 companies
-      let companyList = '';
-      for (const c of companies) {
-        const types = [];
-        if (c.licence_in) types.push('licence-in');
-        if (c.licence_out) types.push('licence-out');
-        if (c.distribution) types.push('distribution');
-        if (c.research) types.push('research');
-        const typeStr = types.length ? types.join(', ') : 'partnership';
-        const desc = (c.summary || c.description || '').substring(0, 300);
-        companyList += `${c.id}. ${c.company_name} (id:${c.id}) — SEEKING PARTNER [${typeStr}]. ${desc}\n`;
-      }
-
-      const systemPrompt = `You are an AI Partnership Consultant for The Partnership Tree — a life science partner network. Your role is to match user queries to the most relevant companies seeking partnerships.
-
-PARTNERSHIP SEEKERS (${companies.length} companies actively seeking partners):
-${companyList}
-
-INSTRUCTIONS:
-- Return ONLY a JSON object with two fields: "ids" (array of matching company id numbers) and "summary" (2-3 sentence plain text explanation of the matches)
-- Select the most relevant companies based on the user's query — typically 5-15 results
-- All companies listed are SEEKING partnerships (licence-out, licence-in, distribution, or research collaboration)
-- Match based on: technology type, therapeutic area, geography, partnership type requested
-- The "ids" array must contain only integer id numbers from the list above
-- Do not include any text outside the JSON object`;
-
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': env.ANTHROPIC_KEY,
-          'anthropic-version': '2023-06-01',
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-5',
-          max_tokens: 1000,
-          system: systemPrompt,
-          messages: body.messages
-        })
-      });
-
-      const data = await response.json();
-      // Parse Claude's response and enrich with full company data
-      try {
-        const text = data.content && data.content[0] ? data.content[0].text : '';
-        const clean = text.replace(/```json|```/g, '').trim();
-        const parsed = JSON.parse(clean);
-        // Attach full company records for matched IDs
-        const matchedCompanies = (parsed.ids || []).map(id => {
-          return companies.find(c => c.id === id) || null;
-        }).filter(Boolean);
-        return new Response(JSON.stringify({
-          ...parsed,
-          d1Companies: matchedCompanies
-        }), { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
-      } catch(e) {
-        return new Response(JSON.stringify(data), {
-          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-        });
-      }
-    }
-
-    // ── Admin routes ──
-    if (path.startsWith('/admin')) {
-      const token = getToken(request);
-      const payload = token ? await verifyToken(token, JWT_SECRET) : null;
-      if (!payload) return redirectToLogin('Please log in to access admin.');
-
-      // Admin home
-      if (path === '/admin' && method === 'GET') {
-        const { results } = await env.DB.prepare('SELECT * FROM users ORDER BY created_at DESC').all();
-        return htmlResponse(ADMIN_PAGE(results || []));
-      }
-
-      // Create user
-      if (path === '/admin/create-user' && method === 'POST') {
-        const form = await request.formData();
-        const name = form.get('name') || '';
-        const company = form.get('company') || '';
-        const email = (form.get('email') || '').toLowerCase().trim();
-        const role = form.get('role') || '';
-        const temp_password = form.get('temp_password') || '';
-
-        try {
-          await env.DB.prepare(
-            'INSERT INTO users (email, password_hash, name, company, role, first_login, active) VALUES (?, ?, ?, ?, ?, 1, 1)'
-          ).bind(email, temp_password, name, company, role).run();
-        } catch (e) {
-          // Email already exists or other error - just redirect back
-        }
-        return new Response(null, { status: 302, headers: { 'Location': '/admin' } });
-      }
-
-      // Toggle user active status
-      if (path === '/admin/toggle-user' && method === 'POST') {
-        const form = await request.formData();
-        const id = form.get('id');
-        const active = form.get('active');
-        await env.DB.prepare('UPDATE users SET active = ? WHERE id = ?').bind(active, id).run();
-        return new Response(null, { status: 302, headers: { 'Location': '/admin' } });
-      }
-    }
-
-    // ── Protected routes — require auth ──
-    // Check if user is trying to access the main app
-    if (path === '/' || path === '/index.html' || path === '') {
-      const token = getToken(request);
-      const payload = token ? await verifyToken(token, JWT_SECRET) : null;
-      if (!payload) return redirectToLogin();
-      // If first login, redirect to set password
-      const user = await env.DB.prepare('SELECT first_login FROM users WHERE id = ?').bind(payload.userId).first();
-      if (user && user.first_login) return new Response(null, { status: 302, headers: { 'Location': '/set-password' } });
-    }
-
-    // Serve static assets
-    return env.ASSETS.fetch(request);
+function render() {
+  var filtered = getFiltered();
+  var grid = document.getElementById('results-grid');
+  var noResults = document.getElementById('no-results');
+  var count = document.getElementById('results-count');
+  count.textContent = filtered.length + ' platform' + (filtered.length !== 1 ? 's' : '');
+  if (filtered.length === 0) {
+    grid.style.display = 'none';
+    noResults.style.display = 'block';
+    return;
   }
+  grid.style.display = 'grid';
+  noResults.style.display = 'none';
+  grid.innerHTML = filtered.map(function(c) {
+    return '<div class="company-card" onclick="openModal('+c.id+')">'
+      + '<div class="card-header">'
+      + '<div class="card-logo">'+c.name.charAt(0)+'</div>'
+      + '<span class="badge '+c.badgeClass+'">'+c.badge+'</span>'
+      + '</div>'
+      + '<div class="card-name">'+c.name+'</div>'
+      + '<div class="card-location">&#128205; '+c.location+'</div>'
+      + '<div class="card-platform">'+c.platform+'</div>'
+      + '<div class="card-summary">'+c.summary+'</div>'
+      + '<div class="card-keywords">'+c.keywords.slice(0,3).map(function(k){return '<span class="kw-tag">'+k+'</span>';}).join('')+'</div>'
+      + '<div class="card-footer"><span class="card-type">Seeking: '+c.seeking+'</span><span class="card-arrow">&rarr;</span></div>'
+      + '</div>';
+  }).join('');
 }
+
+function openModal(id) {
+  var c = COMPANIES.find(function(x){return x.id===id;});
+  if (!c) return;
+  document.getElementById('modal-content').innerHTML =
+    '<div class="modal-hero">'
+    + '<button class="modal-close" onclick="closeModal()">&times;</button>'
+    + '<div class="modal-eyebrow">Partnership Opportunity</div>'
+    + '<div class="modal-company">'+c.name+'</div>'
+    + '<div class="modal-platform-name">'+c.platform+'</div>'
+    + '<div class="modal-meta">&#128205; '+c.location+' &nbsp;&middot;&nbsp; Seeking: '+c.seeking+'</div>'
+    + '</div>'
+    + '<div class="modal-body">'
+    + '<div class="modal-section"><div class="modal-section-title">About the Platform</div><div class="modal-text">'+c.description+'</div></div>'
+    + '<div class="modal-section"><div class="modal-section-title">Technology Keywords</div><div class="modal-keywords">'+c.keywords.map(function(k){return '<span class="modal-kw">'+k+'</span>';}).join('')+'</div></div>'
+    + '</div>'
+    + '<div class="modal-cta">'
+    + '<div class="modal-cta-text"><h3>Interested in this platform?</h3><p>Contact us to make an introduction or to list your own platform opportunity.</p></div>'
+    + '<a href="mailto:paul@thepartnershiptree.com?subject=Partnership Enquiry: '+encodeURIComponent(c.name)+'&body=I am interested in learning more about '+encodeURIComponent(c.name)+' and their '+encodeURIComponent(c.platform)+'." class="modal-cta-btn">Make an Enquiry &rarr;</a>'
+    + '</div>';
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
+render();
+</script>
+</body>
+</html>
+`, {
+      headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=3600' }
+    });
+  }
+};
