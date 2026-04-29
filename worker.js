@@ -2,10 +2,10 @@ export default {
   async fetch(request) {
     const url = new URL(request.url);
     if (url.pathname === '/robots.txt') {
-      return new Response('User-agent: *\nAllow: /\n', { headers: { 'Content-Type': 'text/plain' } });
+      return new Response('User-agent: *\nAllow: /\nSitemap: https://thepartnershiptree.com/sitemap.xml\n', { headers: { 'Content-Type': 'text/plain' } });
     }
     if (url.pathname === '/sitemap.xml') {
-      return new Response(`<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://thepartnershiptree.com/</loc></url></urlset>`, { headers: { 'Content-Type': 'application/xml' } });
+      return new Response('<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://thepartnershiptree.com/</loc></url></urlset>', { headers: { 'Content-Type': 'application/xml' } });
     }
     return new Response(`<!DOCTYPE html>
 <html lang="en">
@@ -245,6 +245,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
   <div class="search-bar">
     <input type="text" class="search-input" id="search-input" placeholder="Search by technology, therapy area, or platform name…" oninput="filterCompanies()">
     <button class="search-btn" onclick="filterCompanies()">Search</button>
+    <button class="search-btn" style="background:var(--mid);" onclick="clearSearch()">Clear</button>
   </div>
   <div class="filter-chips">
     <span class="chip active" onclick="setFilter('all',this)">All Platforms</span>
@@ -316,12 +317,25 @@ var COMPANIES = [
   {id:644,name:"Absci",location:"Vancouver, USA",platform:"Integrated Drug Creation™ Platform",summary:"Absci's Integrated Drug Creation™ platform enables simultaneous multi-parameter optimisation of affinity, specificity, manufacturability, and safety — de-risking biologic drug discovery from day one.",description:"Conventional biologic drug discovery optimises parameters sequentially — leading to late-stage failures. Absci's Integrated Drug Creation™ platform collapses this into a single AI-powered workflow, enabling partners to explore a broader solution space and select candidates that work on all dimensions simultaneously.",keywords:["AI Biologics","Drug Design","Antibody Discovery","Manufacturability","Immuno-oncology"],tags:["AI","antibody"],badge:"AI Biologics Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Co-Development",geo:""},
   {id:492,name:"Schrödinger",location:"New York, USA",platform:"Physics-Based Computational Drug Design Platform",summary:"Schrödinger's leading computational platform for molecular discovery has enabled two FDA-approved drugs and multiple clinical programmes — available for research collaborations and licensing.",description:"Schrödinger's platform applies physics-based simulation to predict how molecules will behave in biological systems — with a level of accuracy that has transformed early drug discovery. Partners gain access to a validated platform that has already generated FDA-approved medicines, alongside a collaborative team with a track record of co-founding startups and partnering with leading global pharma companies.",keywords:["Computational Chemistry","Molecular Design","Small Molecules","Drug Discovery","AI"],tags:["AI"],badge:"Computational Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Research",geo:""},
   {id:826,name:"Valo Health",location:"Boston, USA",platform:"Opal™ Computational Platform",summary:"Opal™ is a groundbreaking closed-loop AI platform combining multi-omic data, computational modelling, and experimental validation — driving next-generation drug discovery and development.",description:"Valo Health's Opal™ platform represents a fundamental reimagining of how drug discovery is conducted. By closing the loop between computation and experiment, Opal™ continuously learns and improves — enabling partners to identify and develop drug candidates faster and with higher probability of success than conventional approaches.",keywords:["AI Drug Discovery","Computational Platform","Multi-omic Data","Drug Development","Closed-Loop AI"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Research",geo:""}
+  ,{id:843,name:"Orna Therapeutics",location:"Cambridge, USA",platform:"oRNA™ Circular RNA Platform",summary:"Orna's oRNA™ platform engineers circular RNA for persistent protein expression — enabling a new class of RNA medicines with superior durability over linear mRNA for immunotherapy and genetic disease.",description:"Linear mRNA degrades rapidly, limiting its therapeutic utility. Orna's oRNA™ circular RNA platform overcomes this fundamental limitation by creating RNA molecules that resist exonuclease degradation and provide sustained, tunable protein expression. The platform enables a broad range of applications from in vivo cell reprogramming to durable protein replacement therapies.",keywords:["Circular RNA","oRNA","Gene Therapy","Immunotherapy","RNA Medicine"],tags:["rna","cell"],badge:"Circular RNA Platform",badgeClass:"badge-rna",seeking:"Licence OUT · Co-Development",geo:""},
+  {id:844,name:"Larimar Therapeutics",location:"Bala Cynwyd, USA",platform:"Cell-Penetrating Peptide Platform",summary:"Larimar's proprietary cell-penetrating peptide platform enables intracellular delivery of large therapeutic molecules — opening targets previously inaccessible to biologics.",description:"The ability to get large molecules inside cells has long been the holy grail of biologics drug delivery. Larimar's cell-penetrating peptide platform provides a validated, licensable solution that has been demonstrated across multiple disease areas, with particular strength in rare mitochondrial diseases.",keywords:["Cell-Penetrating Peptides","Intracellular Delivery","Rare Disease","Biologics","Drug Delivery"],tags:["cell"],badge:"Cell Delivery Platform",badgeClass:"badge-cell",seeking:"Licence OUT",geo:""},
+  {id:845,name:"Cardior Pharmaceuticals",location:"Hannover, Germany",platform:"ncRNA Cardiovascular Platform",summary:"Cardior's non-coding RNA platform targets cardiovascular disease at the RNA level — developing first-in-class therapeutics for heart failure and cardiac fibrosis using proprietary ncRNA technology.",description:"Non-coding RNAs regulate gene expression without encoding proteins, making them highly attractive therapeutic targets. Cardior's platform is focused exclusively on cardiovascular applications of ncRNA biology — an area of major unmet need where conventional small molecules and biologics have failed to deliver transformative outcomes.",keywords:["Non-coding RNA","Cardiovascular","Heart Failure","RNA Therapeutics","ncRNA"],tags:["rna"],badge:"RNA Therapeutics Platform",badgeClass:"badge-rna",seeking:"Licence OUT · Co-Development",geo:"europe"},
+  {id:846,name:"Cellectis",location:"Paris, France",platform:"TALEN® Gene Editing Platform",summary:"Cellectis pioneered allogeneic CAR-T cell therapy using their proprietary TALEN® gene editing technology — offering a differentiated and validated alternative to CRISPR for cell therapy manufacturing.",description:"TALEN® (Transcription Activator-Like Effector Nucleases) technology was pioneered by Cellectis and represents a highly specific, proprietary approach to gene editing with particular advantages in the manufacturing of allogeneic cell therapies. The platform is validated in clinical programmes and offers partners an alternative to CRISPR with a distinct IP landscape.",keywords:["TALEN Gene Editing","Allogeneic CAR-T","Cell Therapy","Gene Engineering","Immunotherapy"],tags:["cell","gene"],badge:"Gene Editing Platform",badgeClass:"badge-gene",seeking:"Licence OUT · Co-Development",geo:"europe"},
+  {id:847,name:"Merus",location:"Utrecht, Netherlands",platform:"Biclonics® Bispecific Antibody Platform",summary:"Merus's Biclonics® platform generates full-length bispecific antibodies using common light chain technology — producing development-ready candidates with natural antibody architecture and excellent manufacturability.",description:"Bispecific antibodies offer transformative potential across oncology and immunology, but their manufacture has historically been technically challenging. Merus's Biclonics® platform produces genuine full-length bispecific IgGs using common light chain engineering — resulting in antibodies with natural architecture, excellent biophysical properties, and straightforward CMC development.",keywords:["Bispecific Antibodies","Biclonics","Common Light Chain","Oncology","Full-Length IgG"],tags:["antibody"],badge:"Bispecific Antibody Platform",badgeClass:"badge-antibody",seeking:"Licence OUT · Co-Development",geo:"europe"}
 ];
 
 // Remove duplicate Intellia (id 444 appears twice) 
 COMPANIES = COMPANIES.filter((c,i,a) => a.findIndex(x=>x.id===c.id)===i);
 
 var activeFilter = 'all';
+
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  activeFilter = 'all';
+  document.querySelectorAll('.chip').forEach(function(c){c.classList.remove('active');});
+  document.querySelector('.chip').classList.add('active');
+  render();
+}
 
 function setFilter(f, el) {
   activeFilter = f;
