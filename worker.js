@@ -1,12 +1,25 @@
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     const url = new URL(request.url);
+
+    // Redirect www to non-www
+    if (url.hostname === 'www.thepartnershiptree.com') {
+      return Response.redirect('https://thepartnershiptree.com' + url.pathname + url.search, 301);
+    }
+
     if (url.pathname === '/robots.txt') {
-      return new Response('User-agent: *\nAllow: /\nSitemap: https://thepartnershiptree.com/sitemap.xml\n', { headers: { 'Content-Type': 'text/plain' } });
+      return new Response('User-agent: *\nAllow: /\nSitemap: https://thepartnershiptree.com/sitemap.xml\n', {
+        headers: { 'Content-Type': 'text/plain' }
+      });
     }
+
     if (url.pathname === '/sitemap.xml') {
-      return new Response('<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://thepartnershiptree.com/</loc></url></urlset>', { headers: { 'Content-Type': 'application/xml' } });
+      return new Response('<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://thepartnershiptree.com/</loc></url></urlset>', {
+        headers: { 'Content-Type': 'application/xml' }
+      });
     }
+
+    // Serve the public site for all other requests
     return new Response(`<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -423,7 +436,10 @@ render();
 </body>
 </html>
 `, {
-      headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=3600' }
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
     });
   }
 };
