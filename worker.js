@@ -1,25 +1,19 @@
 export default {
-  async fetch(request, env) {
+  async fetch(request) {
     const url = new URL(request.url);
-
-    // Redirect www to non-www
     if (url.hostname === 'www.thepartnershiptree.com') {
       return Response.redirect('https://thepartnershiptree.com' + url.pathname + url.search, 301);
     }
-
     if (url.pathname === '/robots.txt') {
       return new Response('User-agent: *\nAllow: /\nSitemap: https://thepartnershiptree.com/sitemap.xml\n', {
         headers: { 'Content-Type': 'text/plain' }
       });
     }
-
     if (url.pathname === '/sitemap.xml') {
       return new Response('<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://thepartnershiptree.com/</loc></url></urlset>', {
         headers: { 'Content-Type': 'application/xml' }
       });
     }
-
-    // Serve the public site for all other requests
     return new Response(`<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -189,8 +183,8 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
   </a>
   <div class="nav-actions">
     <a href="#platforms" class="nav-link">Browse Platforms</a>
-    <a href="mailto:paul@thepartnershiptree.com" class="nav-link">List Your Platform</a>
-    <a href="https://app.thepartnershiptree.com" class="nav-cta">Member Login →</a>
+    <span class="nav-link" onclick="openListingForm()" style="cursor:pointer;">List Your Platform</span>
+    <a href="https://app.thepartnershiptree.com/login" class="nav-cta">Member Login →</a>
   </div>
 </nav>
 
@@ -198,10 +192,10 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
   <div>
     <div class="hero-eyebrow">Life Science Platform Licensing Network</div>
     <h1 class="hero-title">Where proprietary platforms find their <em>ideal partners</em></h1>
-    <p class="hero-body">The Partnership Tree is a curated network where life science companies actively promote their proprietary technology platforms, IP and partnership opportunities to BD professionals worldwide. Every listing is verified, intentional, and actively seeking engagement.</p>
+    <p class="hero-body">The Partnership Tree is a curated network where life science companies actively promote their proprietary technology platforms, IP and partnership opportunities to Alliance, Technology &amp; BD professionals worldwide. Every listing is verified, intentional, and actively seeking engagement.</p>
     <div class="hero-actions">
       <a href="#platforms" class="btn-primary">Browse Platforms →</a>
-      <a href="mailto:paul@thepartnershiptree.com" class="btn-outline">List Your Platform</a>
+      <button class="btn-outline" onclick="openListingForm()" style="cursor:pointer;">List Your Platform</button>
     </div>
   </div>
   <div class="hero-stats">
@@ -211,7 +205,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
     </div>
     <div class="stat-card">
       <div class="stat-num">3,000+</div>
-      <div class="stat-label">Life science companies in our broader member network</div>
+      <div class="stat-label">Life science companies in our broader partnership network</div>
     </div>
     <div class="stat-card">
       <div class="stat-num">12+</div>
@@ -293,7 +287,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
       <h4>Network</h4>
       <a href="#platforms">Browse Platforms</a>
       <a href="https://app.thepartnershiptree.com">Member Login</a>
-      <a href="mailto:paul@thepartnershiptree.com">List Your Platform</a>
+      <a href="#" onclick="openListingForm();return false;">List Your Platform</a>
     </div>
     <div class="footer-col">
       <h4>Contact</h4>
@@ -432,6 +426,84 @@ function closeModal() {
 
 document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
 render();
+</script>
+
+<div id="listing-modal" style="display:none;position:fixed;inset:0;background:rgba(15,35,24,0.75);z-index:300;backdrop-filter:blur(4px);padding:60px 20px;overflow-y:auto;" onclick="if(event.target===this)closeListingForm()">
+  <div style="background:#fff;border-radius:20px;max-width:580px;width:100%;margin:0 auto;position:relative;overflow:hidden;">
+    <div style="background:var(--forest-deep);padding:36px 40px;position:relative;">
+      <button onclick="closeListingForm()" style="position:absolute;top:14px;right:18px;font-size:28px;color:rgba(245,240,232,0.4);cursor:pointer;background:none;border:none;line-height:1;">&times;</button>
+      <div style="font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Join The Network</div>
+      <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--cream);margin-bottom:6px;">List Your Platform</div>
+      <div style="font-size:13px;color:rgba(245,240,232,0.55);">Tell us about your technology platform and we will be in touch within one business day.</div>
+    </div>
+    <div style="padding:36px 40px;">
+      <div id="listing-success" style="display:none;text-align:center;padding:20px 0;">
+        <div style="font-size:48px;margin-bottom:16px;">&#10003;</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--forest);margin-bottom:10px;">Thank you!</h3>
+        <p style="font-size:14px;color:var(--mid);line-height:1.7;">We will review your submission and be in touch within one business day.</p>
+        <button onclick="closeListingForm()" style="margin-top:20px;background:var(--forest);color:var(--cream);border:none;padding:12px 28px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Close</button>
+      </div>
+      <div id="listing-form-fields">
+        <div style="margin-bottom:14px;">
+          <label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Full Name *</label>
+          <input type="text" id="lf-name" placeholder="Your full name" style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Company *</label>
+          <input type="text" id="lf-company" placeholder="Company name" style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Work Email *</label>
+          <input type="email" id="lf-email" placeholder="your@company.com" style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Platform / Technology Name *</label>
+          <input type="text" id="lf-platform" placeholder="e.g. LNAplus Antisense Platform" style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:20px;">
+          <label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">What partnership are you seeking?</label>
+          <textarea id="lf-seeking" rows="3" placeholder="Briefly describe what you are looking for — licensing partner, co-development, geographic rights..." style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;resize:vertical;box-sizing:border-box;"></textarea>
+        </div>
+        <div id="lf-error" style="display:none;background:#ffeaea;color:#c0392b;padding:10px 14px;border-radius:7px;font-size:13px;font-weight:700;margin-bottom:14px;"></div>
+        <button onclick="submitListingForm()" style="width:100%;padding:14px;background:var(--forest);border:none;border-radius:8px;font-weight:800;font-size:15px;color:#fff;cursor:pointer;font-family:inherit;letter-spacing:.04em;">Submit Listing Request &rarr;</button>
+        <p style="font-size:12px;color:var(--mid);margin-top:10px;text-align:center;">We review all applications personally and respond within one business day.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false">
+function openListingForm(){
+  document.getElementById('listing-modal').style.display='block';
+  document.body.style.overflow='hidden';
+}
+function closeListingForm(){
+  document.getElementById('listing-modal').style.display='none';
+  document.body.style.overflow='';
+  document.getElementById('listing-form-fields').style.display='block';
+  document.getElementById('listing-success').style.display='none';
+  document.getElementById('lf-error').style.display='none';
+}
+function submitListingForm(){
+  var name=document.getElementById('lf-name').value.trim();
+  var company=document.getElementById('lf-company').value.trim();
+  var email=document.getElementById('lf-email').value.trim();
+  var platform=document.getElementById('lf-platform').value.trim();
+  var seeking=document.getElementById('lf-seeking').value.trim();
+  var err=document.getElementById('lf-error');
+  if(!name||!company||!email||!platform){
+    err.textContent='Please fill in all required fields.';
+    err.style.display='block';
+    return;
+  }
+  err.style.display='none';
+  var subject='Platform Listing Request: '+company+' - '+platform;
+  var body='Name: '+name+'\\nCompany: '+company+'\\nEmail: '+email+'\\nPlatform: '+platform+'\\nSeeking: '+seeking;
+  window.location.href='mailto:paul@thepartnershiptree.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+  document.getElementById('listing-form-fields').style.display='none';
+  document.getElementById('listing-success').style.display='block';
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeListingForm();});
 </script>
 </body>
 </html>
