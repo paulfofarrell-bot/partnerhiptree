@@ -10,7 +10,12 @@ export default {
       });
     }
     if (url.pathname === '/sitemap.xml') {
-      return new Response('<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://thepartnershiptree.com/</loc></url></urlset>', {
+      return new Response(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://thepartnershiptree.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://thepartnershiptree.com/#platforms</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://thepartnershiptree.com/#insights</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>`, {
         headers: { 'Content-Type': 'application/xml' }
       });
     }
@@ -20,7 +25,41 @@ export default {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Partnership Tree | Life Science Platform Licensing Network</title>
-<meta name="description" content="A curated network connecting life science innovators with development partners. Browse proprietary platform technologies actively seeking licensing and co-development partnerships.">
+<meta name="description" content="The Partnership Tree is a curated life science partner network where biotech and pharma companies promote their proprietary technology platforms, IP and partnership opportunities to Alliance, Technology and BD professionals worldwide.">
+<meta name="keywords" content="life science partnerships, pharma licensing, biotech co-development, drug discovery platform, gene therapy licensing, cell therapy partnership, RNA therapeutics, antibody platform, AI drug discovery, CDMO partnership, CRO partnership, technology licensing">
+<meta name="robots" content="index, follow">
+<meta name="author" content="The Partnership Tree">
+<link rel="canonical" href="https://thepartnershiptree.com/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://thepartnershiptree.com/">
+<meta property="og:title" content="The Partnership Tree | Life Science Platform Licensing Network">
+<meta property="og:description" content="A curated network where life science companies actively promote their proprietary technology platforms and partnership opportunities to BD professionals worldwide.">
+<meta property="og:site_name" content="The Partnership Tree">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Partnership Tree | Life Science Platform Licensing Network">
+<meta name="twitter:description" content="Browse 25 curated life science platform technologies actively seeking licensing and co-development partners.">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "The Partnership Tree",
+  "url": "https://thepartnershiptree.com",
+  "description": "A curated life science partner network connecting platform technology companies with licensing and co-development partners.",
+  "foundingDate": "2024",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "paul@thepartnershiptree.com",
+    "contactType": "Business Development"
+  },
+  "sameAs": ["https://pharmaservicesdirectory.com"]
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -182,8 +221,9 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
     </div>
   </a>
   <div class="nav-actions">
-    <a href="#platforms" class="nav-link">Browse Platforms</a>
-    <span class="nav-link" onclick="openListingForm()" style="cursor:pointer;">List Your Platform</span>
+    <a href="#platforms" class="nav-link">Browse Platform</a>
+    <a href="#insights" class="nav-link">Insights</a>
+    <a href="mailto:paul@thepartnershiptree.com" class="nav-link">List Your Platform</a>
     <a href="https://app.thepartnershiptree.com/login" class="nav-cta">Member Login →</a>
   </div>
 </nav>
@@ -195,7 +235,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
     <p class="hero-body">The Partnership Tree is a curated network where life science companies actively promote their proprietary technology platforms, IP and partnership opportunities to Alliance, Technology &amp; BD professionals worldwide. Every listing is verified, intentional, and actively seeking engagement.</p>
     <div class="hero-actions">
       <a href="#platforms" class="btn-primary">Browse Platforms →</a>
-      <button class="btn-outline" onclick="openListingForm()" style="cursor:pointer;">List Your Platform</button>
+      <a href="mailto:paul@thepartnershiptree.com" class="btn-outline">List Your Platform</a>
     </div>
   </div>
   <div class="hero-stats">
@@ -277,6 +317,48 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
   <div class="modal" id="modal-content"></div>
 </div>
 
+
+<!-- INSIGHTS SECTION -->
+<section id="insights" style="background:var(--white);padding:80px 40px;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="margin-bottom:48px;">
+      <div style="font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Insights & Perspectives</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:36px;color:var(--forest-deep);font-weight:700;margin-bottom:10px;">Thought Leadership</h2>
+      <p style="font-size:15px;color:var(--mid);max-width:600px;line-height:1.7;">Perspectives on pharmaceutical partnerships, platform licensing, and the life science industry.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px;">
+      <article style="background:var(--fog);border-radius:16px;padding:36px;border:1.5px solid var(--card-border);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="background:var(--forest);color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Thought Leadership</span>
+          <span style="color:var(--mid);font-size:12px;">March 2026 · 6 min read</span>
+        </div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--forest-deep);margin-bottom:12px;line-height:1.3;">How AI is Changing Pharmaceutical Partner Search</h3>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">The business of finding the right development partner has always been relationship-driven. Artificial intelligence is not replacing those relationships — but it is fundamentally changing how they begin.</p>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">Traditional directory search operates on keywords. AI-powered partner search interprets intent — understanding capability depth, geography, regulatory framework and partnership stage simultaneously. A query like <em>"Which European CDMOs handle cytotoxic ADC payload synthesis with GMP fill-finish for clinical stage programmes?"</em> is understood in its entirety, not just matched on keywords.</p>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:24px;">The Partnership Tree was built specifically for the pharmaceutical and life science industry, combining two decades of directory expertise from The Pharma Services Directory — established in 2003 — with a purpose-built partner network for platform technology companies seeking licensing and co-development partners.</p>
+        <a href="mailto:paul@thepartnershiptree.com?subject=Insights Enquiry" style="font-size:13px;font-weight:700;color:var(--forest);text-decoration:none;border:1.5px solid var(--forest);padding:8px 18px;border-radius:6px;display:inline-block;">Discuss Partnership →</a>
+      </article>
+      <article style="background:var(--fog);border-radius:16px;padding:36px;border:1.5px solid var(--card-border);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="background:var(--forest);color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Drug Discovery</span>
+          <span style="color:var(--mid);font-size:12px;">March 2026 · 7 min read</span>
+        </div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--forest-deep);margin-bottom:12px;line-height:1.3;">How AI-Based Partnerships Are Changing Drug Discovery</h3>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">Artificial intelligence is not just accelerating drug discovery — it is reshaping who does it, and how collaborations between technology companies and pharmaceutical developers are structured.</p>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">AI drug discovery companies are, almost by definition, partnership-dependent. The most sophisticated computational platform cannot take a drug to the clinic without wet laboratory validation, clinical expertise, regulatory knowledge and manufacturing capability.</p>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:24px;">This creates a structural need for partnerships that is different in character from traditional pharma-CDMO relationships — combining the AI company's discovery engine with the pharmaceutical partner's development infrastructure and commercial reach.</p>
+        <a href="https://app.thepartnershiptree.com/login" style="font-size:13px;font-weight:700;color:var(--forest);text-decoration:none;border:1.5px solid var(--forest);padding:8px 18px;border-radius:6px;display:inline-block;">Read More in Member Portal →</a>
+      </article>
+    </div>
+    <div style="text-align:center;padding:40px;background:var(--forest-deep);border-radius:16px;">
+      <div style="font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Full Articles Available</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:24px;color:var(--cream);margin-bottom:10px;">More Insights in the Member Portal</h3>
+      <p style="font-size:14px;color:rgba(245,240,232,0.6);margin-bottom:24px;max-width:500px;margin-left:auto;margin-right:auto;">Full articles, network news, partnership announcements and industry perspectives are available to members. Login or request access below.</p>
+      <a href="https://app.thepartnershiptree.com/login" style="background:var(--gold);color:var(--forest-deep);font-size:13px;font-weight:900;padding:12px 28px;border-radius:8px;text-decoration:none;letter-spacing:.04em;display:inline-block;">Access Full Insights →</a>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="footer-inner">
     <div>
@@ -285,9 +367,9 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
     </div>
     <div class="footer-col">
       <h4>Network</h4>
-      <a href="#platforms">Browse Platforms</a>
+      <a href="#platforms">Browse Platform</a>
       <a href="https://app.thepartnershiptree.com">Member Login</a>
-      <a href="#" onclick="openListingForm();return false;">List Your Platform</a>
+      <a href="mailto:paul@thepartnershiptree.com">List Your Platform</a>
     </div>
     <div class="footer-col">
       <h4>Contact</h4>
@@ -427,90 +509,13 @@ function closeModal() {
 document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
 render();
 </script>
-
-<div id="listing-modal" style="display:none;position:fixed;inset:0;background:rgba(15,35,24,0.75);z-index:300;backdrop-filter:blur(4px);padding:60px 20px;overflow-y:auto;" onclick="if(event.target===this)closeListingForm()">
-  <div style="background:#fff;border-radius:20px;max-width:580px;width:100%;margin:0 auto;position:relative;overflow:hidden;">
-    <div style="background:var(--forest-deep);padding:36px 40px;position:relative;">
-      <button onclick="closeListingForm()" style="position:absolute;top:14px;right:18px;font-size:28px;color:rgba(245,240,232,0.4);cursor:pointer;background:none;border:none;line-height:1;">&times;</button>
-      <div style="font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Join The Network</div>
-      <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--cream);margin-bottom:6px;">List Your Platform</div>
-      <div style="font-size:13px;color:rgba(245,240,232,0.55);">Tell us about your technology platform and we will be in touch within one business day.</div>
-    </div>
-    <div style="padding:36px 40px;">
-      <div id="listing-success" style="display:none;text-align:center;padding:20px 0;">
-        <div style="font-size:48px;margin-bottom:16px;">&#10003;</div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--forest);margin-bottom:10px;">Thank you!</h3>
-        <p style="font-size:14px;color:var(--mid);line-height:1.7;">We will review your submission and be in touch within one business day.</p>
-        <button onclick="closeListingForm()" style="margin-top:20px;background:var(--forest);color:var(--cream);border:none;padding:12px 28px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Close</button>
-      </div>
-      <div id="listing-form-fields">
-        <div style="margin-bottom:14px;">
-          <label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Full Name *</label>
-          <input type="text" id="lf-name" placeholder="Your full name" style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;box-sizing:border-box;">
-        </div>
-        <div style="margin-bottom:14px;">
-          <label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Company *</label>
-          <input type="text" id="lf-company" placeholder="Company name" style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;box-sizing:border-box;">
-        </div>
-        <div style="margin-bottom:14px;">
-          <label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Work Email *</label>
-          <input type="email" id="lf-email" placeholder="your@company.com" style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;box-sizing:border-box;">
-        </div>
-        <div style="margin-bottom:14px;">
-          <label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Platform / Technology Name *</label>
-          <input type="text" id="lf-platform" placeholder="e.g. LNAplus Antisense Platform" style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;box-sizing:border-box;">
-        </div>
-        <div style="margin-bottom:20px;">
-          <label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">What partnership are you seeking?</label>
-          <textarea id="lf-seeking" rows="3" placeholder="Briefly describe what you are looking for — licensing partner, co-development, geographic rights..." style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;resize:vertical;box-sizing:border-box;"></textarea>
-        </div>
-        <div id="lf-error" style="display:none;background:#ffeaea;color:#c0392b;padding:10px 14px;border-radius:7px;font-size:13px;font-weight:700;margin-bottom:14px;"></div>
-        <button onclick="submitListingForm()" style="width:100%;padding:14px;background:var(--forest);border:none;border-radius:8px;font-weight:800;font-size:15px;color:#fff;cursor:pointer;font-family:inherit;letter-spacing:.04em;">Submit Listing Request &rarr;</button>
-        <p style="font-size:12px;color:var(--mid);margin-top:10px;text-align:center;">We review all applications personally and respond within one business day.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script data-cfasync="false">
-function openListingForm(){
-  document.getElementById('listing-modal').style.display='block';
-  document.body.style.overflow='hidden';
-}
-function closeListingForm(){
-  document.getElementById('listing-modal').style.display='none';
-  document.body.style.overflow='';
-  document.getElementById('listing-form-fields').style.display='block';
-  document.getElementById('listing-success').style.display='none';
-  document.getElementById('lf-error').style.display='none';
-}
-function submitListingForm(){
-  var name=document.getElementById('lf-name').value.trim();
-  var company=document.getElementById('lf-company').value.trim();
-  var email=document.getElementById('lf-email').value.trim();
-  var platform=document.getElementById('lf-platform').value.trim();
-  var seeking=document.getElementById('lf-seeking').value.trim();
-  var err=document.getElementById('lf-error');
-  if(!name||!company||!email||!platform){
-    err.textContent='Please fill in all required fields.';
-    err.style.display='block';
-    return;
-  }
-  err.style.display='none';
-  var subject='Platform Listing Request: '+company+' - '+platform;
-  var body='Name: '+name+'\\nCompany: '+company+'\\nEmail: '+email+'\\nPlatform: '+platform+'\\nSeeking: '+seeking;
-  window.location.href='mailto:paul@thepartnershiptree.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
-  document.getElementById('listing-form-fields').style.display='none';
-  document.getElementById('listing-success').style.display='block';
-}
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeListingForm();});
-</script>
 </body>
 </html>
 `, {
       headers: {
         'Content-Type': 'text/html; charset=utf-8',
-        'Cache-Control': 'public, max-age=3600'
+        'Cache-Control': 'public, max-age=3600',
+        'X-Robots-Tag': 'index, follow'
       }
     });
   }
