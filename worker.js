@@ -326,6 +326,60 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
       <h2 style="font-family:'Playfair Display',serif;font-size:36px;color:var(--forest-deep);font-weight:700;margin-bottom:10px;">Thought Leadership</h2>
       <p style="font-size:15px;color:var(--mid);max-width:600px;line-height:1.7;">Perspectives on pharmaceutical partnerships, platform licensing, and the life science industry.</p>
     </div>
+    <div style="margin-bottom:40px;">
+      <article style="background:var(--fog);border-radius:16px;padding:40px;border:1.5px solid var(--card-border);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+          <span style="background:var(--forest);color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Manufacturing Review</span>
+          <span style="color:var(--mid);font-size:12px;">June 2026 · 8 min read</span>
+        </div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--forest-deep);margin-bottom:16px;line-height:1.3;">Pharma &amp; Biotech CDMO Partnerships — The Manufacturing Alliances Reshaping Drug Production</h3>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:16px;">The contract development and manufacturing sector has never been more strategically central to the life sciences industry. In 2026, CDMO partnerships are no longer simply about outsourcing production — they are about accessing specialised infrastructure, securing supply chain resilience, and building the industrial backbone for the next generation of complex therapies. Two distinct partnership patterns have emerged: biotechs leaning on CDMO expertise to scale proven assets, and CDMOs forming deep alliances with each other to solve the uniquely complex logistics of living drugs.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:24px;">
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">1. Biologics &amp; Antibodies — Global Scale-Up</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Virtual and clinical-stage biotechs continue to rely on established CDMO infrastructure for the high-yield, distribution-ready manufacturing that monoclonal antibodies and complex biologics demand. These are true outsourcing relationships — the innovator owns the asset; the CDMO owns the scale.</p>
+            <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
+              <li><strong>Ottimo Pharma + Lotte Biologics (S. Korea):</strong> Commercial scale-up of oncology asset KT-109 — a Korean CDMO securing a US biotech's biologic manufacturing footprint in Asia.</li>
+              <li><strong>Novelty Nobility + AGC Biologics (Japan):</strong> Antibody drug product manufacturing expansion — South Korea's Novelty Nobility leveraging Japanese CDMO infrastructure for global distribution readiness.</li>
+              <li><strong>ImmuneOncia + Lonza (Switzerland):</strong> Late-stage monoclonal antibody scale-up — one of the most recognised names in CDMO biologics manufacturing anchoring a South Korean immuno-oncology programme.</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">2. Small Molecules — Commercial Readiness</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Small molecule programmes are driving a wave of highly targeted CDMO engagements focused on formulation expertise, API scale-up, and clinical batch supply — particularly where specialist capability (topical formulation, sterile injectables) is the determining factor in partner selection.</p>
+            <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
+              <li><strong>Achieve Life Sciences + Adare Pharma Solutions (USA):</strong> Commercial production tech transfer for a small molecule programme — a clean handoff from development to scalable commercial manufacture.</li>
+              <li><strong>Botanix Pharmaceuticals + Piramal Pharma Solutions (India):</strong> Formulation and active topical API scale-up — an Australian biotech accessing India's world-class API manufacturing for a cannabidiol-based dermatology asset.</li>
+              <li><strong>Curative Biotech + Sterling Pharma (UK):</strong> Clinical batch supply of sterile eye drops — a highly specialised fill-finish capability that few CDMOs can offer at clinical grade.</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">3. Gene &amp; Cell Therapy — Specialist Scale-Up</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">AAV viral vectors and advanced cell therapies are the most technically demanding manufacturing challenges in pharma. Innovators in this space are selecting CDMO partners not on price, but on demonstrated specialist capability — and the partnerships reflect that selectivity.</p>
+            <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
+              <li><strong>Elpida Therapeutics + Catalent (USA):</strong> Late-phase AAV viral vector scale-up — bringing a gene therapy programme to the critical juncture between clinical and commercial manufacturing.</li>
+              <li><strong>LIR Life Sciences + Neuland Labs (India):</strong> Cell-Penetrating Peptide (CPP) platform scale-up — a Japanese innovator accessing Indian synthesis expertise for a novel delivery modality sitting at the intersection of biologics and drug delivery.</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">4. CDMO-to-CDMO — The B2B Alliance Layer</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Perhaps the most telling signal in this data is what happens when CDMOs and tool providers partner with <em>each other</em>. Almost without exception, these B2B alliances are concentrated in gene and cell therapy — revealing just how complex the raw material and logistics chain for living drugs has become.</p>
+            <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
+              <li><strong>Cellares + ProTGenS (S. Korea):</strong> Automation provider adapting specialised progenitor T-cell therapies into automated manufacturing pods — closing the gap between novel cell types and industrial-scale production.</li>
+              <li><strong>Aldevron + Minaris Regenerative (USA/Japan):</strong> Long-term contract securing clinical-grade lentiviral plasmid supply — a raw material-to-CDMO alliance that underpins multiple downstream cell therapy programmes.</li>
+              <li><strong>Andelyn Biosciences + EnCell (USA):</strong> Joint framework alliance to scale viral vector processing efficiencies — two CDMOs combining complementary expertise rather than competing.</li>
+              <li><strong>OrganaBio + Excellos (USA):</strong> Strategic asset acquisition creating a nationwide cellular donor procurement-to-cleanroom pipeline — CDMO consolidation building end-to-end control of the cell therapy supply chain.</li>
+            </ul>
+          </div>
+        </div>
+        <div style="background:var(--forest);border-radius:10px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+          <p style="font-size:13px;color:rgba(245,240,232,0.8);margin:0;max-width:600px;">The CDMO sector is bifurcating: generalist manufacturers face commoditisation, while those with specialist capabilities in gene therapy, ADCs, and complex sterile injectables are commanding premium long-term contracts. Browse the platform to find CDMO and manufacturing partners actively seeking engagement.</p>
+          <a href="#platforms" style="background:var(--gold);color:var(--forest-deep);font-size:12px;font-weight:900;padding:10px 22px;border-radius:7px;text-decoration:none;white-space:nowrap;letter-spacing:.04em;">Browse Platforms &rarr;</a>
+        </div>
+        <div style="margin-top:16px;font-size:12px;color:var(--mid);">By <strong>Paul O'Farrell</strong> · Owner focused on Innovation &amp; Technical Alliances and Procurement solutions</div>
+      </article>
+    </div>
+
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px;">
       <article style="background:var(--fog);border-radius:16px;padding:36px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
