@@ -323,9 +323,11 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
   <div style="max-width:1200px;margin:0 auto;">
     <div style="margin-bottom:48px;">
       <div style="font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Insights &amp; Perspectives</div>
-      <h2 style="font-family:'Playfair Display',serif;font-size:36px;color:var(--forest-deep);font-weight:700;margin-bottom:10px;">Review and Summary of the Latest Headline News in Partnerships and Alliances within the Life Science Sector</h2>
-      <p style="font-size:15px;color:var(--mid);max-width:700px;line-height:1.7;">Perspectives on pharmaceutical partnerships, platform licensing, and the life science industry.</p>
+      <h2 style="font-family:'Playfair Display',serif;font-size:36px;color:var(--forest-deep);font-weight:700;margin-bottom:10px;">Thought Leadership</h2>
+      <p style="font-size:15px;color:var(--mid);max-width:600px;line-height:1.7;">Review and Summary of the Latest Headline News in Partnerships and Alliances within the Life Science Sector</p>
     </div>
+
+    <!-- JUNE 2026: CDMO Partnerships -->
     <div style="margin-bottom:40px;">
       <article style="background:var(--fog);border-radius:16px;padding:40px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
@@ -380,7 +382,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
       </article>
     </div>
 
-    <!-- Discovery Review — May 2026 -->
+    <!-- MAY 2026: Discovery Review -->
     <div style="margin-bottom:40px;">
       <article style="background:var(--fog);border-radius:16px;padding:40px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
@@ -437,7 +439,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
       </article>
     </div>
 
-    <!-- Executive Review — April 2026 -->
+    <!-- APRIL 2026: Executive Review -->
     <div style="margin-bottom:40px;">
       <article style="background:var(--fog);border-radius:16px;padding:40px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
@@ -492,7 +494,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
       </article>
     </div>
 
-    <!-- Two smaller March articles -->
+    <!-- MARCH 2026: Two smaller articles -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px;">
       <article style="background:var(--fog);border-radius:16px;padding:36px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
@@ -503,7 +505,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
         <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">The business of finding the right development partner has always been relationship-driven. Artificial intelligence is not replacing those relationships — but it is fundamentally changing how they begin.</p>
         <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">Traditional directory search operates on keywords. AI-powered partner search interprets intent — understanding capability depth, geography, regulatory framework and partnership stage simultaneously. A query like <em>"Which European CDMOs handle cytotoxic ADC payload synthesis with GMP fill-finish for clinical stage programmes?"</em> is understood in its entirety, not just matched on keywords.</p>
         <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:24px;">The Partnership Tree was built specifically for the pharmaceutical and life science industry, combining two decades of directory expertise from The Pharma Services Directory — established in 2003 — with a purpose-built partner network for platform technology companies seeking licensing and co-development partners.</p>
-        <a href="mailto:paul@thepartnershiptree.com?subject=Insights Enquiry" style="font-size:13px;font-weight:700;color:var(--forest);text-decoration:none;border:1.5px solid var(--forest);padding:8px 18px;border-radius:6px;display:inline-block;">Discuss Partnership →</a>
+        <a href="mailto:paul@thepartnershiptree.com?subject=Insights Enquiry" style="font-size:13px;font-weight:700;color:var(--forest);text-decoration:none;border:1.5px solid var(--forest);padding:8px 18px;border-radius:6px;display:inline-block;">Discuss Partnership &rarr;</a>
       </article>
       <article style="background:var(--fog);border-radius:16px;padding:36px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
@@ -514,7 +516,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
         <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">Artificial intelligence is not just accelerating drug discovery — it is reshaping who does it, and how collaborations between technology companies and pharmaceutical developers are structured.</p>
         <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">AI drug discovery companies are, almost by definition, partnership-dependent. The most sophisticated computational platform cannot take a drug to the clinic without wet laboratory validation, clinical expertise, regulatory knowledge and manufacturing capability.</p>
         <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:24px;">This creates a structural need for partnerships that is different in character from traditional pharma-CDMO relationships — combining the AI company's discovery engine with the pharmaceutical partner's development infrastructure and commercial reach.</p>
-        <a href="https://app.thepartnershiptree.com/login" style="font-size:13px;font-weight:700;color:var(--forest);text-decoration:none;border:1.5px solid var(--forest);padding:8px 18px;border-radius:6px;display:inline-block;">Read More in Member Portal →</a>
+        <a href="https://app.thepartnershiptree.com/login" style="font-size:13px;font-weight:700;color:var(--forest);text-decoration:none;border:1.5px solid var(--forest);padding:8px 18px;border-radius:6px;display:inline-block;">Read More in Member Portal &rarr;</a>
       </article>
     </div>
 
@@ -522,7 +524,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
       <div style="font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Full Articles Available</div>
       <h3 style="font-family:'Playfair Display',serif;font-size:24px;color:var(--cream);margin-bottom:10px;">More Insights in the Member Portal</h3>
       <p style="font-size:14px;color:rgba(245,240,232,0.6);margin-bottom:24px;max-width:500px;margin-left:auto;margin-right:auto;">Full articles, network news, partnership announcements and industry perspectives are available to members. Login or request access below.</p>
-      <a href="https://app.thepartnershiptree.com/login" style="background:var(--gold);color:var(--forest-deep);font-size:13px;font-weight:900;padding:12px 28px;border-radius:8px;text-decoration:none;letter-spacing:.04em;display:inline-block;">Access Full Insights →</a>
+      <a href="https://app.thepartnershiptree.com/login" style="background:var(--gold);color:var(--forest-deep);font-size:13px;font-weight:900;padding:12px 28px;border-radius:8px;text-decoration:none;letter-spacing:.04em;display:inline-block;">Access Full Insights &rarr;</a>
     </div>
   </div>
 </section>
