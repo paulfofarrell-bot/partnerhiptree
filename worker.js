@@ -322,9 +322,9 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
 <section id="insights" style="background:var(--white);padding:80px 40px;">
   <div style="max-width:1200px;margin:0 auto;">
     <div style="margin-bottom:48px;">
-      <div style="font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Insights & Perspectives</div>
-      <h2 style="font-family:'Playfair Display',serif;font-size:36px;color:var(--forest-deep);font-weight:700;margin-bottom:10px;">Thought Leadership</h2>
-      <p style="font-size:15px;color:var(--mid);max-width:600px;line-height:1.7;">Perspectives on pharmaceutical partnerships, platform licensing, and the life science industry.</p>
+      <div style="font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Insights &amp; Perspectives</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:36px;color:var(--forest-deep);font-weight:700;margin-bottom:10px;">Review and Summary of the Latest Headline News in Partnerships and Alliances within the Life Science Sector</h2>
+      <p style="font-size:15px;color:var(--mid);max-width:700px;line-height:1.7;">Perspectives on pharmaceutical partnerships, platform licensing, and the life science industry.</p>
     </div>
     <div style="margin-bottom:40px;">
       <article style="background:var(--fog);border-radius:16px;padding:40px;border:1.5px solid var(--card-border);">
@@ -380,6 +380,119 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
       </article>
     </div>
 
+    <!-- Discovery Review — May 2026 -->
+    <div style="margin-bottom:40px;">
+      <article style="background:var(--fog);border-radius:16px;padding:40px;border:1.5px solid var(--card-border);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+          <span style="background:var(--forest);color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Discovery Review</span>
+          <span style="color:var(--mid);font-size:12px;">May 2026 · 8 min read</span>
+        </div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--forest-deep);margin-bottom:16px;line-height:1.3;">Drug Discovery Partnerships — From Molecules to Delivery Machines</h3>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:16px;">The rules of drug discovery have changed. For decades, the central question was: can we find a molecule that works? In 2026, that question has been overtaken by a harder one: can we get it there? The most valuable partnerships in today's life sciences landscape are no longer just about discovering effective medicines — they are about solving the delivery hurdle simultaneously. We are now in a Platform-First era, where the capsid, the conjugate linker, and the lipid nanoparticle are just as strategically important as the drug itself.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:24px;">
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">1. Proteins &amp; Biologics — Armed Antibodies</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">The discovery of "armed" antibodies remains the most lucrative area of biopharma-to-biopharma collaboration — ADCs, radiopharmaceuticals, and antibody-oligonucleotide conjugates are all commanding billion-dollar commitments.</p>
+            <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
+              <li><strong>Eli Lilly + CrossBridge Bio:</strong> A $300M investment in a dual-payload ADC platform engineered to prevent cancer cells from developing resistance.</li>
+              <li><strong>AstraZeneca + Ablaze Pharma:</strong> A $2.1B deal for Targeted Alpha Therapies — using high-precision isotopes to destroy solid tumours at the cellular level.</li>
+              <li><strong>Regeneron + Telix Pharma:</strong> A $4.3B strategic alliance combining antibody precision with radioactive payloads in a 50/50 cost and profit-sharing structure.</li>
+              <li><strong>Aimed Bio + Sovargen:</strong> Co-developing Antibody-Oligonucleotide Conjugates (AOCs) for cancer and rare diseases — combining gene-silencing with antibody targeting.</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">2. Gene &amp; Cell Therapy — The Delivery Engineering Race</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Discovery has shifted from simple gene replacement to engineering how genetic cargo is delivered. The partnership currency in 2026 is the delivery vehicle — the capsid, the LNP, the in-vivo reprogramming mechanism.</p>
+            <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
+              <li><strong>Eli Lilly + Kelonia Bio:</strong> A $7B in-vivo CAR-T licensing deal — programming T-cells to fight cancer directly inside the patient without ex-vivo manufacturing.</li>
+              <li><strong>Circio + Acuitas:</strong> Circular RNA CAR-T using LNP delivery — turning a patient's own cells into cancer-hunters with a single injection.</li>
+              <li><strong>AviadoBio + Apertura Gene Therapy:</strong> Licensing a next-gen AAV capsid engineered specifically to cross the Blood-Brain Barrier for CNS disorders.</li>
+              <li><strong>Profluent + Eli Lilly:</strong> AI-designed recombinases — programmable DNA editors with greater precision than CRISPR for a new class of genetic medicines.</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">3. Small Molecules — Precision Chemistry</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Traditional medicinal chemistry is being revitalised through targeted discovery partnerships — using AI screening, 3D tissue models, and mechanism-driven collaborations to find molecules that hit exactly the right target.</p>
+            <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
+              <li><strong>AbbVie + Haisco Pharma:</strong> Exclusive licence for novel small molecule pain medicines — AbbVie betting on Chinese biotech chemistry for one of pharma's most commercially significant areas.</li>
+              <li><strong>Evotec + Almirall:</strong> Multi-year discovery collaboration delivering a preclinical candidate for severe inflammatory skin diseases.</li>
+              <li><strong>BioDuro-Sundia + CTI Biotech:</strong> Using 3D bioprinted human tissue models as the primary oncology screening platform — replacing animal models with more predictive biology.</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">4. Platform Infrastructure — Enabling the Science</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Behind every discovery partnership is an enabling layer of tools — AI target engines, quantum simulation, automated synthesis. In 2026, these platform companies are no longer just service providers; they are strategic assets in their own right.</p>
+            <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
+              <li><strong>Crown Bio + Turbine:</strong> AI-powered cell simulations validated against patient-derived organoids — computing which experiments to run before touching a cell.</li>
+              <li><strong>Basilea Pharma + Phare Bio:</strong> AI antibiotic discovery targeting Antimicrobial Resistance — combining discovery speed with late-stage regulatory expertise.</li>
+              <li><strong>CQT Singapore + Qubit Pharma:</strong> Quantum simulation for atomic-scale molecular interactions — an early but serious bet on the future of computational chemistry.</li>
+            </ul>
+          </div>
+        </div>
+        <div style="background:var(--forest);border-radius:10px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+          <p style="font-size:13px;color:rgba(245,240,232,0.8);margin:0;max-width:600px;">The "Discovery" phase is no longer just about finding a molecule — it is about finding the delivery vehicle simultaneously. Browse the platform to find companies active across ADCs, gene therapy delivery, RNA therapeutics, and AI-enabled discovery.</p>
+          <a href="#platforms" style="background:var(--gold);color:var(--forest-deep);font-size:12px;font-weight:900;padding:10px 22px;border-radius:7px;text-decoration:none;white-space:nowrap;letter-spacing:.04em;">Browse Platforms &rarr;</a>
+        </div>
+        <div style="margin-top:16px;font-size:12px;color:var(--mid);">By <strong>Paul O'Farrell</strong> · Owner focused on Innovation &amp; Technical Alliances and Procurement solutions</div>
+      </article>
+    </div>
+
+    <!-- Executive Review — April 2026 -->
+    <div style="margin-bottom:40px;">
+      <article style="background:var(--fog);border-radius:16px;padding:40px;border:1.5px solid var(--card-border);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+          <span style="background:var(--forest);color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Executive Review</span>
+          <span style="color:var(--mid);font-size:12px;">April 2026 · 8 min read</span>
+        </div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--forest-deep);margin-bottom:16px;line-height:1.3;">AI Partnership in Pharma — From Discovery to Delivery</h3>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:16px;">The 10-year drug development cycle is under siege. By 2026, the alliance between Silicon Valley and Big Pharma has moved past the pilot phase. We are officially in the era of Generative Biology and Physical AI. From Eli Lilly's $1B co-innovation lab with NVIDIA to Sanofi's use of protein language models, the goal is no longer just digital transformation — it's about becoming AI Native.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:24px;">
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">1. AI in Discovery &amp; R&amp;D</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">The industry has transitioned from traditional screening to "Generative Biology," enabling the design of molecules with specific properties from the ground up.</p>
+            <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
+              <li><strong>Eli Lilly + NVIDIA:</strong> A 5-year, $1B alliance linking robotic wet labs with supercomputing dry labs in a 24/7 continuous learning loop.</li>
+              <li><strong>Sanofi + BioMap:</strong> Using the CodonBERT language model to design mRNA and complex biologics before physical production.</li>
+              <li><strong>Chai Discovery + Eli Lilly:</strong> Accelerating biologics discovery through targeted AI collaboration.</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">2. AI in Clinical Trials</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">AI is being deployed to "de-risk" clinical trials by predicting patient responses and utilising Synthetic Control Arms to improve efficiency.</p>
+            <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
+              <li><strong>Daiichi Sankyo + Imagene AI:</strong> Using AI to refine patient selection by analysing real-world data and biomarkers.</li>
+              <li><strong>In-Silico Modelling:</strong> Simulating trial outcomes can reduce human participants needed and cut timelines by up to 30%.</li>
+              <li><strong>Pi Health + GSK:</strong> Fully outsourced clinical research for a Phase 2 oncology trial.</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">3. AI in Manufacturing &amp; Operations</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">AI has become the primary tool for increasing factory yield and addressing global supply shortages.</p>
+            <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
+              <li><strong>Eli Lilly + NVIDIA:</strong> Digital Twins of production lines using NVIDIA Omniverse to stress-test changes virtually.</li>
+              <li><strong>Merck + Google Cloud:</strong> Deploying Gemini Enterprise AI agents to monitor production lines and predict equipment failures.</li>
+              <li><strong>Aprecia + Molecule One:</strong> Scaling pharmaceutical 3D printing manufacturing using an AI-powered platform.</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">4. Logistics, Distribution &amp; Regulation</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Autonomous Logistics is rising in 2026 to combat supply chain volatility, while AI shifts from perceived risk to critical compliance tool.</p>
+            <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
+              <li><strong>Haleon + SAP:</strong> Monitoring global signals to automatically re-route distribution.</li>
+              <li><strong>SkyCell + Microsoft:</strong> AI-powered cold chain logistics integrated with Microsoft Teams.</li>
+              <li><strong>Parexel + Weave Bio:</strong> Accelerating regulatory submissions using an AI-native platform.</li>
+            </ul>
+          </div>
+        </div>
+        <div style="background:var(--forest);border-radius:10px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+          <p style="font-size:13px;color:rgba(245,240,232,0.8);margin:0;max-width:600px;">To find companies actively seeking partnerships and alliances in AI, Discovery, Research, Regulatory, Clinical Development, Manufacture, Logistics and Distribution — browse the platform or get in touch.</p>
+          <a href="#platforms" style="background:var(--gold);color:var(--forest-deep);font-size:12px;font-weight:900;padding:10px 22px;border-radius:7px;text-decoration:none;white-space:nowrap;letter-spacing:.04em;">Browse Platforms &rarr;</a>
+        </div>
+        <div style="margin-top:16px;font-size:12px;color:var(--mid);">By <strong>Paul O'Farrell</strong> · Owner focused on Innovation &amp; Technical Alliances and Procurement solutions</div>
+      </article>
+    </div>
+
+    <!-- Two smaller March articles -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px;">
       <article style="background:var(--fog);border-radius:16px;padding:36px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
@@ -404,6 +517,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
         <a href="https://app.thepartnershiptree.com/login" style="font-size:13px;font-weight:700;color:var(--forest);text-decoration:none;border:1.5px solid var(--forest);padding:8px 18px;border-radius:6px;display:inline-block;">Read More in Member Portal →</a>
       </article>
     </div>
+
     <div style="text-align:center;padding:40px;background:var(--forest-deep);border-radius:16px;">
       <div style="font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Full Articles Available</div>
       <h3 style="font-family:'Playfair Display',serif;font-size:24px;color:var(--cream);margin-bottom:10px;">More Insights in the Member Portal</h3>
