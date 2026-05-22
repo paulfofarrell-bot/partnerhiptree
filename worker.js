@@ -19,14 +19,14 @@ export default {
         headers: { 'Content-Type': 'application/xml' }
       });
     }
-    return new Response(`<!DOCTYPE html>
+    const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Partnership Tree | Life Science Platform Licensing Network</title>
-<meta name="description" content="The Partnership Tree is a curated life science partner network where biotech and pharma companies promote their proprietary technology platforms, IP and partnership opportunities to Alliance, Technology and BD professionals worldwide.">
-<meta name="keywords" content="life science partnerships, pharma licensing, biotech co-development, drug discovery platform, gene therapy licensing, cell therapy partnership, RNA therapeutics, antibody platform, AI drug discovery, CDMO partnership, CRO partnership, technology licensing">
+<title>The Partnership Tree | Life Science Partnerships, Alliances &amp; Collaborations Platform</title>
+<meta name="description" content="The Partnership Tree is a curated life science partnerships, alliances and collaborations platform — connecting biotech and pharma companies with licensing partners, co-development opportunities and strategic alliances worldwide.">
+<meta name="keywords" content="life science partnerships, life science alliances, life science collaborations, pharma licensing, biotech co-development, drug discovery platform, gene therapy licensing, cell therapy partnership, RNA therapeutics, antibody platform, AI drug discovery, technology licensing, platform licensing, strategic alliances">
 <meta name="robots" content="index, follow">
 <meta name="author" content="The Partnership Tree">
 <link rel="canonical" href="https://thepartnershiptree.com/">
@@ -34,14 +34,14 @@ export default {
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://thepartnershiptree.com/">
-<meta property="og:title" content="The Partnership Tree | Life Science Platform Licensing Network">
-<meta property="og:description" content="A curated network where life science companies actively promote their proprietary technology platforms and partnership opportunities to BD professionals worldwide.">
+<meta property="og:title" content="The Partnership Tree | Life Science Partnerships, Alliances &amp; Collaborations Platform">
+<meta property="og:description" content="A curated life science partnerships, alliances and collaborations platform. Browse 25 proprietary platform technologies actively seeking licensing, co-development and strategic alliance partners.">
 <meta property="og:site_name" content="The Partnership Tree">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The Partnership Tree | Life Science Platform Licensing Network">
-<meta name="twitter:description" content="Browse 25 curated life science platform technologies actively seeking licensing and co-development partners.">
+<meta name="twitter:title" content="The Partnership Tree | Life Science Partnerships, Alliances &amp; Collaborations Platform">
+<meta name="twitter:description" content="A curated life science partnerships, alliances and collaborations platform. Browse 25 proprietary platform technologies seeking licensing and co-development partners.">
 
 <!-- Structured Data -->
 <script type="application/ld+json">
@@ -50,7 +50,7 @@ export default {
   "@type": "Organization",
   "name": "The Partnership Tree",
   "url": "https://thepartnershiptree.com",
-  "description": "A curated life science partner network connecting platform technology companies with licensing and co-development partners.",
+  "description": "A curated life science partnerships, alliances and collaborations platform connecting platform technology companies with licensing partners, co-development opportunities and strategic alliances.",
   "foundingDate": "2024",
   "contactPoint": {
     "@type": "ContactPoint",
@@ -114,8 +114,8 @@ nav{position:fixed;top:0;left:0;right:0;background:var(--forest-deep);height:60p
 .prop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;}
 .prop-item{text-align:center;}
 .prop-icon{width:48px;height:48px;background:rgba(201,168,76,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px;}
-.prop-item h3{font-size:15px;font-weight:700;color:var(--cream);margin-bottom:8px;}
-.prop-item p{font-size:13px;color:rgba(245,240,232,0.55);line-height:1.65;font-weight:300;}
+.prop-item h3{font-size:17px;font-weight:700;color:var(--cream);margin-bottom:10px;}
+.prop-item p{font-size:15px;color:rgba(245,240,232,0.75);line-height:1.7;font-weight:300;}
 
 /* SEARCH */
 .search-section{padding:60px 40px 24px;max-width:1200px;margin:0 auto;}
@@ -223,25 +223,25 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
   <div class="nav-actions">
     <a href="#platforms" class="nav-link">Browse Platform</a>
     <a href="#insights" class="nav-link">Insights</a>
-    <a href="mailto:paul@thepartnershiptree.com" class="nav-link">List Your Platform</a>
+    <span class="nav-link" onclick="openListingForm()" style="cursor:pointer;">List Your Technology</span>
     <a href="https://app.thepartnershiptree.com/login" class="nav-cta">Member Login →</a>
   </div>
 </nav>
 
 <section class="hero">
   <div>
-    <div class="hero-eyebrow">Life Science Platform Licensing Network</div>
-    <h1 class="hero-title">Where proprietary platforms find their <em>ideal partners</em></h1>
-    <p class="hero-body">The Partnership Tree is a curated network where life science companies actively promote their proprietary technology platforms, IP and partnership opportunities to Alliance, Technology &amp; BD professionals worldwide. Every listing is verified, intentional, and actively seeking engagement.</p>
+    <div class="hero-eyebrow"></div>
+    <h1 class="hero-title">Find Partners, Investors, Clients for your <em>Technology and Intellectual Property</em></h1>
+    <p class="hero-body">The Partnership Tree is a curated network where life science companies actively promote their technology &amp; IP platforms to Alliance, Technology &amp; BD professionals worldwide. Every listing is verified, intentional, and actively seeking engagement.</p>
     <div class="hero-actions">
       <a href="#platforms" class="btn-primary">Browse Platforms →</a>
-      <a href="mailto:paul@thepartnershiptree.com" class="btn-outline">List Your Platform</a>
+      <button class="btn-outline" onclick="openListingForm()" style="cursor:pointer;">List Your Technology</button>
     </div>
   </div>
   <div class="hero-stats">
     <div class="stat-card">
       <div class="stat-num">20</div>
-      <div class="stat-label">Curated platform technologies actively seeking partners</div>
+      <div class="stat-label">Curated companies with their technologies &amp; IP, actively seeking partners</div>
     </div>
     <div class="stat-card">
       <div class="stat-num">3,000+</div>
@@ -264,18 +264,18 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
     <div class="prop-grid">
       <div class="prop-item">
         <div class="prop-icon">🎯</div>
-        <h3>Curated, not crawled</h3>
-        <p>Every platform here is hand-selected for clear partnership intent, proprietary IP, and verified profile completeness. No noise, no generic AI-scraped listings.</p>
+        <h3>Curated Companies &amp; Technologies</h3>
+        <p>Every company here is hand-selected for clear partnership intent, technology &amp; IP, and verified profile completeness.</p>
       </div>
       <div class="prop-item">
         <div class="prop-icon">🤝</div>
         <h3>Intent, not just presence</h3>
-        <p>Companies declare exactly what they're seeking — licence partners, co-development, geographic rights — so BD professionals can act on the information immediately.</p>
+        <p>Companies declare exactly what they're seeking — Alliance partners, co-research, co-development, geographic rights, Sale of IP assets — so BD professionals can act on the information immediately.</p>
       </div>
       <div class="prop-item">
         <div class="prop-icon">🔍</div>
         <h3>Found where it matters</h3>
-        <p>Your platform surfaces in precise keyword searches by life science BD professionals who know what they're looking for — not buried in generic search results.</p>
+        <p>Your company technology and IP profile surfaces in precise keyword searches by life science Technology &amp; BD professionals who know what they're looking for — not buried in generic search results.</p>
       </div>
     </div>
   </div>
@@ -284,8 +284,8 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
 <section class="search-section" id="platforms">
   <div class="section-header">
     <div>
-      <h2 class="section-title">Featured Platform Opportunities</h2>
-      <div class="section-sub">Proprietary technologies actively seeking licensing and co-development partners</div>
+      <h2 class="section-title">Featured Partnership Opportunities</h2>
+      <div class="section-sub">Proprietary technologies and services actively seeking partners, investors and clients</div>
     </div>
     <div class="section-count" id="results-count">20 platforms</div>
   </div>
@@ -318,16 +318,14 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
 </div>
 
 
-<!-- INSIGHTS SECTION -->
 <section id="insights" style="background:var(--white);padding:80px 40px;">
   <div style="max-width:1200px;margin:0 auto;">
     <div style="margin-bottom:48px;">
       <div style="font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Insights &amp; Perspectives</div>
-      <h2 style="font-family:'Playfair Display',serif;font-size:36px;color:var(--forest-deep);font-weight:700;margin-bottom:10px;">Thought Leadership</h2>
-      <p style="font-size:15px;color:var(--mid);max-width:600px;line-height:1.7;">Review and Summary of the Latest Headline News in Partnerships and Alliances within the Life Science Sector</p>
+      <h2 style="font-family:'Playfair Display',serif;font-size:32px;color:var(--forest-deep);font-weight:700;line-height:1.4;max-width:700px;">Review and Summary of the Latest Headline News in Partnerships and Alliances within the Life Science Sector</h2>
     </div>
 
-    <!-- JUNE 2026: CDMO Partnerships -->
+    <!-- NEW ARTICLE: CDMO Partnerships — June 2026 -->
     <div style="margin-bottom:40px;">
       <article style="background:var(--fog);border-radius:16px;padding:40px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
@@ -376,13 +374,12 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
         </div>
         <div style="background:var(--forest);border-radius:10px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
           <p style="font-size:13px;color:rgba(245,240,232,0.8);margin:0;max-width:600px;">The CDMO sector is bifurcating: generalist manufacturers face commoditisation, while those with specialist capabilities in gene therapy, ADCs, and complex sterile injectables are commanding premium long-term contracts. Browse the platform to find CDMO and manufacturing partners actively seeking engagement.</p>
-          <a href="#platforms" style="background:var(--gold);color:var(--forest-deep);font-size:12px;font-weight:900;padding:10px 22px;border-radius:7px;text-decoration:none;white-space:nowrap;letter-spacing:.04em;">Browse Platforms &rarr;</a>
+          <a href="#platforms" style="background:var(--gold);color:var(--forest-deep);font-size:12px;font-weight:900;padding:10px 22px;border-radius:7px;text-decoration:none;white-space:nowrap;letter-spacing:.04em;">Browse Platforms →</a>
         </div>
         <div style="margin-top:16px;font-size:12px;color:var(--mid);">By <strong>Paul O'Farrell</strong> · Owner focused on Innovation &amp; Technical Alliances and Procurement solutions</div>
       </article>
     </div>
-
-    <!-- MAY 2026: Discovery Review -->
+    <!-- NEW ARTICLE: Drug Discovery Partnerships — May 2026 -->
     <div style="margin-bottom:40px;">
       <article style="background:var(--fog);border-radius:16px;padding:40px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
@@ -390,7 +387,8 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
           <span style="color:var(--mid);font-size:12px;">May 2026 · 8 min read</span>
         </div>
         <h3 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--forest-deep);margin-bottom:16px;line-height:1.3;">Drug Discovery Partnerships — From Molecules to Delivery Machines</h3>
-        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:16px;">The rules of drug discovery have changed. For decades, the central question was: can we find a molecule that works? In 2026, that question has been overtaken by a harder one: can we get it there? The most valuable partnerships in today's life sciences landscape are no longer just about discovering effective medicines — they are about solving the delivery hurdle simultaneously. We are now in a Platform-First era, where the capsid, the conjugate linker, and the lipid nanoparticle are just as strategically important as the drug itself.</p>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:16px;">The rules of drug discovery have changed. For decades, the central question was: <em>can we find a molecule that works?</em> In 2026, that question has been overtaken by a harder one: <em>can we get it there?</em> The most valuable partnerships in today's life sciences landscape are no longer just about discovering effective medicines — they are about solving the delivery hurdle simultaneously. We are now in a Platform-First era, where the capsid, the conjugate linker, and the lipid nanoparticle are just as strategically important as the drug itself.</p>
+
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:24px;">
           <div>
             <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">1. Proteins &amp; Biologics — Armed Antibodies</div>
@@ -431,15 +429,17 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
             </ul>
           </div>
         </div>
+
         <div style="background:var(--forest);border-radius:10px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
           <p style="font-size:13px;color:rgba(245,240,232,0.8);margin:0;max-width:600px;">The "Discovery" phase is no longer just about finding a molecule — it is about finding the delivery vehicle simultaneously. Browse the platform to find companies active across ADCs, gene therapy delivery, RNA therapeutics, and AI-enabled discovery.</p>
           <a href="#platforms" style="background:var(--gold);color:var(--forest-deep);font-size:12px;font-weight:900;padding:10px 22px;border-radius:7px;text-decoration:none;white-space:nowrap;letter-spacing:.04em;">Browse Platforms &rarr;</a>
         </div>
+
         <div style="margin-top:16px;font-size:12px;color:var(--mid);">By <strong>Paul O'Farrell</strong> · Owner focused on Innovation &amp; Technical Alliances and Procurement solutions</div>
       </article>
     </div>
 
-    <!-- APRIL 2026: Executive Review -->
+    <!-- EXISTING ARTICLE: AI Partnership in Pharma — April 2026 -->
     <div style="margin-bottom:40px;">
       <article style="background:var(--fog);border-radius:16px;padding:40px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
@@ -448,6 +448,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
         </div>
         <h3 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--forest-deep);margin-bottom:16px;line-height:1.3;">AI Partnership in Pharma — From Discovery to Delivery</h3>
         <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:16px;">The 10-year drug development cycle is under siege. By 2026, the alliance between Silicon Valley and Big Pharma has moved past the pilot phase. We are officially in the era of Generative Biology and Physical AI. From Eli Lilly's $1B co-innovation lab with NVIDIA to Sanofi's use of protein language models, the goal is no longer just digital transformation — it's about becoming AI Native.</p>
+
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:24px;">
           <div>
             <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">1. AI in Discovery &amp; R&amp;D</div>
@@ -486,15 +487,17 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
             </ul>
           </div>
         </div>
+
         <div style="background:var(--forest);border-radius:10px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
           <p style="font-size:13px;color:rgba(245,240,232,0.8);margin:0;max-width:600px;">To find companies actively seeking partnerships and alliances in AI, Discovery, Research, Regulatory, Clinical Development, Manufacture, Logistics and Distribution — browse the platform or get in touch.</p>
           <a href="#platforms" style="background:var(--gold);color:var(--forest-deep);font-size:12px;font-weight:900;padding:10px 22px;border-radius:7px;text-decoration:none;white-space:nowrap;letter-spacing:.04em;">Browse Platforms &rarr;</a>
         </div>
+
         <div style="margin-top:16px;font-size:12px;color:var(--mid);">By <strong>Paul O'Farrell</strong> · Owner focused on Innovation &amp; Technical Alliances and Procurement solutions</div>
       </article>
     </div>
 
-    <!-- MARCH 2026: Two smaller articles -->
+    <!-- SMALLER CARDS ROW -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px;">
       <article style="background:var(--fog);border-radius:16px;padding:36px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
@@ -529,6 +532,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
   </div>
 </section>
 
+
 <footer>
   <div class="footer-inner">
     <div>
@@ -539,7 +543,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
       <h4>Network</h4>
       <a href="#platforms">Browse Platform</a>
       <a href="https://app.thepartnershiptree.com">Member Login</a>
-      <a href="mailto:paul@thepartnershiptree.com">List Your Platform</a>
+      <a href="#" onclick="openListingForm();return false;">List Your Technology</a>
     </div>
     <div class="footer-col">
       <h4>Contact</h4>
@@ -558,7 +562,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
 var COMPANIES = [
   {id:793,name:"mAbsolve",location:"London, United Kingdom",platform:"Fc Silencing Technology",summary:"mAbsolve has developed proprietary technology to silence unwanted Fc-mediated effector functions in therapeutic antibodies — a critical capability for antibody engineering where immune activation must be precisely controlled.",description:"The need for silence in antibody therapeutics is clear: many of the most promising therapeutic targets require antibodies that can bind without triggering unwanted immune responses. mAbsolve's Fc silencing platform provides that precision control, offering a licensable solution that can be integrated into partners' antibody development programmes.",keywords:["Antibody Engineering","Fc Silencing","Biologics","Monoclonal Antibodies","Bi-specific Antibodies"],tags:["antibody"],badge:"Antibody Platform",badgeClass:"badge-antibody",seeking:"Licence OUT",geo:"europe"},
   {id:825,name:"Receptor.AI",location:"London, United Kingdom",platform:"AI-Accelerated Multi-Platform Drug Design",summary:"A next-generation TechBio company with a multiplatform AI-powered ecosystem for designing small molecules, peptides, and drug conjugates — accelerating novel therapy development for challenging targets.",description:"Receptor.AI combines computational drug design with high-throughput screening and lead optimisation into a seamless AI-powered workflow. Their platform specialises in difficult targets where conventional approaches have failed, offering partners access to a validated ecosystem rather than a single tool.",keywords:["AI Drug Design","Small Molecules","Peptides","Drug Conjugates","High Throughput Screening"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Research",geo:"europe"},
-  {id:236,name:"Exscientia",location:"Oxford, United Kingdom",platform:"AI-Driven Precision Medicine Platform",summary:"Exscientia applies AI to precision engineer medicines more rapidly and efficiently. Their platform has already delivered programmes into clinical trials, demonstrating real-world validation of AI-directed drug discovery.",description:"Finding faster and smarter ways to discover new and better drugs drives Exscientia. By actively applying AI to precision engineer medicines, they enable people to live more healthy and productive lives. Partners access a battle-tested AI platform with a track record of advancing programmes from concept to clinic.",keywords:["AI Drug Discovery","Precision Medicine","Small Molecules","Immuno-Oncology","Drug Design"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Co-Development",geo:"europe"},
+  {id:236,name:"Recursion Pharmaceuticals",location:"Salt Lake City, USA",platform:"Recursion OS — Biological & Chemical Foundation Models",summary:"Recursion's operating system for drug discovery combines massive biological datasets, foundation models and robotic experimentation to map the relationship between genes, proteins and disease at unprecedented scale.",description:"Recursion OS integrates proprietary biological and chemical foundation models with high-throughput robotic labs generating petabytes of experimental data. The platform enables partners to rapidly identify and validate novel drug targets across a broad range of diseases — with a track record of programmes advanced into clinical trials and major partnerships with Bayer, Roche and NVIDIA.",keywords:["AI Drug Discovery","Foundation Models","Biological Data","Drug Target Identification","Phenomics"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Co-Development",geo:""},
   {id:677,name:"Sibylla Biotech",location:"Bresso, Italy",platform:"Oneiros AI Platform",summary:"The Oneiros platform deploys advanced machine learning to navigate and prioritise the most promising compounds from a vast chemical universe — with a focus on oncology and neurodegenerative diseases.",description:"Sibylla Biotech's Oneiros platform represents a fundamental shift in how compounds are selected for development. By mapping the protein folding landscape with AI, it identifies compounds that others miss — particularly relevant for CNS diseases and oncology where conventional approaches consistently fail.",keywords:["AI","Oncology","Neurodegeneration","Protein Degradation","Drug Discovery"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Research",geo:"europe"},
   {id:352,name:"Molecure",location:"Warsaw, Poland",platform:"RNA-Targeting Small Molecule Platform",summary:"Molecure has developed a unique platform to discover small molecule compounds that interact directly with the mRNA of disease-related proteins — opening an entirely new class of drug targets.",description:"The ability to target RNA with small molecules represents one of the most exciting frontiers in drug discovery. Molecure's platform makes this tractable at scale, with applications across oncology and immuno-oncology where undruggable protein targets have long frustrated conventional approaches.",keywords:["RNA Platform","Small Molecules","mRNA Targeting","Oncology","Immuno-oncology"],tags:["rna"],badge:"RNA Platform",badgeClass:"badge-rna",seeking:"Licence OUT · Research",geo:"europe"},
   {id:286,name:"Avectas",location:"Dublin, Ireland",platform:"SOLUPORE® Cell Engineering Platform",summary:"SOLUPORE® is a non-viral cell engineering solution for next-generation cell and gene therapies. Avectas actively seeks partners developing gene-modified cell therapy products.",description:"SOLUPORE® addresses one of the key bottlenecks in cell and gene therapy manufacturing — efficient, scalable, non-viral delivery of genetic cargo into cells. By eliminating the immunogenicity risks of viral vectors, the platform enables safer and more cost-effective production of advanced cell therapies.",keywords:["Cell Engineering","Non-Viral Delivery","Gene Therapy","Cell Therapy","Bioprocess"],tags:["cell","gene"],badge:"Cell & Gene Platform",badgeClass:"badge-cell",seeking:"Licence OUT · Research",geo:"europe"},
@@ -679,9 +683,59 @@ function closeModal() {
 document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
 render();
 </script>
+
+<div id="listing-modal" style="display:none;position:fixed;inset:0;background:rgba(15,35,24,0.75);z-index:300;backdrop-filter:blur(4px);padding:60px 20px;overflow-y:auto;" onclick="if(event.target===this)closeListingForm()">
+  <div style="background:#fff;border-radius:20px;max-width:580px;width:100%;margin:0 auto;position:relative;overflow:hidden;">
+    <div style="background:var(--forest-deep);padding:36px 40px;position:relative;">
+      <button onclick="closeListingForm()" style="position:absolute;top:14px;right:18px;font-size:28px;color:rgba(245,240,232,0.4);cursor:pointer;background:none;border:none;line-height:1;">&times;</button>
+      <div style="font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Join The Network</div>
+      <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--cream);margin-bottom:6px;">List Your Technology</div>
+      <div style="font-size:13px;color:rgba(245,240,232,0.55);">Tell us about your technology platform and we will be in touch within one business day.</div>
+    </div>
+    <div style="padding:36px 40px;">
+      <div id="listing-success" style="display:none;text-align:center;padding:20px 0;">
+        <div style="font-size:48px;margin-bottom:16px;">&#10003;</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--forest);margin-bottom:10px;">Thank you!</h3>
+        <p style="font-size:14px;color:var(--mid);line-height:1.7;">We will review your submission and be in touch within one business day.</p>
+        <button onclick="closeListingForm()" style="margin-top:20px;background:var(--forest);color:var(--cream);border:none;padding:12px 28px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Close</button>
+      </div>
+      <div id="listing-form-fields">
+        <div style="margin-bottom:14px;"><label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Full Name *</label><input type="text" id="lf-name" placeholder="Your full name" style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;box-sizing:border-box;"></div>
+        <div style="margin-bottom:14px;"><label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Company *</label><input type="text" id="lf-company" placeholder="Company name" style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;box-sizing:border-box;"></div>
+        <div style="margin-bottom:14px;"><label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Work Email *</label><input type="email" id="lf-email" placeholder="your@company.com" style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;box-sizing:border-box;"></div>
+        <div style="margin-bottom:14px;"><label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">Platform / Technology Name *</label><input type="text" id="lf-platform" placeholder="e.g. LNAplus Antisense Platform" style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;box-sizing:border-box;"></div>
+        <div style="margin-bottom:20px;"><label style="font-size:11px;font-weight:700;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:5px;">What partnership are you seeking?</label><textarea id="lf-seeking" rows="3" placeholder="Briefly describe what you are looking for..." style="width:100%;padding:10px 14px;border:1.5px solid #dde8de;border-radius:8px;font-size:14px;font-family:inherit;color:var(--forest);outline:none;resize:vertical;box-sizing:border-box;"></textarea></div>
+        <div id="lf-error" style="display:none;background:#ffeaea;color:#c0392b;padding:10px 14px;border-radius:7px;font-size:13px;font-weight:700;margin-bottom:14px;"></div>
+        <button onclick="submitListingForm()" style="width:100%;padding:14px;background:var(--forest);border:none;border-radius:8px;font-weight:800;font-size:15px;color:#fff;cursor:pointer;font-family:inherit;letter-spacing:.04em;">Submit Listing Request &rarr;</button>
+        <p style="font-size:12px;color:var(--mid);margin-top:10px;text-align:center;">We review all applications personally and respond within one business day.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false">
+function openListingForm(){document.getElementById('listing-modal').style.display='block';document.body.style.overflow='hidden';}
+function closeListingForm(){document.getElementById('listing-modal').style.display='none';document.body.style.overflow='';document.getElementById('listing-form-fields').style.display='block';document.getElementById('listing-success').style.display='none';document.getElementById('lf-error').style.display='none';}
+function submitListingForm(){
+  var name=document.getElementById('lf-name').value.trim();
+  var company=document.getElementById('lf-company').value.trim();
+  var email=document.getElementById('lf-email').value.trim();
+  var platform=document.getElementById('lf-platform').value.trim();
+  var seeking=document.getElementById('lf-seeking').value.trim();
+  var err=document.getElementById('lf-error');
+  if(!name||!company||!email||!platform){err.textContent='Please fill in all required fields.';err.style.display='block';return;}
+  err.style.display='none';
+  var subject='Platform Listing Request: '+company+' - '+platform;
+  var body='Name: '+name+'\nCompany: '+company+'\nEmail: '+email+'\nPlatform: '+platform+'\nSeeking: '+seeking;
+  window.location.href='mailto:paul@thepartnershiptree.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+  document.getElementById('listing-form-fields').style.display='none';
+  document.getElementById('listing-success').style.display='block';
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeListingForm();});
+</script>
 </body>
-</html>
-`, {
+</html>`;
+    return new Response(html, {
       headers: {
         'Content-Type': 'text/html; charset=utf-8',
         'Cache-Control': 'public, max-age=3600',
