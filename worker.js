@@ -332,7 +332,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
           <span style="background:var(--forest);color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Manufacturing Review</span>
           <span style="color:var(--mid);font-size:12px;">June 2026 · 8 min read</span>
         </div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--forest-deep);margin-bottom:16px;line-height:1.3;">Pharma &amp; Biotech CDMO Partnerships — The Manufacturing Alliances Reshaping Drug Production</h3>
+        <h3 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--forest-deep);margin-bottom:16px;line-height:1.3;">Pharma &amp; Biotech CDMO Partnerships — The Manufacturing Alliances Reshaping Drug Research & Production</h3>
         <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:16px;">The contract development and manufacturing sector has never been more strategically central to the life sciences industry. In 2026, CDMO partnerships are no longer simply about outsourcing production — they are about accessing specialised infrastructure, securing supply chain resilience, and building the industrial backbone for the next generation of complex therapies. Two distinct partnership patterns have emerged: biotechs leaning on CDMO expertise to scale proven assets, and CDMOs forming deep alliances with each other to solve the uniquely complex logistics of living drugs.</p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:24px;">
           <div>
