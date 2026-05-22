@@ -1,22 +1,953 @@
-export default {
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+
+// ../.npm/_npx/32026684e21afda6/node_modules/unenv/dist/runtime/_internal/utils.mjs
+// @__NO_SIDE_EFFECTS__
+function createNotImplementedError(name) {
+  return new Error(`[unenv] ${name} is not implemented yet!`);
+}
+__name(createNotImplementedError, "createNotImplementedError");
+// @__NO_SIDE_EFFECTS__
+function notImplemented(name) {
+  const fn = /* @__PURE__ */ __name(() => {
+    throw /* @__PURE__ */ createNotImplementedError(name);
+  }, "fn");
+  return Object.assign(fn, { __unenv__: true });
+}
+__name(notImplemented, "notImplemented");
+// @__NO_SIDE_EFFECTS__
+function notImplementedClass(name) {
+  return class {
+    __unenv__ = true;
+    constructor() {
+      throw new Error(`[unenv] ${name} is not implemented yet!`);
+    }
+  };
+}
+__name(notImplementedClass, "notImplementedClass");
+
+// ../.npm/_npx/32026684e21afda6/node_modules/unenv/dist/runtime/node/internal/perf_hooks/performance.mjs
+var _timeOrigin = globalThis.performance?.timeOrigin ?? Date.now();
+var _performanceNow = globalThis.performance?.now ? globalThis.performance.now.bind(globalThis.performance) : () => Date.now() - _timeOrigin;
+var nodeTiming = {
+  name: "node",
+  entryType: "node",
+  startTime: 0,
+  duration: 0,
+  nodeStart: 0,
+  v8Start: 0,
+  bootstrapComplete: 0,
+  environment: 0,
+  loopStart: 0,
+  loopExit: 0,
+  idleTime: 0,
+  uvMetricsInfo: {
+    loopCount: 0,
+    events: 0,
+    eventsWaiting: 0
+  },
+  detail: void 0,
+  toJSON() {
+    return this;
+  }
+};
+var PerformanceEntry = class {
+  static {
+    __name(this, "PerformanceEntry");
+  }
+  __unenv__ = true;
+  detail;
+  entryType = "event";
+  name;
+  startTime;
+  constructor(name, options) {
+    this.name = name;
+    this.startTime = options?.startTime || _performanceNow();
+    this.detail = options?.detail;
+  }
+  get duration() {
+    return _performanceNow() - this.startTime;
+  }
+  toJSON() {
+    return {
+      name: this.name,
+      entryType: this.entryType,
+      startTime: this.startTime,
+      duration: this.duration,
+      detail: this.detail
+    };
+  }
+};
+var PerformanceMark = class PerformanceMark2 extends PerformanceEntry {
+  static {
+    __name(this, "PerformanceMark");
+  }
+  entryType = "mark";
+  constructor() {
+    super(...arguments);
+  }
+  get duration() {
+    return 0;
+  }
+};
+var PerformanceMeasure = class extends PerformanceEntry {
+  static {
+    __name(this, "PerformanceMeasure");
+  }
+  entryType = "measure";
+};
+var PerformanceResourceTiming = class extends PerformanceEntry {
+  static {
+    __name(this, "PerformanceResourceTiming");
+  }
+  entryType = "resource";
+  serverTiming = [];
+  connectEnd = 0;
+  connectStart = 0;
+  decodedBodySize = 0;
+  domainLookupEnd = 0;
+  domainLookupStart = 0;
+  encodedBodySize = 0;
+  fetchStart = 0;
+  initiatorType = "";
+  name = "";
+  nextHopProtocol = "";
+  redirectEnd = 0;
+  redirectStart = 0;
+  requestStart = 0;
+  responseEnd = 0;
+  responseStart = 0;
+  secureConnectionStart = 0;
+  startTime = 0;
+  transferSize = 0;
+  workerStart = 0;
+  responseStatus = 0;
+};
+var PerformanceObserverEntryList = class {
+  static {
+    __name(this, "PerformanceObserverEntryList");
+  }
+  __unenv__ = true;
+  getEntries() {
+    return [];
+  }
+  getEntriesByName(_name, _type) {
+    return [];
+  }
+  getEntriesByType(type) {
+    return [];
+  }
+};
+var Performance = class {
+  static {
+    __name(this, "Performance");
+  }
+  __unenv__ = true;
+  timeOrigin = _timeOrigin;
+  eventCounts = /* @__PURE__ */ new Map();
+  _entries = [];
+  _resourceTimingBufferSize = 0;
+  navigation = void 0;
+  timing = void 0;
+  timerify(_fn, _options) {
+    throw createNotImplementedError("Performance.timerify");
+  }
+  get nodeTiming() {
+    return nodeTiming;
+  }
+  eventLoopUtilization() {
+    return {};
+  }
+  markResourceTiming() {
+    return new PerformanceResourceTiming("");
+  }
+  onresourcetimingbufferfull = null;
+  now() {
+    if (this.timeOrigin === _timeOrigin) {
+      return _performanceNow();
+    }
+    return Date.now() - this.timeOrigin;
+  }
+  clearMarks(markName) {
+    this._entries = markName ? this._entries.filter((e) => e.name !== markName) : this._entries.filter((e) => e.entryType !== "mark");
+  }
+  clearMeasures(measureName) {
+    this._entries = measureName ? this._entries.filter((e) => e.name !== measureName) : this._entries.filter((e) => e.entryType !== "measure");
+  }
+  clearResourceTimings() {
+    this._entries = this._entries.filter((e) => e.entryType !== "resource" || e.entryType !== "navigation");
+  }
+  getEntries() {
+    return this._entries;
+  }
+  getEntriesByName(name, type) {
+    return this._entries.filter((e) => e.name === name && (!type || e.entryType === type));
+  }
+  getEntriesByType(type) {
+    return this._entries.filter((e) => e.entryType === type);
+  }
+  mark(name, options) {
+    const entry = new PerformanceMark(name, options);
+    this._entries.push(entry);
+    return entry;
+  }
+  measure(measureName, startOrMeasureOptions, endMark) {
+    let start;
+    let end;
+    if (typeof startOrMeasureOptions === "string") {
+      start = this.getEntriesByName(startOrMeasureOptions, "mark")[0]?.startTime;
+      end = this.getEntriesByName(endMark, "mark")[0]?.startTime;
+    } else {
+      start = Number.parseFloat(startOrMeasureOptions?.start) || this.now();
+      end = Number.parseFloat(startOrMeasureOptions?.end) || this.now();
+    }
+    const entry = new PerformanceMeasure(measureName, {
+      startTime: start,
+      detail: {
+        start,
+        end
+      }
+    });
+    this._entries.push(entry);
+    return entry;
+  }
+  setResourceTimingBufferSize(maxSize) {
+    this._resourceTimingBufferSize = maxSize;
+  }
+  addEventListener(type, listener, options) {
+    throw createNotImplementedError("Performance.addEventListener");
+  }
+  removeEventListener(type, listener, options) {
+    throw createNotImplementedError("Performance.removeEventListener");
+  }
+  dispatchEvent(event) {
+    throw createNotImplementedError("Performance.dispatchEvent");
+  }
+  toJSON() {
+    return this;
+  }
+};
+var PerformanceObserver = class {
+  static {
+    __name(this, "PerformanceObserver");
+  }
+  __unenv__ = true;
+  static supportedEntryTypes = [];
+  _callback = null;
+  constructor(callback) {
+    this._callback = callback;
+  }
+  takeRecords() {
+    return [];
+  }
+  disconnect() {
+    throw createNotImplementedError("PerformanceObserver.disconnect");
+  }
+  observe(options) {
+    throw createNotImplementedError("PerformanceObserver.observe");
+  }
+  bind(fn) {
+    return fn;
+  }
+  runInAsyncScope(fn, thisArg, ...args) {
+    return fn.call(thisArg, ...args);
+  }
+  asyncId() {
+    return 0;
+  }
+  triggerAsyncId() {
+    return 0;
+  }
+  emitDestroy() {
+    return this;
+  }
+};
+var performance = globalThis.performance && "addEventListener" in globalThis.performance ? globalThis.performance : new Performance();
+
+// ../.npm/_npx/32026684e21afda6/node_modules/@cloudflare/unenv-preset/dist/runtime/polyfill/performance.mjs
+if (!("__unenv__" in performance)) {
+  const proto = Performance.prototype;
+  for (const key of Object.getOwnPropertyNames(proto)) {
+    if (key !== "constructor" && !(key in performance)) {
+      const desc = Object.getOwnPropertyDescriptor(proto, key);
+      if (desc) {
+        Object.defineProperty(performance, key, desc);
+      }
+    }
+  }
+}
+globalThis.performance = performance;
+globalThis.Performance = Performance;
+globalThis.PerformanceEntry = PerformanceEntry;
+globalThis.PerformanceMark = PerformanceMark;
+globalThis.PerformanceMeasure = PerformanceMeasure;
+globalThis.PerformanceObserver = PerformanceObserver;
+globalThis.PerformanceObserverEntryList = PerformanceObserverEntryList;
+globalThis.PerformanceResourceTiming = PerformanceResourceTiming;
+
+// ../.npm/_npx/32026684e21afda6/node_modules/unenv/dist/runtime/node/console.mjs
+import { Writable } from "node:stream";
+
+// ../.npm/_npx/32026684e21afda6/node_modules/unenv/dist/runtime/mock/noop.mjs
+var noop_default = Object.assign(() => {
+}, { __unenv__: true });
+
+// ../.npm/_npx/32026684e21afda6/node_modules/unenv/dist/runtime/node/console.mjs
+var _console = globalThis.console;
+var _ignoreErrors = true;
+var _stderr = new Writable();
+var _stdout = new Writable();
+var log = _console?.log ?? noop_default;
+var info = _console?.info ?? log;
+var trace = _console?.trace ?? info;
+var debug = _console?.debug ?? log;
+var table = _console?.table ?? log;
+var error = _console?.error ?? log;
+var warn = _console?.warn ?? error;
+var createTask = _console?.createTask ?? /* @__PURE__ */ notImplemented("console.createTask");
+var clear = _console?.clear ?? noop_default;
+var count = _console?.count ?? noop_default;
+var countReset = _console?.countReset ?? noop_default;
+var dir = _console?.dir ?? noop_default;
+var dirxml = _console?.dirxml ?? noop_default;
+var group = _console?.group ?? noop_default;
+var groupEnd = _console?.groupEnd ?? noop_default;
+var groupCollapsed = _console?.groupCollapsed ?? noop_default;
+var profile = _console?.profile ?? noop_default;
+var profileEnd = _console?.profileEnd ?? noop_default;
+var time = _console?.time ?? noop_default;
+var timeEnd = _console?.timeEnd ?? noop_default;
+var timeLog = _console?.timeLog ?? noop_default;
+var timeStamp = _console?.timeStamp ?? noop_default;
+var Console = _console?.Console ?? /* @__PURE__ */ notImplementedClass("console.Console");
+var _times = /* @__PURE__ */ new Map();
+var _stdoutErrorHandler = noop_default;
+var _stderrErrorHandler = noop_default;
+
+// ../.npm/_npx/32026684e21afda6/node_modules/@cloudflare/unenv-preset/dist/runtime/node/console.mjs
+var workerdConsole = globalThis["console"];
+var {
+  assert,
+  clear: clear2,
+  // @ts-expect-error undocumented public API
+  context,
+  count: count2,
+  countReset: countReset2,
+  // @ts-expect-error undocumented public API
+  createTask: createTask2,
+  debug: debug2,
+  dir: dir2,
+  dirxml: dirxml2,
+  error: error2,
+  group: group2,
+  groupCollapsed: groupCollapsed2,
+  groupEnd: groupEnd2,
+  info: info2,
+  log: log2,
+  profile: profile2,
+  profileEnd: profileEnd2,
+  table: table2,
+  time: time2,
+  timeEnd: timeEnd2,
+  timeLog: timeLog2,
+  timeStamp: timeStamp2,
+  trace: trace2,
+  warn: warn2
+} = workerdConsole;
+Object.assign(workerdConsole, {
+  Console,
+  _ignoreErrors,
+  _stderr,
+  _stderrErrorHandler,
+  _stdout,
+  _stdoutErrorHandler,
+  _times
+});
+var console_default = workerdConsole;
+
+// ../.npm/_npx/32026684e21afda6/node_modules/wrangler/_virtual_unenv_global_polyfill-@cloudflare-unenv-preset-node-console
+globalThis.console = console_default;
+
+// ../.npm/_npx/32026684e21afda6/node_modules/unenv/dist/runtime/node/internal/process/hrtime.mjs
+var hrtime = /* @__PURE__ */ Object.assign(/* @__PURE__ */ __name(function hrtime2(startTime) {
+  const now = Date.now();
+  const seconds = Math.trunc(now / 1e3);
+  const nanos = now % 1e3 * 1e6;
+  if (startTime) {
+    let diffSeconds = seconds - startTime[0];
+    let diffNanos = nanos - startTime[0];
+    if (diffNanos < 0) {
+      diffSeconds = diffSeconds - 1;
+      diffNanos = 1e9 + diffNanos;
+    }
+    return [diffSeconds, diffNanos];
+  }
+  return [seconds, nanos];
+}, "hrtime"), { bigint: /* @__PURE__ */ __name(function bigint() {
+  return BigInt(Date.now() * 1e6);
+}, "bigint") });
+
+// ../.npm/_npx/32026684e21afda6/node_modules/unenv/dist/runtime/node/internal/process/process.mjs
+import { EventEmitter } from "node:events";
+
+// ../.npm/_npx/32026684e21afda6/node_modules/unenv/dist/runtime/node/internal/tty/read-stream.mjs
+var ReadStream = class {
+  static {
+    __name(this, "ReadStream");
+  }
+  fd;
+  isRaw = false;
+  isTTY = false;
+  constructor(fd) {
+    this.fd = fd;
+  }
+  setRawMode(mode) {
+    this.isRaw = mode;
+    return this;
+  }
+};
+
+// ../.npm/_npx/32026684e21afda6/node_modules/unenv/dist/runtime/node/internal/tty/write-stream.mjs
+var WriteStream = class {
+  static {
+    __name(this, "WriteStream");
+  }
+  fd;
+  columns = 80;
+  rows = 24;
+  isTTY = false;
+  constructor(fd) {
+    this.fd = fd;
+  }
+  clearLine(dir3, callback) {
+    callback && callback();
+    return false;
+  }
+  clearScreenDown(callback) {
+    callback && callback();
+    return false;
+  }
+  cursorTo(x, y, callback) {
+    callback && typeof callback === "function" && callback();
+    return false;
+  }
+  moveCursor(dx, dy, callback) {
+    callback && callback();
+    return false;
+  }
+  getColorDepth(env2) {
+    return 1;
+  }
+  hasColors(count3, env2) {
+    return false;
+  }
+  getWindowSize() {
+    return [this.columns, this.rows];
+  }
+  write(str, encoding, cb) {
+    if (str instanceof Uint8Array) {
+      str = new TextDecoder().decode(str);
+    }
+    try {
+      console.log(str);
+    } catch {
+    }
+    cb && typeof cb === "function" && cb();
+    return false;
+  }
+};
+
+// ../.npm/_npx/32026684e21afda6/node_modules/unenv/dist/runtime/node/internal/process/node-version.mjs
+var NODE_VERSION = "22.14.0";
+
+// ../.npm/_npx/32026684e21afda6/node_modules/unenv/dist/runtime/node/internal/process/process.mjs
+var Process = class _Process extends EventEmitter {
+  static {
+    __name(this, "Process");
+  }
+  env;
+  hrtime;
+  nextTick;
+  constructor(impl) {
+    super();
+    this.env = impl.env;
+    this.hrtime = impl.hrtime;
+    this.nextTick = impl.nextTick;
+    for (const prop of [...Object.getOwnPropertyNames(_Process.prototype), ...Object.getOwnPropertyNames(EventEmitter.prototype)]) {
+      const value = this[prop];
+      if (typeof value === "function") {
+        this[prop] = value.bind(this);
+      }
+    }
+  }
+  // --- event emitter ---
+  emitWarning(warning, type, code) {
+    console.warn(`${code ? `[${code}] ` : ""}${type ? `${type}: ` : ""}${warning}`);
+  }
+  emit(...args) {
+    return super.emit(...args);
+  }
+  listeners(eventName) {
+    return super.listeners(eventName);
+  }
+  // --- stdio (lazy initializers) ---
+  #stdin;
+  #stdout;
+  #stderr;
+  get stdin() {
+    return this.#stdin ??= new ReadStream(0);
+  }
+  get stdout() {
+    return this.#stdout ??= new WriteStream(1);
+  }
+  get stderr() {
+    return this.#stderr ??= new WriteStream(2);
+  }
+  // --- cwd ---
+  #cwd = "/";
+  chdir(cwd2) {
+    this.#cwd = cwd2;
+  }
+  cwd() {
+    return this.#cwd;
+  }
+  // --- dummy props and getters ---
+  arch = "";
+  platform = "";
+  argv = [];
+  argv0 = "";
+  execArgv = [];
+  execPath = "";
+  title = "";
+  pid = 200;
+  ppid = 100;
+  get version() {
+    return `v${NODE_VERSION}`;
+  }
+  get versions() {
+    return { node: NODE_VERSION };
+  }
+  get allowedNodeEnvironmentFlags() {
+    return /* @__PURE__ */ new Set();
+  }
+  get sourceMapsEnabled() {
+    return false;
+  }
+  get debugPort() {
+    return 0;
+  }
+  get throwDeprecation() {
+    return false;
+  }
+  get traceDeprecation() {
+    return false;
+  }
+  get features() {
+    return {};
+  }
+  get release() {
+    return {};
+  }
+  get connected() {
+    return false;
+  }
+  get config() {
+    return {};
+  }
+  get moduleLoadList() {
+    return [];
+  }
+  constrainedMemory() {
+    return 0;
+  }
+  availableMemory() {
+    return 0;
+  }
+  uptime() {
+    return 0;
+  }
+  resourceUsage() {
+    return {};
+  }
+  // --- noop methods ---
+  ref() {
+  }
+  unref() {
+  }
+  // --- unimplemented methods ---
+  umask() {
+    throw createNotImplementedError("process.umask");
+  }
+  getBuiltinModule() {
+    return void 0;
+  }
+  getActiveResourcesInfo() {
+    throw createNotImplementedError("process.getActiveResourcesInfo");
+  }
+  exit() {
+    throw createNotImplementedError("process.exit");
+  }
+  reallyExit() {
+    throw createNotImplementedError("process.reallyExit");
+  }
+  kill() {
+    throw createNotImplementedError("process.kill");
+  }
+  abort() {
+    throw createNotImplementedError("process.abort");
+  }
+  dlopen() {
+    throw createNotImplementedError("process.dlopen");
+  }
+  setSourceMapsEnabled() {
+    throw createNotImplementedError("process.setSourceMapsEnabled");
+  }
+  loadEnvFile() {
+    throw createNotImplementedError("process.loadEnvFile");
+  }
+  disconnect() {
+    throw createNotImplementedError("process.disconnect");
+  }
+  cpuUsage() {
+    throw createNotImplementedError("process.cpuUsage");
+  }
+  setUncaughtExceptionCaptureCallback() {
+    throw createNotImplementedError("process.setUncaughtExceptionCaptureCallback");
+  }
+  hasUncaughtExceptionCaptureCallback() {
+    throw createNotImplementedError("process.hasUncaughtExceptionCaptureCallback");
+  }
+  initgroups() {
+    throw createNotImplementedError("process.initgroups");
+  }
+  openStdin() {
+    throw createNotImplementedError("process.openStdin");
+  }
+  assert() {
+    throw createNotImplementedError("process.assert");
+  }
+  binding() {
+    throw createNotImplementedError("process.binding");
+  }
+  // --- attached interfaces ---
+  permission = { has: /* @__PURE__ */ notImplemented("process.permission.has") };
+  report = {
+    directory: "",
+    filename: "",
+    signal: "SIGUSR2",
+    compact: false,
+    reportOnFatalError: false,
+    reportOnSignal: false,
+    reportOnUncaughtException: false,
+    getReport: /* @__PURE__ */ notImplemented("process.report.getReport"),
+    writeReport: /* @__PURE__ */ notImplemented("process.report.writeReport")
+  };
+  finalization = {
+    register: /* @__PURE__ */ notImplemented("process.finalization.register"),
+    unregister: /* @__PURE__ */ notImplemented("process.finalization.unregister"),
+    registerBeforeExit: /* @__PURE__ */ notImplemented("process.finalization.registerBeforeExit")
+  };
+  memoryUsage = Object.assign(() => ({
+    arrayBuffers: 0,
+    rss: 0,
+    external: 0,
+    heapTotal: 0,
+    heapUsed: 0
+  }), { rss: /* @__PURE__ */ __name(() => 0, "rss") });
+  // --- undefined props ---
+  mainModule = void 0;
+  domain = void 0;
+  // optional
+  send = void 0;
+  exitCode = void 0;
+  channel = void 0;
+  getegid = void 0;
+  geteuid = void 0;
+  getgid = void 0;
+  getgroups = void 0;
+  getuid = void 0;
+  setegid = void 0;
+  seteuid = void 0;
+  setgid = void 0;
+  setgroups = void 0;
+  setuid = void 0;
+  // internals
+  _events = void 0;
+  _eventsCount = void 0;
+  _exiting = void 0;
+  _maxListeners = void 0;
+  _debugEnd = void 0;
+  _debugProcess = void 0;
+  _fatalException = void 0;
+  _getActiveHandles = void 0;
+  _getActiveRequests = void 0;
+  _kill = void 0;
+  _preload_modules = void 0;
+  _rawDebug = void 0;
+  _startProfilerIdleNotifier = void 0;
+  _stopProfilerIdleNotifier = void 0;
+  _tickCallback = void 0;
+  _disconnect = void 0;
+  _handleQueue = void 0;
+  _pendingMessage = void 0;
+  _channel = void 0;
+  _send = void 0;
+  _linkedBinding = void 0;
+};
+
+// ../.npm/_npx/32026684e21afda6/node_modules/@cloudflare/unenv-preset/dist/runtime/node/process.mjs
+var globalProcess = globalThis["process"];
+var getBuiltinModule = globalProcess.getBuiltinModule;
+var workerdProcess = getBuiltinModule("node:process");
+var unenvProcess = new Process({
+  env: globalProcess.env,
+  hrtime,
+  // `nextTick` is available from workerd process v1
+  nextTick: workerdProcess.nextTick
+});
+var { exit, features, platform } = workerdProcess;
+var {
+  _channel,
+  _debugEnd,
+  _debugProcess,
+  _disconnect,
+  _events,
+  _eventsCount,
+  _exiting,
+  _fatalException,
+  _getActiveHandles,
+  _getActiveRequests,
+  _handleQueue,
+  _kill,
+  _linkedBinding,
+  _maxListeners,
+  _pendingMessage,
+  _preload_modules,
+  _rawDebug,
+  _send,
+  _startProfilerIdleNotifier,
+  _stopProfilerIdleNotifier,
+  _tickCallback,
+  abort,
+  addListener,
+  allowedNodeEnvironmentFlags,
+  arch,
+  argv,
+  argv0,
+  assert: assert2,
+  availableMemory,
+  binding,
+  channel,
+  chdir,
+  config,
+  connected,
+  constrainedMemory,
+  cpuUsage,
+  cwd,
+  debugPort,
+  disconnect,
+  dlopen,
+  domain,
+  emit,
+  emitWarning,
+  env,
+  eventNames,
+  execArgv,
+  execPath,
+  exitCode,
+  finalization,
+  getActiveResourcesInfo,
+  getegid,
+  geteuid,
+  getgid,
+  getgroups,
+  getMaxListeners,
+  getuid,
+  hasUncaughtExceptionCaptureCallback,
+  hrtime: hrtime3,
+  initgroups,
+  kill,
+  listenerCount,
+  listeners,
+  loadEnvFile,
+  mainModule,
+  memoryUsage,
+  moduleLoadList,
+  nextTick,
+  off,
+  on,
+  once,
+  openStdin,
+  permission,
+  pid,
+  ppid,
+  prependListener,
+  prependOnceListener,
+  rawListeners,
+  reallyExit,
+  ref,
+  release,
+  removeAllListeners,
+  removeListener,
+  report,
+  resourceUsage,
+  send,
+  setegid,
+  seteuid,
+  setgid,
+  setgroups,
+  setMaxListeners,
+  setSourceMapsEnabled,
+  setuid,
+  setUncaughtExceptionCaptureCallback,
+  sourceMapsEnabled,
+  stderr,
+  stdin,
+  stdout,
+  throwDeprecation,
+  title,
+  traceDeprecation,
+  umask,
+  unref,
+  uptime,
+  version,
+  versions
+} = unenvProcess;
+var _process = {
+  abort,
+  addListener,
+  allowedNodeEnvironmentFlags,
+  hasUncaughtExceptionCaptureCallback,
+  setUncaughtExceptionCaptureCallback,
+  loadEnvFile,
+  sourceMapsEnabled,
+  arch,
+  argv,
+  argv0,
+  chdir,
+  config,
+  connected,
+  constrainedMemory,
+  availableMemory,
+  cpuUsage,
+  cwd,
+  debugPort,
+  dlopen,
+  disconnect,
+  emit,
+  emitWarning,
+  env,
+  eventNames,
+  execArgv,
+  execPath,
+  exit,
+  finalization,
+  features,
+  getBuiltinModule,
+  getActiveResourcesInfo,
+  getMaxListeners,
+  hrtime: hrtime3,
+  kill,
+  listeners,
+  listenerCount,
+  memoryUsage,
+  nextTick,
+  on,
+  off,
+  once,
+  pid,
+  platform,
+  ppid,
+  prependListener,
+  prependOnceListener,
+  rawListeners,
+  release,
+  removeAllListeners,
+  removeListener,
+  report,
+  resourceUsage,
+  setMaxListeners,
+  setSourceMapsEnabled,
+  stderr,
+  stdin,
+  stdout,
+  title,
+  throwDeprecation,
+  traceDeprecation,
+  umask,
+  uptime,
+  version,
+  versions,
+  // @ts-expect-error old API
+  domain,
+  initgroups,
+  moduleLoadList,
+  reallyExit,
+  openStdin,
+  assert: assert2,
+  binding,
+  send,
+  exitCode,
+  channel,
+  getegid,
+  geteuid,
+  getgid,
+  getgroups,
+  getuid,
+  setegid,
+  seteuid,
+  setgid,
+  setgroups,
+  setuid,
+  permission,
+  mainModule,
+  _events,
+  _eventsCount,
+  _exiting,
+  _maxListeners,
+  _debugEnd,
+  _debugProcess,
+  _fatalException,
+  _getActiveHandles,
+  _getActiveRequests,
+  _kill,
+  _preload_modules,
+  _rawDebug,
+  _startProfilerIdleNotifier,
+  _stopProfilerIdleNotifier,
+  _tickCallback,
+  _disconnect,
+  _handleQueue,
+  _pendingMessage,
+  _channel,
+  _send,
+  _linkedBinding
+};
+var process_default = _process;
+
+// ../.npm/_npx/32026684e21afda6/node_modules/wrangler/_virtual_unenv_global_polyfill-@cloudflare-unenv-preset-node-process
+globalThis.process = process_default;
+
+// worker.js
+var worker_default = {
   async fetch(request) {
     const url = new URL(request.url);
-    if (url.hostname === 'www.thepartnershiptree.com') {
-      return Response.redirect('https://thepartnershiptree.com' + url.pathname + url.search, 301);
+    if (url.hostname === "www.thepartnershiptree.com") {
+      return Response.redirect("https://thepartnershiptree.com" + url.pathname + url.search, 301);
     }
-    if (url.pathname === '/robots.txt') {
-      return new Response('User-agent: *\nAllow: /\nSitemap: https://thepartnershiptree.com/sitemap.xml\n', {
-        headers: { 'Content-Type': 'text/plain' }
+    if (url.pathname === "/robots.txt") {
+      return new Response("User-agent: *\nAllow: /\nSitemap: https://thepartnershiptree.com/sitemap.xml\n", {
+        headers: { "Content-Type": "text/plain" }
       });
     }
-    if (url.pathname === '/sitemap.xml') {
+    if (url.pathname === "/sitemap.xml") {
       return new Response(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://thepartnershiptree.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://thepartnershiptree.com/#platforms</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://thepartnershiptree.com/#insights</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>`, {
-        headers: { 'Content-Type': 'application/xml' }
+        headers: { "Content-Type": "application/xml" }
       });
     }
     const html = `<!DOCTYPE html>
@@ -25,7 +956,7 @@ export default {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Partnership Tree | Life Science Partnerships, Alliances &amp; Collaborations Platform</title>
-<meta name="description" content="The Partnership Tree is a curated life science partnerships, alliances and collaborations platform — connecting biotech and pharma companies with licensing partners, co-development opportunities and strategic alliances worldwide.">
+<meta name="description" content="The Partnership Tree is a curated life science partnerships, alliances and collaborations platform \u2014 connecting biotech and pharma companies with licensing partners, co-development opportunities and strategic alliances worldwide.">
 <meta name="keywords" content="life science partnerships, life science alliances, life science collaborations, pharma licensing, biotech co-development, drug discovery platform, gene therapy licensing, cell therapy partnership, RNA therapeutics, antibody platform, AI drug discovery, technology licensing, platform licensing, strategic alliances">
 <meta name="robots" content="index, follow">
 <meta name="author" content="The Partnership Tree">
@@ -59,7 +990,7 @@ export default {
   },
   "sameAs": ["https://pharmaservicesdirectory.com"]
 }
-</script>
+<\/script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -224,7 +1155,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
     <a href="#platforms" class="nav-link">Browse Platform</a>
     <a href="#insights" class="nav-link">Insights</a>
     <span class="nav-link" onclick="openListingForm()" style="cursor:pointer;">List Your Technology</span>
-    <a href="https://app.thepartnershiptree.com/login" class="nav-cta">Member Login →</a>
+    <a href="https://app.thepartnershiptree.com/login" class="nav-cta">Member Login \u2192</a>
   </div>
 </nav>
 
@@ -234,7 +1165,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
     <h1 class="hero-title">Find Partners, Investors, Clients for your <em>Technology and Intellectual Property</em></h1>
     <p class="hero-body">The Partnership Tree is a curated network where life science companies actively promote their technology &amp; IP platforms to Alliance, Technology &amp; BD professionals worldwide. Every listing is verified, intentional, and actively seeking engagement.</p>
     <div class="hero-actions">
-      <a href="#platforms" class="btn-primary">Browse Platforms →</a>
+      <a href="#platforms" class="btn-primary">Browse Platforms \u2192</a>
       <button class="btn-outline" onclick="openListingForm()" style="cursor:pointer;">List Your Technology</button>
     </div>
   </div>
@@ -253,7 +1184,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
     </div>
     <div class="stat-card">
       <div class="stat-num">100%</div>
-      <div class="stat-label">Verified active partnership intent — no stale listings</div>
+      <div class="stat-label">Verified active partnership intent \u2014 no stale listings</div>
     </div>
   </div>
 </section>
@@ -263,19 +1194,19 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
     <div class="prop-title">Why The Partnership Tree</div>
     <div class="prop-grid">
       <div class="prop-item">
-        <div class="prop-icon">🎯</div>
+        <div class="prop-icon">\u{1F3AF}</div>
         <h3>Curated Companies &amp; Technologies</h3>
         <p>Every company here is hand-selected for clear partnership intent, technology &amp; IP, and verified profile completeness.</p>
       </div>
       <div class="prop-item">
-        <div class="prop-icon">🤝</div>
+        <div class="prop-icon">\u{1F91D}</div>
         <h3>Intent, not just presence</h3>
-        <p>Companies declare exactly what they're seeking — Alliance partners, co-research, co-development, geographic rights, Sale of IP assets — so BD professionals can act on the information immediately.</p>
+        <p>Companies declare exactly what they're seeking \u2014 Alliance partners, co-research, co-development, geographic rights, Sale of IP assets \u2014 so BD professionals can act on the information immediately.</p>
       </div>
       <div class="prop-item">
-        <div class="prop-icon">🔍</div>
+        <div class="prop-icon">\u{1F50D}</div>
         <h3>Found where it matters</h3>
-        <p>Your company technology and IP profile surfaces in precise keyword searches by life science Technology &amp; BD professionals who know what they're looking for — not buried in generic search results.</p>
+        <p>Your company technology and IP profile surfaces in precise keyword searches by life science Technology &amp; BD professionals who know what they're looking for \u2014 not buried in generic search results.</p>
       </div>
     </div>
   </div>
@@ -290,7 +1221,7 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
     <div class="section-count" id="results-count">20 platforms</div>
   </div>
   <div class="search-bar">
-    <input type="text" class="search-input" id="search-input" placeholder="Search by technology, therapy area, or platform name…" oninput="filterCompanies()">
+    <input type="text" class="search-input" id="search-input" placeholder="Search by technology, therapy area, or platform name\u2026" oninput="filterCompanies()">
     <button class="search-btn" onclick="filterCompanies()">Search</button>
     <button class="search-btn" style="background:var(--mid);" onclick="clearSearch()">Clear</button>
   </div>
@@ -325,129 +1256,129 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
       <h2 style="font-family:'Playfair Display',serif;font-size:32px;color:var(--forest-deep);font-weight:700;line-height:1.4;max-width:700px;">Review and Summary of the Latest Headline News in Partnerships and Alliances within the Life Science Sector</h2>
     </div>
 
-    <!-- NEW ARTICLE: CDMO Partnerships — June 2026 -->
+    <!-- NEW ARTICLE: CDMO Partnerships \u2014 June 2026 -->
     <div style="margin-bottom:40px;">
       <article style="background:var(--fog);border-radius:16px;padding:40px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
           <span style="background:var(--forest);color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Manufacturing Review</span>
-          <span style="color:var(--mid);font-size:12px;">June 2026 · 8 min read</span>
+          <span style="color:var(--mid);font-size:12px;">June 2026 \xB7 8 min read</span>
         </div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--forest-deep);margin-bottom:16px;line-height:1.3;">Pharma &amp; Biotech CDMO Partnerships — The Manufacturing Alliances Reshaping Drug Research & Production</h3>
-        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:16px;">The contract development and manufacturing sector has never been more strategically central to the life sciences industry. In 2026, CDMO partnerships are no longer simply about outsourcing production — they are about accessing specialised infrastructure, securing supply chain resilience, and building the industrial backbone for the next generation of complex therapies. Two distinct partnership patterns have emerged: biotechs leaning on CDMO expertise to scale proven assets, and CDMOs forming deep alliances with each other to solve the uniquely complex logistics of living drugs.</p>
+        <h3 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--forest-deep);margin-bottom:16px;line-height:1.3;">Pharma &amp; Biotech CDMO Partnerships \u2014 The Manufacturing Alliances Reshaping Drug Research & Production</h3>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:16px;">The contract development and manufacturing sector has never been more strategically central to the life sciences industry. In 2026, CDMO partnerships are no longer simply about outsourcing production \u2014 they are about accessing specialised infrastructure, securing supply chain resilience, and building the industrial backbone for the next generation of complex therapies. Two distinct partnership patterns have emerged: biotechs leaning on CDMO expertise to scale proven assets, and CDMOs forming deep alliances with each other to solve the uniquely complex logistics of living drugs.</p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:24px;">
           <div>
-            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">1. Biologics &amp; Antibodies — Global Scale-Up</div>
-            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Virtual and clinical-stage biotechs continue to rely on established CDMO infrastructure for the high-yield, distribution-ready manufacturing that monoclonal antibodies and complex biologics demand. These are true outsourcing relationships — the innovator owns the asset; the CDMO owns the scale.</p>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">1. Biologics &amp; Antibodies \u2014 Global Scale-Up</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Virtual and clinical-stage biotechs continue to rely on established CDMO infrastructure for the high-yield, distribution-ready manufacturing that monoclonal antibodies and complex biologics demand. These are true outsourcing relationships \u2014 the innovator owns the asset; the CDMO owns the scale.</p>
             <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
-              <li><strong>Ottimo Pharma + Lotte Biologics (S. Korea):</strong> Commercial scale-up of oncology asset KT-109 — a Korean CDMO securing a US biotech's biologic manufacturing footprint in Asia.</li>
-              <li><strong>Novelty Nobility + AGC Biologics (Japan):</strong> Antibody drug product manufacturing expansion — South Korea's Novelty Nobility leveraging Japanese CDMO infrastructure for global distribution readiness.</li>
-              <li><strong>ImmuneOncia + Lonza (Switzerland):</strong> Late-stage monoclonal antibody scale-up — one of the most recognised names in CDMO biologics manufacturing anchoring a South Korean immuno-oncology programme.</li>
+              <li><strong>Ottimo Pharma + Lotte Biologics (S. Korea):</strong> Commercial scale-up of oncology asset KT-109 \u2014 a Korean CDMO securing a US biotech's biologic manufacturing footprint in Asia.</li>
+              <li><strong>Novelty Nobility + AGC Biologics (Japan):</strong> Antibody drug product manufacturing expansion \u2014 South Korea's Novelty Nobility leveraging Japanese CDMO infrastructure for global distribution readiness.</li>
+              <li><strong>ImmuneOncia + Lonza (Switzerland):</strong> Late-stage monoclonal antibody scale-up \u2014 one of the most recognised names in CDMO biologics manufacturing anchoring a South Korean immuno-oncology programme.</li>
             </ul>
           </div>
           <div>
-            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">2. Small Molecules — Commercial Readiness</div>
-            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Small molecule programmes are driving a wave of highly targeted CDMO engagements focused on formulation expertise, API scale-up, and clinical batch supply — particularly where specialist capability (topical formulation, sterile injectables) is the determining factor in partner selection.</p>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">2. Small Molecules \u2014 Commercial Readiness</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Small molecule programmes are driving a wave of highly targeted CDMO engagements focused on formulation expertise, API scale-up, and clinical batch supply \u2014 particularly where specialist capability (topical formulation, sterile injectables) is the determining factor in partner selection.</p>
             <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
-              <li><strong>Achieve Life Sciences + Adare Pharma Solutions (USA):</strong> Commercial production tech transfer for a small molecule programme — a clean handoff from development to scalable commercial manufacture.</li>
-              <li><strong>Botanix Pharmaceuticals + Piramal Pharma Solutions (India):</strong> Formulation and active topical API scale-up — an Australian biotech accessing India's world-class API manufacturing for a cannabidiol-based dermatology asset.</li>
-              <li><strong>Curative Biotech + Sterling Pharma (UK):</strong> Clinical batch supply of sterile eye drops — a highly specialised fill-finish capability that few CDMOs can offer at clinical grade.</li>
+              <li><strong>Achieve Life Sciences + Adare Pharma Solutions (USA):</strong> Commercial production tech transfer for a small molecule programme \u2014 a clean handoff from development to scalable commercial manufacture.</li>
+              <li><strong>Botanix Pharmaceuticals + Piramal Pharma Solutions (India):</strong> Formulation and active topical API scale-up \u2014 an Australian biotech accessing India's world-class API manufacturing for a cannabidiol-based dermatology asset.</li>
+              <li><strong>Curative Biotech + Sterling Pharma (UK):</strong> Clinical batch supply of sterile eye drops \u2014 a highly specialised fill-finish capability that few CDMOs can offer at clinical grade.</li>
             </ul>
           </div>
           <div>
-            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">3. Gene &amp; Cell Therapy — Specialist Scale-Up</div>
-            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">AAV viral vectors and advanced cell therapies are the most technically demanding manufacturing challenges in pharma. Innovators in this space are selecting CDMO partners not on price, but on demonstrated specialist capability — and the partnerships reflect that selectivity.</p>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">3. Gene &amp; Cell Therapy \u2014 Specialist Scale-Up</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">AAV viral vectors and advanced cell therapies are the most technically demanding manufacturing challenges in pharma. Innovators in this space are selecting CDMO partners not on price, but on demonstrated specialist capability \u2014 and the partnerships reflect that selectivity.</p>
             <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
-              <li><strong>Elpida Therapeutics + Catalent (USA):</strong> Late-phase AAV viral vector scale-up — bringing a gene therapy programme to the critical juncture between clinical and commercial manufacturing.</li>
-              <li><strong>LIR Life Sciences + Neuland Labs (India):</strong> Cell-Penetrating Peptide (CPP) platform scale-up — a Japanese innovator accessing Indian synthesis expertise for a novel delivery modality sitting at the intersection of biologics and drug delivery.</li>
+              <li><strong>Elpida Therapeutics + Catalent (USA):</strong> Late-phase AAV viral vector scale-up \u2014 bringing a gene therapy programme to the critical juncture between clinical and commercial manufacturing.</li>
+              <li><strong>LIR Life Sciences + Neuland Labs (India):</strong> Cell-Penetrating Peptide (CPP) platform scale-up \u2014 a Japanese innovator accessing Indian synthesis expertise for a novel delivery modality sitting at the intersection of biologics and drug delivery.</li>
             </ul>
           </div>
           <div>
-            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">4. CDMO-to-CDMO — The B2B Alliance Layer</div>
-            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Perhaps the most telling signal in this data is what happens when CDMOs and tool providers partner with <em>each other</em>. Almost without exception, these B2B alliances are concentrated in gene and cell therapy — revealing just how complex the raw material and logistics chain for living drugs has become.</p>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">4. CDMO-to-CDMO \u2014 The B2B Alliance Layer</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Perhaps the most telling signal in this data is what happens when CDMOs and tool providers partner with <em>each other</em>. Almost without exception, these B2B alliances are concentrated in gene and cell therapy \u2014 revealing just how complex the raw material and logistics chain for living drugs has become.</p>
             <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
-              <li><strong>Cellares + ProTGenS (S. Korea):</strong> Automation provider adapting specialised progenitor T-cell therapies into automated manufacturing pods — closing the gap between novel cell types and industrial-scale production.</li>
-              <li><strong>Aldevron + Minaris Regenerative (USA/Japan):</strong> Long-term contract securing clinical-grade lentiviral plasmid supply — a raw material-to-CDMO alliance that underpins multiple downstream cell therapy programmes.</li>
-              <li><strong>Andelyn Biosciences + EnCell (USA):</strong> Joint framework alliance to scale viral vector processing efficiencies — two CDMOs combining complementary expertise rather than competing.</li>
-              <li><strong>OrganaBio + Excellos (USA):</strong> Strategic asset acquisition creating a nationwide cellular donor procurement-to-cleanroom pipeline — CDMO consolidation building end-to-end control of the cell therapy supply chain.</li>
+              <li><strong>Cellares + ProTGenS (S. Korea):</strong> Automation provider adapting specialised progenitor T-cell therapies into automated manufacturing pods \u2014 closing the gap between novel cell types and industrial-scale production.</li>
+              <li><strong>Aldevron + Minaris Regenerative (USA/Japan):</strong> Long-term contract securing clinical-grade lentiviral plasmid supply \u2014 a raw material-to-CDMO alliance that underpins multiple downstream cell therapy programmes.</li>
+              <li><strong>Andelyn Biosciences + EnCell (USA):</strong> Joint framework alliance to scale viral vector processing efficiencies \u2014 two CDMOs combining complementary expertise rather than competing.</li>
+              <li><strong>OrganaBio + Excellos (USA):</strong> Strategic asset acquisition creating a nationwide cellular donor procurement-to-cleanroom pipeline \u2014 CDMO consolidation building end-to-end control of the cell therapy supply chain.</li>
             </ul>
           </div>
         </div>
         <div style="background:var(--forest);border-radius:10px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
           <p style="font-size:13px;color:rgba(245,240,232,0.8);margin:0;max-width:600px;">The CDMO sector is bifurcating: generalist manufacturers face commoditisation, while those with specialist capabilities in gene therapy, ADCs, and complex sterile injectables are commanding premium long-term contracts. Browse the platform to find CDMO and manufacturing partners actively seeking engagement.</p>
-          <a href="#platforms" style="background:var(--gold);color:var(--forest-deep);font-size:12px;font-weight:900;padding:10px 22px;border-radius:7px;text-decoration:none;white-space:nowrap;letter-spacing:.04em;">Browse Platforms →</a>
+          <a href="#platforms" style="background:var(--gold);color:var(--forest-deep);font-size:12px;font-weight:900;padding:10px 22px;border-radius:7px;text-decoration:none;white-space:nowrap;letter-spacing:.04em;">Browse Platforms \u2192</a>
         </div>
-        <div style="margin-top:16px;font-size:12px;color:var(--mid);">By <strong>Paul O'Farrell</strong> · Owner focused on Innovation &amp; Technical Alliances and Procurement solutions</div>
+        <div style="margin-top:16px;font-size:12px;color:var(--mid);">By <strong>Paul O'Farrell</strong> \xB7 Owner focused on Innovation &amp; Technical Alliances and Procurement solutions</div>
       </article>
     </div>
-    <!-- NEW ARTICLE: Drug Discovery Partnerships — May 2026 -->
+    <!-- NEW ARTICLE: Drug Discovery Partnerships \u2014 May 2026 -->
     <div style="margin-bottom:40px;">
       <article style="background:var(--fog);border-radius:16px;padding:40px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
           <span style="background:var(--forest);color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Discovery Review</span>
-          <span style="color:var(--mid);font-size:12px;">May 2026 · 8 min read</span>
+          <span style="color:var(--mid);font-size:12px;">May 2026 \xB7 8 min read</span>
         </div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--forest-deep);margin-bottom:16px;line-height:1.3;">Drug Discovery Partnerships — From Molecules to Delivery Machines</h3>
-        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:16px;">The rules of drug discovery have changed. For decades, the central question was: <em>can we find a molecule that works?</em> In 2026, that question has been overtaken by a harder one: <em>can we get it there?</em> The most valuable partnerships in today's life sciences landscape are no longer just about discovering effective medicines — they are about solving the delivery hurdle simultaneously. We are now in a Platform-First era, where the capsid, the conjugate linker, and the lipid nanoparticle are just as strategically important as the drug itself.</p>
+        <h3 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--forest-deep);margin-bottom:16px;line-height:1.3;">Drug Discovery Partnerships \u2014 From Molecules to Delivery Machines</h3>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:16px;">The rules of drug discovery have changed. For decades, the central question was: <em>can we find a molecule that works?</em> In 2026, that question has been overtaken by a harder one: <em>can we get it there?</em> The most valuable partnerships in today's life sciences landscape are no longer just about discovering effective medicines \u2014 they are about solving the delivery hurdle simultaneously. We are now in a Platform-First era, where the capsid, the conjugate linker, and the lipid nanoparticle are just as strategically important as the drug itself.</p>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:24px;">
           <div>
-            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">1. Proteins &amp; Biologics — Armed Antibodies</div>
-            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">The discovery of "armed" antibodies remains the most lucrative area of biopharma-to-biopharma collaboration — ADCs, radiopharmaceuticals, and antibody-oligonucleotide conjugates are all commanding billion-dollar commitments.</p>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">1. Proteins &amp; Biologics \u2014 Armed Antibodies</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">The discovery of "armed" antibodies remains the most lucrative area of biopharma-to-biopharma collaboration \u2014 ADCs, radiopharmaceuticals, and antibody-oligonucleotide conjugates are all commanding billion-dollar commitments.</p>
             <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
               <li><strong>Eli Lilly + CrossBridge Bio:</strong> A $300M investment in a dual-payload ADC platform engineered to prevent cancer cells from developing resistance.</li>
-              <li><strong>AstraZeneca + Ablaze Pharma:</strong> A $2.1B deal for Targeted Alpha Therapies — using high-precision isotopes to destroy solid tumours at the cellular level.</li>
+              <li><strong>AstraZeneca + Ablaze Pharma:</strong> A $2.1B deal for Targeted Alpha Therapies \u2014 using high-precision isotopes to destroy solid tumours at the cellular level.</li>
               <li><strong>Regeneron + Telix Pharma:</strong> A $4.3B strategic alliance combining antibody precision with radioactive payloads in a 50/50 cost and profit-sharing structure.</li>
-              <li><strong>Aimed Bio + Sovargen:</strong> Co-developing Antibody-Oligonucleotide Conjugates (AOCs) for cancer and rare diseases — combining gene-silencing with antibody targeting.</li>
+              <li><strong>Aimed Bio + Sovargen:</strong> Co-developing Antibody-Oligonucleotide Conjugates (AOCs) for cancer and rare diseases \u2014 combining gene-silencing with antibody targeting.</li>
             </ul>
           </div>
           <div>
-            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">2. Gene &amp; Cell Therapy — The Delivery Engineering Race</div>
-            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Discovery has shifted from simple gene replacement to engineering how genetic cargo is delivered. The partnership currency in 2026 is the delivery vehicle — the capsid, the LNP, the in-vivo reprogramming mechanism.</p>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">2. Gene &amp; Cell Therapy \u2014 The Delivery Engineering Race</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Discovery has shifted from simple gene replacement to engineering how genetic cargo is delivered. The partnership currency in 2026 is the delivery vehicle \u2014 the capsid, the LNP, the in-vivo reprogramming mechanism.</p>
             <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
-              <li><strong>Eli Lilly + Kelonia Bio:</strong> A $7B in-vivo CAR-T licensing deal — programming T-cells to fight cancer directly inside the patient without ex-vivo manufacturing.</li>
-              <li><strong>Circio + Acuitas:</strong> Circular RNA CAR-T using LNP delivery — turning a patient's own cells into cancer-hunters with a single injection.</li>
+              <li><strong>Eli Lilly + Kelonia Bio:</strong> A $7B in-vivo CAR-T licensing deal \u2014 programming T-cells to fight cancer directly inside the patient without ex-vivo manufacturing.</li>
+              <li><strong>Circio + Acuitas:</strong> Circular RNA CAR-T using LNP delivery \u2014 turning a patient's own cells into cancer-hunters with a single injection.</li>
               <li><strong>AviadoBio + Apertura Gene Therapy:</strong> Licensing a next-gen AAV capsid engineered specifically to cross the Blood-Brain Barrier for CNS disorders.</li>
-              <li><strong>Profluent + Eli Lilly:</strong> AI-designed recombinases — programmable DNA editors with greater precision than CRISPR for a new class of genetic medicines.</li>
+              <li><strong>Profluent + Eli Lilly:</strong> AI-designed recombinases \u2014 programmable DNA editors with greater precision than CRISPR for a new class of genetic medicines.</li>
             </ul>
           </div>
           <div>
-            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">3. Small Molecules — Precision Chemistry</div>
-            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Traditional medicinal chemistry is being revitalised through targeted discovery partnerships — using AI screening, 3D tissue models, and mechanism-driven collaborations to find molecules that hit exactly the right target.</p>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">3. Small Molecules \u2014 Precision Chemistry</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Traditional medicinal chemistry is being revitalised through targeted discovery partnerships \u2014 using AI screening, 3D tissue models, and mechanism-driven collaborations to find molecules that hit exactly the right target.</p>
             <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
-              <li><strong>AbbVie + Haisco Pharma:</strong> Exclusive licence for novel small molecule pain medicines — AbbVie betting on Chinese biotech chemistry for one of pharma's most commercially significant areas.</li>
+              <li><strong>AbbVie + Haisco Pharma:</strong> Exclusive licence for novel small molecule pain medicines \u2014 AbbVie betting on Chinese biotech chemistry for one of pharma's most commercially significant areas.</li>
               <li><strong>Evotec + Almirall:</strong> Multi-year discovery collaboration delivering a preclinical candidate for severe inflammatory skin diseases.</li>
-              <li><strong>BioDuro-Sundia + CTI Biotech:</strong> Using 3D bioprinted human tissue models as the primary oncology screening platform — replacing animal models with more predictive biology.</li>
+              <li><strong>BioDuro-Sundia + CTI Biotech:</strong> Using 3D bioprinted human tissue models as the primary oncology screening platform \u2014 replacing animal models with more predictive biology.</li>
             </ul>
           </div>
           <div>
-            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">4. Platform Infrastructure — Enabling the Science</div>
-            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Behind every discovery partnership is an enabling layer of tools — AI target engines, quantum simulation, automated synthesis. In 2026, these platform companies are no longer just service providers; they are strategic assets in their own right.</p>
+            <div style="font-size:11px;font-weight:800;color:var(--forest);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">4. Platform Infrastructure \u2014 Enabling the Science</div>
+            <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;">Behind every discovery partnership is an enabling layer of tools \u2014 AI target engines, quantum simulation, automated synthesis. In 2026, these platform companies are no longer just service providers; they are strategic assets in their own right.</p>
             <ul style="font-size:13px;color:var(--mid);line-height:1.8;padding-left:18px;">
-              <li><strong>Crown Bio + Turbine:</strong> AI-powered cell simulations validated against patient-derived organoids — computing which experiments to run before touching a cell.</li>
-              <li><strong>Basilea Pharma + Phare Bio:</strong> AI antibiotic discovery targeting Antimicrobial Resistance — combining discovery speed with late-stage regulatory expertise.</li>
-              <li><strong>CQT Singapore + Qubit Pharma:</strong> Quantum simulation for atomic-scale molecular interactions — an early but serious bet on the future of computational chemistry.</li>
+              <li><strong>Crown Bio + Turbine:</strong> AI-powered cell simulations validated against patient-derived organoids \u2014 computing which experiments to run before touching a cell.</li>
+              <li><strong>Basilea Pharma + Phare Bio:</strong> AI antibiotic discovery targeting Antimicrobial Resistance \u2014 combining discovery speed with late-stage regulatory expertise.</li>
+              <li><strong>CQT Singapore + Qubit Pharma:</strong> Quantum simulation for atomic-scale molecular interactions \u2014 an early but serious bet on the future of computational chemistry.</li>
             </ul>
           </div>
         </div>
 
         <div style="background:var(--forest);border-radius:10px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
-          <p style="font-size:13px;color:rgba(245,240,232,0.8);margin:0;max-width:600px;">The "Discovery" phase is no longer just about finding a molecule — it is about finding the delivery vehicle simultaneously. Browse the platform to find companies active across ADCs, gene therapy delivery, RNA therapeutics, and AI-enabled discovery.</p>
+          <p style="font-size:13px;color:rgba(245,240,232,0.8);margin:0;max-width:600px;">The "Discovery" phase is no longer just about finding a molecule \u2014 it is about finding the delivery vehicle simultaneously. Browse the platform to find companies active across ADCs, gene therapy delivery, RNA therapeutics, and AI-enabled discovery.</p>
           <a href="#platforms" style="background:var(--gold);color:var(--forest-deep);font-size:12px;font-weight:900;padding:10px 22px;border-radius:7px;text-decoration:none;white-space:nowrap;letter-spacing:.04em;">Browse Platforms &rarr;</a>
         </div>
 
-        <div style="margin-top:16px;font-size:12px;color:var(--mid);">By <strong>Paul O'Farrell</strong> · Owner focused on Innovation &amp; Technical Alliances and Procurement solutions</div>
+        <div style="margin-top:16px;font-size:12px;color:var(--mid);">By <strong>Paul O'Farrell</strong> \xB7 Owner focused on Innovation &amp; Technical Alliances and Procurement solutions</div>
       </article>
     </div>
 
-    <!-- EXISTING ARTICLE: AI Partnership in Pharma — April 2026 -->
+    <!-- EXISTING ARTICLE: AI Partnership in Pharma \u2014 April 2026 -->
     <div style="margin-bottom:40px;">
       <article style="background:var(--fog);border-radius:16px;padding:40px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
           <span style="background:var(--forest);color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Executive Review</span>
-          <span style="color:var(--mid);font-size:12px;">April 2026 · 8 min read</span>
+          <span style="color:var(--mid);font-size:12px;">April 2026 \xB7 8 min read</span>
         </div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--forest-deep);margin-bottom:16px;line-height:1.3;">AI Partnership in Pharma — From Discovery to Delivery</h3>
-        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:16px;">The 10-year drug development cycle is under siege. By 2026, the alliance between Silicon Valley and Big Pharma has moved past the pilot phase. We are officially in the era of Generative Biology and Physical AI. From Eli Lilly's $1B co-innovation lab with NVIDIA to Sanofi's use of protein language models, the goal is no longer just digital transformation — it's about becoming AI Native.</p>
+        <h3 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--forest-deep);margin-bottom:16px;line-height:1.3;">AI Partnership in Pharma \u2014 From Discovery to Delivery</h3>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:16px;">The 10-year drug development cycle is under siege. By 2026, the alliance between Silicon Valley and Big Pharma has moved past the pilot phase. We are officially in the era of Generative Biology and Physical AI. From Eli Lilly's $1B co-innovation lab with NVIDIA to Sanofi's use of protein language models, the goal is no longer just digital transformation \u2014 it's about becoming AI Native.</p>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:24px;">
           <div>
@@ -489,11 +1420,11 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
         </div>
 
         <div style="background:var(--forest);border-radius:10px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
-          <p style="font-size:13px;color:rgba(245,240,232,0.8);margin:0;max-width:600px;">To find companies actively seeking partnerships and alliances in AI, Discovery, Research, Regulatory, Clinical Development, Manufacture, Logistics and Distribution — browse the platform or get in touch.</p>
+          <p style="font-size:13px;color:rgba(245,240,232,0.8);margin:0;max-width:600px;">To find companies actively seeking partnerships and alliances in AI, Discovery, Research, Regulatory, Clinical Development, Manufacture, Logistics and Distribution \u2014 browse the platform or get in touch.</p>
           <a href="#platforms" style="background:var(--gold);color:var(--forest-deep);font-size:12px;font-weight:900;padding:10px 22px;border-radius:7px;text-decoration:none;white-space:nowrap;letter-spacing:.04em;">Browse Platforms &rarr;</a>
         </div>
 
-        <div style="margin-top:16px;font-size:12px;color:var(--mid);">By <strong>Paul O'Farrell</strong> · Owner focused on Innovation &amp; Technical Alliances and Procurement solutions</div>
+        <div style="margin-top:16px;font-size:12px;color:var(--mid);">By <strong>Paul O'Farrell</strong> \xB7 Owner focused on Innovation &amp; Technical Alliances and Procurement solutions</div>
       </article>
     </div>
 
@@ -502,23 +1433,23 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
       <article style="background:var(--fog);border-radius:16px;padding:36px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
           <span style="background:var(--forest);color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Thought Leadership</span>
-          <span style="color:var(--mid);font-size:12px;">March 2026 · 6 min read</span>
+          <span style="color:var(--mid);font-size:12px;">March 2026 \xB7 6 min read</span>
         </div>
         <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--forest-deep);margin-bottom:12px;line-height:1.3;">How AI is Changing Pharmaceutical Partner Search</h3>
-        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">The business of finding the right development partner has always been relationship-driven. Artificial intelligence is not replacing those relationships — but it is fundamentally changing how they begin.</p>
-        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">Traditional directory search operates on keywords. AI-powered partner search interprets intent — understanding capability depth, geography, regulatory framework and partnership stage simultaneously. A query like <em>"Which European CDMOs handle cytotoxic ADC payload synthesis with GMP fill-finish for clinical stage programmes?"</em> is understood in its entirety, not just matched on keywords.</p>
-        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:24px;">The Partnership Tree was built specifically for the pharmaceutical and life science industry, combining two decades of directory expertise from The Pharma Services Directory — established in 2003 — with a purpose-built partner network for platform technology companies seeking licensing and co-development partners.</p>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">The business of finding the right development partner has always been relationship-driven. Artificial intelligence is not replacing those relationships \u2014 but it is fundamentally changing how they begin.</p>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">Traditional directory search operates on keywords. AI-powered partner search interprets intent \u2014 understanding capability depth, geography, regulatory framework and partnership stage simultaneously. A query like <em>"Which European CDMOs handle cytotoxic ADC payload synthesis with GMP fill-finish for clinical stage programmes?"</em> is understood in its entirety, not just matched on keywords.</p>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:24px;">The Partnership Tree was built specifically for the pharmaceutical and life science industry, combining two decades of directory expertise from The Pharma Services Directory \u2014 established in 2003 \u2014 with a purpose-built partner network for platform technology companies seeking licensing and co-development partners.</p>
         <a href="mailto:paul@thepartnershiptree.com?subject=Insights Enquiry" style="font-size:13px;font-weight:700;color:var(--forest);text-decoration:none;border:1.5px solid var(--forest);padding:8px 18px;border-radius:6px;display:inline-block;">Discuss Partnership &rarr;</a>
       </article>
       <article style="background:var(--fog);border-radius:16px;padding:36px;border:1.5px solid var(--card-border);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
           <span style="background:var(--forest);color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Drug Discovery</span>
-          <span style="color:var(--mid);font-size:12px;">March 2026 · 7 min read</span>
+          <span style="color:var(--mid);font-size:12px;">March 2026 \xB7 7 min read</span>
         </div>
         <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--forest-deep);margin-bottom:12px;line-height:1.3;">How AI-Based Partnerships Are Changing Drug Discovery</h3>
-        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">Artificial intelligence is not just accelerating drug discovery — it is reshaping who does it, and how collaborations between technology companies and pharmaceutical developers are structured.</p>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">Artificial intelligence is not just accelerating drug discovery \u2014 it is reshaping who does it, and how collaborations between technology companies and pharmaceutical developers are structured.</p>
         <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:20px;">AI drug discovery companies are, almost by definition, partnership-dependent. The most sophisticated computational platform cannot take a drug to the clinic without wet laboratory validation, clinical expertise, regulatory knowledge and manufacturing capability.</p>
-        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:24px;">This creates a structural need for partnerships that is different in character from traditional pharma-CDMO relationships — combining the AI company's discovery engine with the pharmaceutical partner's development infrastructure and commercial reach.</p>
+        <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:24px;">This creates a structural need for partnerships that is different in character from traditional pharma-CDMO relationships \u2014 combining the AI company's discovery engine with the pharmaceutical partner's development infrastructure and commercial reach.</p>
         <a href="https://app.thepartnershiptree.com/login" style="font-size:13px;font-weight:700;color:var(--forest);text-decoration:none;border:1.5px solid var(--forest);padding:8px 18px;border-radius:6px;display:inline-block;">Read More in Member Portal &rarr;</a>
       </article>
     </div>
@@ -553,38 +1484,38 @@ footer{background:var(--forest-deep);padding:60px 40px;border-top:1px solid rgba
     </div>
   </div>
   <div class="footer-bottom">
-    <span class="footer-copy">© 2026 The Partnership Tree. All rights reserved.</span>
+    <span class="footer-copy">\xA9 2026 The Partnership Tree. All rights reserved.</span>
     <span class="footer-tagline">Where platforms find their partners.</span>
   </div>
 </footer>
 
 <script data-cfasync="false">
 var COMPANIES = [
-  {id:793,name:"mAbsolve",location:"London, United Kingdom",platform:"Fc Silencing Technology",summary:"mAbsolve has developed proprietary technology to silence unwanted Fc-mediated effector functions in therapeutic antibodies — a critical capability for antibody engineering where immune activation must be precisely controlled.",description:"The need for silence in antibody therapeutics is clear: many of the most promising therapeutic targets require antibodies that can bind without triggering unwanted immune responses. mAbsolve's Fc silencing platform provides that precision control, offering a licensable solution that can be integrated into partners' antibody development programmes.",keywords:["Antibody Engineering","Fc Silencing","Biologics","Monoclonal Antibodies","Bi-specific Antibodies"],tags:["antibody"],badge:"Antibody Platform",badgeClass:"badge-antibody",seeking:"Licence OUT",geo:"europe"},
-  {id:825,name:"Receptor.AI",location:"London, United Kingdom",platform:"AI-Accelerated Multi-Platform Drug Design",summary:"A next-generation TechBio company with a multiplatform AI-powered ecosystem for designing small molecules, peptides, and drug conjugates — accelerating novel therapy development for challenging targets.",description:"Receptor.AI combines computational drug design with high-throughput screening and lead optimisation into a seamless AI-powered workflow. Their platform specialises in difficult targets where conventional approaches have failed, offering partners access to a validated ecosystem rather than a single tool.",keywords:["AI Drug Design","Small Molecules","Peptides","Drug Conjugates","High Throughput Screening"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Research",geo:"europe"},
-  {id:236,name:"Recursion Pharmaceuticals",location:"Salt Lake City, USA",platform:"Recursion OS — Biological & Chemical Foundation Models",summary:"Recursion's operating system for drug discovery combines massive biological datasets, foundation models and robotic experimentation to map the relationship between genes, proteins and disease at unprecedented scale.",description:"Recursion OS integrates proprietary biological and chemical foundation models with high-throughput robotic labs generating petabytes of experimental data. The platform enables partners to rapidly identify and validate novel drug targets across a broad range of diseases — with a track record of programmes advanced into clinical trials and major partnerships with Bayer, Roche and NVIDIA.",keywords:["AI Drug Discovery","Foundation Models","Biological Data","Drug Target Identification","Phenomics"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Co-Development",geo:""},
-  {id:677,name:"Sibylla Biotech",location:"Bresso, Italy",platform:"Oneiros AI Platform",summary:"The Oneiros platform deploys advanced machine learning to navigate and prioritise the most promising compounds from a vast chemical universe — with a focus on oncology and neurodegenerative diseases.",description:"Sibylla Biotech's Oneiros platform represents a fundamental shift in how compounds are selected for development. By mapping the protein folding landscape with AI, it identifies compounds that others miss — particularly relevant for CNS diseases and oncology where conventional approaches consistently fail.",keywords:["AI","Oncology","Neurodegeneration","Protein Degradation","Drug Discovery"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Research",geo:"europe"},
-  {id:352,name:"Molecure",location:"Warsaw, Poland",platform:"RNA-Targeting Small Molecule Platform",summary:"Molecure has developed a unique platform to discover small molecule compounds that interact directly with the mRNA of disease-related proteins — opening an entirely new class of drug targets.",description:"The ability to target RNA with small molecules represents one of the most exciting frontiers in drug discovery. Molecure's platform makes this tractable at scale, with applications across oncology and immuno-oncology where undruggable protein targets have long frustrated conventional approaches.",keywords:["RNA Platform","Small Molecules","mRNA Targeting","Oncology","Immuno-oncology"],tags:["rna"],badge:"RNA Platform",badgeClass:"badge-rna",seeking:"Licence OUT · Research",geo:"europe"},
-  {id:286,name:"Avectas",location:"Dublin, Ireland",platform:"SOLUPORE® Cell Engineering Platform",summary:"SOLUPORE® is a non-viral cell engineering solution for next-generation cell and gene therapies. Avectas actively seeks partners developing gene-modified cell therapy products.",description:"SOLUPORE® addresses one of the key bottlenecks in cell and gene therapy manufacturing — efficient, scalable, non-viral delivery of genetic cargo into cells. By eliminating the immunogenicity risks of viral vectors, the platform enables safer and more cost-effective production of advanced cell therapies.",keywords:["Cell Engineering","Non-Viral Delivery","Gene Therapy","Cell Therapy","Bioprocess"],tags:["cell","gene"],badge:"Cell & Gene Platform",badgeClass:"badge-cell",seeking:"Licence OUT · Research",geo:"europe"},
-  {id:698,name:"Circio",location:"Oslo, Norway",platform:"Circular RNA Therapeutics Platform",summary:"Circio is pioneering circular RNA as a novel therapeutic modality — offering enhanced stability and expression compared to linear mRNA, with applications in immunotherapy and oncology.",description:"Circular RNA represents the next evolution in RNA medicine. Unlike linear mRNA, circRNA resists degradation and provides sustained protein expression — key advantages for therapeutic applications. Circio's platform enables the design, production, and delivery of circRNA medicines across cancer and infectious disease.",keywords:["Circular RNA","RNA Therapeutics","Immunotherapy","Oncology","mRNA Alternative"],tags:["rna"],badge:"RNA Platform",badgeClass:"badge-rna",seeking:"Licence OUT · Co-Development",geo:"europe"},
-  {id:784,name:"Amarna Therapeutics",location:"Leiden, Netherlands",platform:"Nimvec™ Gene Delivery Platform",summary:"Nimvec™ is a non-immunogenic gene delivery vector derived from Simian Virus 40, offering high transduction efficiency across diverse cell types without the immunogenicity concerns of AAV.",description:"Amarna's Nimvec™ platform addresses a critical limitation of current gene therapy vectors — immune responses that limit repeat dosing and restrict patient populations. Nimvec™ vectors transduce a wide range of cell types and have demonstrated therapeutic potential in animal models across ophthalmology, diabetes, and autoimmune disease.",keywords:["Gene Delivery","Viral Vectors","Non-immunogenic","Ophthalmology","Gene Therapy"],tags:["gene"],badge:"Gene Therapy Platform",badgeClass:"badge-gene",seeking:"Licence OUT",geo:"europe"},
-  {id:697,name:"Excellgene",location:"Monthey, Switzerland",platform:"Superior Cell Host Platform",summary:"Excellgene offers out-licensing of proprietary superior cell hosts — state-of-the-art technology that revolutionises biologics development programmes from research through clinical manufacture.",description:"The quality and productivity of cell hosts fundamentally determines the economics of biologic drug manufacturing. Excellgene's proprietary cell host platform delivers superior expression levels, consistency, and scalability — licensable technology that partners can integrate directly into their development and manufacturing pipelines.",keywords:["Cell Culture","Biologics Manufacturing","Monoclonal Antibodies","Cell Banking","Bioprocess"],tags:["antibody","cell"],badge:"Biologics Platform",badgeClass:"badge-antibody",seeking:"Licence OUT · Co-Development",geo:"europe"},
-  {id:683,name:"Secarna Pharmaceuticals",location:"Planegg, Germany",platform:"LNAplus™ Antisense Discovery Platform",summary:"LNAplus™ is a proprietary drug discovery platform for discovering, testing, and selecting antisense oligonucleotides for pre-clinical and clinical development — with fully independent discovery capability.",description:"Antisense oligonucleotides represent a powerful and growing class of therapeutics. Secarna's LNAplus™ platform provides partners with an independent, validated route to ASO drug candidates — from target identification through lead selection. The platform's proprietary locked nucleic acid chemistry delivers superior affinity and selectivity.",keywords:["Antisense","Oligonucleotides","ASO","LNA Chemistry","Drug Discovery"],tags:["rna"],badge:"Oligonucleotide Platform",badgeClass:"badge-rna",seeking:"Licence OUT · Research",geo:"europe"},
-  {id:779,name:"Smart Immune",location:"Paris, France",platform:"ProTcell™ Allogeneic T-Cell Platform",summary:"ProTcell™ is a pioneering allogeneic T-cell therapy platform that leverages the patient's own thymus to rapidly re-arm the immune system against cancers and infections — without the limitations of autologous approaches.",description:"The ProTcell platform addresses the fundamental scalability and cost challenges of current cell therapies by creating an allogeneic, off-the-shelf solution. By harnessing thymic education, Smart Immune generates T-cells with genuine immunological memory — a qualitative advance over conventional allogeneic approaches.",keywords:["Allogeneic Cell Therapy","T-Cells","Immuno-oncology","Thymic Education","Off-the-Shelf"],tags:["cell"],badge:"Cell Therapy Platform",badgeClass:"badge-cell",seeking:"Licence OUT · Co-Development",geo:"europe"},
-  {id:558,name:"Denali Therapeutics",location:"San Francisco, USA",platform:"Transport Vehicle (TV) Platform",summary:"Denali's proprietary Transport Vehicle platform actively transports large molecule therapeutics across the blood-brain barrier — solving one of the most persistent challenges in CNS drug delivery.",description:"The blood-brain barrier has long prevented large molecules from reaching CNS targets. Denali's Transport Vehicle platform uses engineered proteins to actively carry biologics across the barrier, opening up entirely new treatment possibilities for neurodegenerative diseases including Alzheimer's, Parkinson's, and rare CNS disorders.",keywords:["Blood-Brain Barrier","CNS Drug Delivery","Large Molecules","Neuroscience","Platform Technology"],tags:["gene"],badge:"CNS Delivery Platform",badgeClass:"badge-gene",seeking:"Licence OUT · Co-Development",geo:""},
-  {id:443,name:"Intellia Therapeutics",location:"Cambridge, USA",platform:"CRISPR/Cas9 Gene Editing Platform",summary:"Intellia is focused on developing proprietary therapeutics using the CRISPR/Cas9 system — one of the most powerful and versatile gene editing tools available for therapeutic application.",description:"The CRISPR/Cas9 system represents a generational advance in the ability to precisely edit the human genome. Intellia's platform encompasses the IP, delivery systems, and manufacturing know-how to translate this technology into medicines — they actively seek partners for licensing and co-development in disease areas beyond their internal pipeline.",keywords:["CRISPR","Gene Editing","Gene Therapy","Biologics","Licensing"],tags:["gene"],badge:"Gene Editing Platform",badgeClass:"badge-gene",seeking:"Licence OUT · Research",geo:""},
-  {id:753,name:"MaxCyte",location:"Rockville, USA",platform:"ExPERT™ Electroporation Platform",summary:"MaxCyte's ExPERT™ platform has spent 20+ years refining the science of electroporation — offering scalable, GMP-compatible cell engineering for therapeutics from research through commercial manufacture.",description:"Electroporation is increasingly the method of choice for engineering cells for therapy — but scaling it reliably is technically demanding. MaxCyte's ExPERT™ platform provides a validated, GMP-compatible solution that works across cell types and scales seamlessly from research to commercial manufacture. Used in hundreds of programmes worldwide.",keywords:["Electroporation","Cell Engineering","GMP Manufacturing","Cell Therapy","Gene Therapy"],tags:["cell","gene"],badge:"Cell Engineering Platform",badgeClass:"badge-cell",seeking:"Licence OUT · Co-Development",geo:""},
-  {id:444,name:"Intellia Therapeutics",location:"Cambridge, USA",platform:"CRISPR/Cas9 Platform",summary:"Intellia is focused on the development of proprietary therapeutics using the CRISPR/Cas9 system — actively seeking licensing and co-development partners in disease areas beyond their core pipeline.",description:"The CRISPR/Cas9 system is the driving force behind Intellia's creation. Their platform encompasses comprehensive gene editing IP, validated delivery systems, and the manufacturing expertise needed to advance programmes from discovery to clinic.",keywords:["CRISPR/Cas9","Gene Editing","Gene Therapy","Licensing","Biologics"],tags:["gene"],badge:"Gene Editing Platform",badgeClass:"badge-gene",seeking:"Licence OUT",geo:""},
-  {id:740,name:"Sanyou Bio",location:"Cambridge, USA",platform:"Super Trillion Common Light Chain Platform",summary:"Sanyou's Common Light Chain Antibody Discovery Platform provides access to a super-trillion diverse antibody library — dramatically accelerating identification of development-ready bispecific candidates.",description:"The Super Trillion Common Light Chain platform addresses a key challenge in bispecific antibody development: manufacturing complexity. By engineering a common light chain across diverse heavy chains, Sanyou's platform enables discovery of bispecific antibodies that are inherently manufacturable — combining diversity with developability from the outset.",keywords:["Antibody Discovery","Bispecific Antibodies","Common Light Chain","ADC","Drug Discovery"],tags:["antibody"],badge:"Antibody Platform",badgeClass:"badge-antibody",seeking:"Licence OUT · Research",geo:""},
-  {id:821,name:"OBI Pharma",location:"Taipei, Taiwan",platform:"GlycOBI® Glycan ADC Platform",summary:"GlycOBI® is a unique glycan-based ADC platform delivering precise, site-specific conjugation of cytotoxic payloads to antibodies — improving therapeutic index and manufacturability of antibody-drug conjugates.",description:"Antibody-drug conjugates are one of the most exciting frontiers in oncology, but their manufacturing complexity limits their potential. OBI Pharma's GlycOBI® platform uses glycan engineering to achieve precise, homogeneous conjugation — resulting in ADCs with superior pharmacokinetics and a cleaner safety profile.",keywords:["ADC","Glycan Engineering","Site-Specific Conjugation","Oncology","Antibody Drug Conjugates"],tags:["antibody"],badge:"ADC Platform",badgeClass:"badge-antibody",seeking:"Licence OUT · Co-Development",geo:""},
-  {id:644,name:"Absci",location:"Vancouver, USA",platform:"Integrated Drug Creation™ Platform",summary:"Absci's Integrated Drug Creation™ platform enables simultaneous multi-parameter optimisation of affinity, specificity, manufacturability, and safety — de-risking biologic drug discovery from day one.",description:"Conventional biologic drug discovery optimises parameters sequentially — leading to late-stage failures. Absci's Integrated Drug Creation™ platform collapses this into a single AI-powered workflow, enabling partners to explore a broader solution space and select candidates that work on all dimensions simultaneously.",keywords:["AI Biologics","Drug Design","Antibody Discovery","Manufacturability","Immuno-oncology"],tags:["AI","antibody"],badge:"AI Biologics Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Co-Development",geo:""},
-  {id:492,name:"Schrödinger",location:"New York, USA",platform:"Physics-Based Computational Drug Design Platform",summary:"Schrödinger's leading computational platform for molecular discovery has enabled two FDA-approved drugs and multiple clinical programmes — available for research collaborations and licensing.",description:"Schrödinger's platform applies physics-based simulation to predict how molecules will behave in biological systems — with a level of accuracy that has transformed early drug discovery. Partners gain access to a validated platform that has already generated FDA-approved medicines, alongside a collaborative team with a track record of co-founding startups and partnering with leading global pharma companies.",keywords:["Computational Chemistry","Molecular Design","Small Molecules","Drug Discovery","AI"],tags:["AI"],badge:"Computational Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Research",geo:""},
-  {id:826,name:"Valo Health",location:"Boston, USA",platform:"Opal™ Computational Platform",summary:"Opal™ is a groundbreaking closed-loop AI platform combining multi-omic data, computational modelling, and experimental validation — driving next-generation drug discovery and development.",description:"Valo Health's Opal™ platform represents a fundamental reimagining of how drug discovery is conducted. By closing the loop between computation and experiment, Opal™ continuously learns and improves — enabling partners to identify and develop drug candidates faster and with higher probability of success than conventional approaches.",keywords:["AI Drug Discovery","Computational Platform","Multi-omic Data","Drug Development","Closed-Loop AI"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT · Research",geo:""}
-  ,{id:843,name:"Orna Therapeutics",location:"Cambridge, USA",platform:"oRNA™ Circular RNA Platform",summary:"Orna's oRNA™ platform engineers circular RNA for persistent protein expression — enabling a new class of RNA medicines with superior durability over linear mRNA for immunotherapy and genetic disease.",description:"Linear mRNA degrades rapidly, limiting its therapeutic utility. Orna's oRNA™ circular RNA platform overcomes this fundamental limitation by creating RNA molecules that resist exonuclease degradation and provide sustained, tunable protein expression. The platform enables a broad range of applications from in vivo cell reprogramming to durable protein replacement therapies.",keywords:["Circular RNA","oRNA","Gene Therapy","Immunotherapy","RNA Medicine"],tags:["rna","cell"],badge:"Circular RNA Platform",badgeClass:"badge-rna",seeking:"Licence OUT · Co-Development",geo:""},
-  {id:844,name:"Larimar Therapeutics",location:"Bala Cynwyd, USA",platform:"Cell-Penetrating Peptide Platform",summary:"Larimar's proprietary cell-penetrating peptide platform enables intracellular delivery of large therapeutic molecules — opening targets previously inaccessible to biologics.",description:"The ability to get large molecules inside cells has long been the holy grail of biologics drug delivery. Larimar's cell-penetrating peptide platform provides a validated, licensable solution that has been demonstrated across multiple disease areas, with particular strength in rare mitochondrial diseases.",keywords:["Cell-Penetrating Peptides","Intracellular Delivery","Rare Disease","Biologics","Drug Delivery"],tags:["cell"],badge:"Cell Delivery Platform",badgeClass:"badge-cell",seeking:"Licence OUT",geo:""},
-  {id:845,name:"Cardior Pharmaceuticals",location:"Hannover, Germany",platform:"ncRNA Cardiovascular Platform",summary:"Cardior's non-coding RNA platform targets cardiovascular disease at the RNA level — developing first-in-class therapeutics for heart failure and cardiac fibrosis using proprietary ncRNA technology.",description:"Non-coding RNAs regulate gene expression without encoding proteins, making them highly attractive therapeutic targets. Cardior's platform is focused exclusively on cardiovascular applications of ncRNA biology — an area of major unmet need where conventional small molecules and biologics have failed to deliver transformative outcomes.",keywords:["Non-coding RNA","Cardiovascular","Heart Failure","RNA Therapeutics","ncRNA"],tags:["rna"],badge:"RNA Therapeutics Platform",badgeClass:"badge-rna",seeking:"Licence OUT · Co-Development",geo:"europe"},
-  {id:846,name:"Cellectis",location:"Paris, France",platform:"TALEN® Gene Editing Platform",summary:"Cellectis pioneered allogeneic CAR-T cell therapy using their proprietary TALEN® gene editing technology — offering a differentiated and validated alternative to CRISPR for cell therapy manufacturing.",description:"TALEN® (Transcription Activator-Like Effector Nucleases) technology was pioneered by Cellectis and represents a highly specific, proprietary approach to gene editing with particular advantages in the manufacturing of allogeneic cell therapies. The platform is validated in clinical programmes and offers partners an alternative to CRISPR with a distinct IP landscape.",keywords:["TALEN Gene Editing","Allogeneic CAR-T","Cell Therapy","Gene Engineering","Immunotherapy"],tags:["cell","gene"],badge:"Gene Editing Platform",badgeClass:"badge-gene",seeking:"Licence OUT · Co-Development",geo:"europe"},
-  {id:847,name:"Merus",location:"Utrecht, Netherlands",platform:"Biclonics® Bispecific Antibody Platform",summary:"Merus's Biclonics® platform generates full-length bispecific antibodies using common light chain technology — producing development-ready candidates with natural antibody architecture and excellent manufacturability.",description:"Bispecific antibodies offer transformative potential across oncology and immunology, but their manufacture has historically been technically challenging. Merus's Biclonics® platform produces genuine full-length bispecific IgGs using common light chain engineering — resulting in antibodies with natural architecture, excellent biophysical properties, and straightforward CMC development.",keywords:["Bispecific Antibodies","Biclonics","Common Light Chain","Oncology","Full-Length IgG"],tags:["antibody"],badge:"Bispecific Antibody Platform",badgeClass:"badge-antibody",seeking:"Licence OUT · Co-Development",geo:"europe"}
+  {id:793,name:"mAbsolve",location:"London, United Kingdom",platform:"Fc Silencing Technology",summary:"mAbsolve has developed proprietary technology to silence unwanted Fc-mediated effector functions in therapeutic antibodies \u2014 a critical capability for antibody engineering where immune activation must be precisely controlled.",description:"The need for silence in antibody therapeutics is clear: many of the most promising therapeutic targets require antibodies that can bind without triggering unwanted immune responses. mAbsolve's Fc silencing platform provides that precision control, offering a licensable solution that can be integrated into partners' antibody development programmes.",keywords:["Antibody Engineering","Fc Silencing","Biologics","Monoclonal Antibodies","Bi-specific Antibodies"],tags:["antibody"],badge:"Antibody Platform",badgeClass:"badge-antibody",seeking:"Licence OUT",geo:"europe"},
+  {id:825,name:"Receptor.AI",location:"London, United Kingdom",platform:"AI-Accelerated Multi-Platform Drug Design",summary:"A next-generation TechBio company with a multiplatform AI-powered ecosystem for designing small molecules, peptides, and drug conjugates \u2014 accelerating novel therapy development for challenging targets.",description:"Receptor.AI combines computational drug design with high-throughput screening and lead optimisation into a seamless AI-powered workflow. Their platform specialises in difficult targets where conventional approaches have failed, offering partners access to a validated ecosystem rather than a single tool.",keywords:["AI Drug Design","Small Molecules","Peptides","Drug Conjugates","High Throughput Screening"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT \xB7 Research",geo:"europe"},
+  {id:236,name:"Recursion Pharmaceuticals",location:"Salt Lake City, USA",platform:"Recursion OS \u2014 Biological & Chemical Foundation Models",summary:"Recursion's operating system for drug discovery combines massive biological datasets, foundation models and robotic experimentation to map the relationship between genes, proteins and disease at unprecedented scale.",description:"Recursion OS integrates proprietary biological and chemical foundation models with high-throughput robotic labs generating petabytes of experimental data. The platform enables partners to rapidly identify and validate novel drug targets across a broad range of diseases \u2014 with a track record of programmes advanced into clinical trials and major partnerships with Bayer, Roche and NVIDIA.",keywords:["AI Drug Discovery","Foundation Models","Biological Data","Drug Target Identification","Phenomics"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT \xB7 Co-Development",geo:""},
+  {id:677,name:"Sibylla Biotech",location:"Bresso, Italy",platform:"Oneiros AI Platform",summary:"The Oneiros platform deploys advanced machine learning to navigate and prioritise the most promising compounds from a vast chemical universe \u2014 with a focus on oncology and neurodegenerative diseases.",description:"Sibylla Biotech's Oneiros platform represents a fundamental shift in how compounds are selected for development. By mapping the protein folding landscape with AI, it identifies compounds that others miss \u2014 particularly relevant for CNS diseases and oncology where conventional approaches consistently fail.",keywords:["AI","Oncology","Neurodegeneration","Protein Degradation","Drug Discovery"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT \xB7 Research",geo:"europe"},
+  {id:352,name:"Molecure",location:"Warsaw, Poland",platform:"RNA-Targeting Small Molecule Platform",summary:"Molecure has developed a unique platform to discover small molecule compounds that interact directly with the mRNA of disease-related proteins \u2014 opening an entirely new class of drug targets.",description:"The ability to target RNA with small molecules represents one of the most exciting frontiers in drug discovery. Molecure's platform makes this tractable at scale, with applications across oncology and immuno-oncology where undruggable protein targets have long frustrated conventional approaches.",keywords:["RNA Platform","Small Molecules","mRNA Targeting","Oncology","Immuno-oncology"],tags:["rna"],badge:"RNA Platform",badgeClass:"badge-rna",seeking:"Licence OUT \xB7 Research",geo:"europe"},
+  {id:286,name:"Avectas",location:"Dublin, Ireland",platform:"SOLUPORE\xAE Cell Engineering Platform",summary:"SOLUPORE\xAE is a non-viral cell engineering solution for next-generation cell and gene therapies. Avectas actively seeks partners developing gene-modified cell therapy products.",description:"SOLUPORE\xAE addresses one of the key bottlenecks in cell and gene therapy manufacturing \u2014 efficient, scalable, non-viral delivery of genetic cargo into cells. By eliminating the immunogenicity risks of viral vectors, the platform enables safer and more cost-effective production of advanced cell therapies.",keywords:["Cell Engineering","Non-Viral Delivery","Gene Therapy","Cell Therapy","Bioprocess"],tags:["cell","gene"],badge:"Cell & Gene Platform",badgeClass:"badge-cell",seeking:"Licence OUT \xB7 Research",geo:"europe"},
+  {id:698,name:"Circio",location:"Oslo, Norway",platform:"Circular RNA Therapeutics Platform",summary:"Circio is pioneering circular RNA as a novel therapeutic modality \u2014 offering enhanced stability and expression compared to linear mRNA, with applications in immunotherapy and oncology.",description:"Circular RNA represents the next evolution in RNA medicine. Unlike linear mRNA, circRNA resists degradation and provides sustained protein expression \u2014 key advantages for therapeutic applications. Circio's platform enables the design, production, and delivery of circRNA medicines across cancer and infectious disease.",keywords:["Circular RNA","RNA Therapeutics","Immunotherapy","Oncology","mRNA Alternative"],tags:["rna"],badge:"RNA Platform",badgeClass:"badge-rna",seeking:"Licence OUT \xB7 Co-Development",geo:"europe"},
+  {id:784,name:"Amarna Therapeutics",location:"Leiden, Netherlands",platform:"Nimvec\u2122 Gene Delivery Platform",summary:"Nimvec\u2122 is a non-immunogenic gene delivery vector derived from Simian Virus 40, offering high transduction efficiency across diverse cell types without the immunogenicity concerns of AAV.",description:"Amarna's Nimvec\u2122 platform addresses a critical limitation of current gene therapy vectors \u2014 immune responses that limit repeat dosing and restrict patient populations. Nimvec\u2122 vectors transduce a wide range of cell types and have demonstrated therapeutic potential in animal models across ophthalmology, diabetes, and autoimmune disease.",keywords:["Gene Delivery","Viral Vectors","Non-immunogenic","Ophthalmology","Gene Therapy"],tags:["gene"],badge:"Gene Therapy Platform",badgeClass:"badge-gene",seeking:"Licence OUT",geo:"europe"},
+  {id:697,name:"Excellgene",location:"Monthey, Switzerland",platform:"Superior Cell Host Platform",summary:"Excellgene offers out-licensing of proprietary superior cell hosts \u2014 state-of-the-art technology that revolutionises biologics development programmes from research through clinical manufacture.",description:"The quality and productivity of cell hosts fundamentally determines the economics of biologic drug manufacturing. Excellgene's proprietary cell host platform delivers superior expression levels, consistency, and scalability \u2014 licensable technology that partners can integrate directly into their development and manufacturing pipelines.",keywords:["Cell Culture","Biologics Manufacturing","Monoclonal Antibodies","Cell Banking","Bioprocess"],tags:["antibody","cell"],badge:"Biologics Platform",badgeClass:"badge-antibody",seeking:"Licence OUT \xB7 Co-Development",geo:"europe"},
+  {id:683,name:"Secarna Pharmaceuticals",location:"Planegg, Germany",platform:"LNAplus\u2122 Antisense Discovery Platform",summary:"LNAplus\u2122 is a proprietary drug discovery platform for discovering, testing, and selecting antisense oligonucleotides for pre-clinical and clinical development \u2014 with fully independent discovery capability.",description:"Antisense oligonucleotides represent a powerful and growing class of therapeutics. Secarna's LNAplus\u2122 platform provides partners with an independent, validated route to ASO drug candidates \u2014 from target identification through lead selection. The platform's proprietary locked nucleic acid chemistry delivers superior affinity and selectivity.",keywords:["Antisense","Oligonucleotides","ASO","LNA Chemistry","Drug Discovery"],tags:["rna"],badge:"Oligonucleotide Platform",badgeClass:"badge-rna",seeking:"Licence OUT \xB7 Research",geo:"europe"},
+  {id:779,name:"Smart Immune",location:"Paris, France",platform:"ProTcell\u2122 Allogeneic T-Cell Platform",summary:"ProTcell\u2122 is a pioneering allogeneic T-cell therapy platform that leverages the patient's own thymus to rapidly re-arm the immune system against cancers and infections \u2014 without the limitations of autologous approaches.",description:"The ProTcell platform addresses the fundamental scalability and cost challenges of current cell therapies by creating an allogeneic, off-the-shelf solution. By harnessing thymic education, Smart Immune generates T-cells with genuine immunological memory \u2014 a qualitative advance over conventional allogeneic approaches.",keywords:["Allogeneic Cell Therapy","T-Cells","Immuno-oncology","Thymic Education","Off-the-Shelf"],tags:["cell"],badge:"Cell Therapy Platform",badgeClass:"badge-cell",seeking:"Licence OUT \xB7 Co-Development",geo:"europe"},
+  {id:558,name:"Denali Therapeutics",location:"San Francisco, USA",platform:"Transport Vehicle (TV) Platform",summary:"Denali's proprietary Transport Vehicle platform actively transports large molecule therapeutics across the blood-brain barrier \u2014 solving one of the most persistent challenges in CNS drug delivery.",description:"The blood-brain barrier has long prevented large molecules from reaching CNS targets. Denali's Transport Vehicle platform uses engineered proteins to actively carry biologics across the barrier, opening up entirely new treatment possibilities for neurodegenerative diseases including Alzheimer's, Parkinson's, and rare CNS disorders.",keywords:["Blood-Brain Barrier","CNS Drug Delivery","Large Molecules","Neuroscience","Platform Technology"],tags:["gene"],badge:"CNS Delivery Platform",badgeClass:"badge-gene",seeking:"Licence OUT \xB7 Co-Development",geo:""},
+  {id:443,name:"Intellia Therapeutics",location:"Cambridge, USA",platform:"CRISPR/Cas9 Gene Editing Platform",summary:"Intellia is focused on developing proprietary therapeutics using the CRISPR/Cas9 system \u2014 one of the most powerful and versatile gene editing tools available for therapeutic application.",description:"The CRISPR/Cas9 system represents a generational advance in the ability to precisely edit the human genome. Intellia's platform encompasses the IP, delivery systems, and manufacturing know-how to translate this technology into medicines \u2014 they actively seek partners for licensing and co-development in disease areas beyond their internal pipeline.",keywords:["CRISPR","Gene Editing","Gene Therapy","Biologics","Licensing"],tags:["gene"],badge:"Gene Editing Platform",badgeClass:"badge-gene",seeking:"Licence OUT \xB7 Research",geo:""},
+  {id:753,name:"MaxCyte",location:"Rockville, USA",platform:"ExPERT\u2122 Electroporation Platform",summary:"MaxCyte's ExPERT\u2122 platform has spent 20+ years refining the science of electroporation \u2014 offering scalable, GMP-compatible cell engineering for therapeutics from research through commercial manufacture.",description:"Electroporation is increasingly the method of choice for engineering cells for therapy \u2014 but scaling it reliably is technically demanding. MaxCyte's ExPERT\u2122 platform provides a validated, GMP-compatible solution that works across cell types and scales seamlessly from research to commercial manufacture. Used in hundreds of programmes worldwide.",keywords:["Electroporation","Cell Engineering","GMP Manufacturing","Cell Therapy","Gene Therapy"],tags:["cell","gene"],badge:"Cell Engineering Platform",badgeClass:"badge-cell",seeking:"Licence OUT \xB7 Co-Development",geo:""},
+  {id:444,name:"Intellia Therapeutics",location:"Cambridge, USA",platform:"CRISPR/Cas9 Platform",summary:"Intellia is focused on the development of proprietary therapeutics using the CRISPR/Cas9 system \u2014 actively seeking licensing and co-development partners in disease areas beyond their core pipeline.",description:"The CRISPR/Cas9 system is the driving force behind Intellia's creation. Their platform encompasses comprehensive gene editing IP, validated delivery systems, and the manufacturing expertise needed to advance programmes from discovery to clinic.",keywords:["CRISPR/Cas9","Gene Editing","Gene Therapy","Licensing","Biologics"],tags:["gene"],badge:"Gene Editing Platform",badgeClass:"badge-gene",seeking:"Licence OUT",geo:""},
+  {id:740,name:"Sanyou Bio",location:"Cambridge, USA",platform:"Super Trillion Common Light Chain Platform",summary:"Sanyou's Common Light Chain Antibody Discovery Platform provides access to a super-trillion diverse antibody library \u2014 dramatically accelerating identification of development-ready bispecific candidates.",description:"The Super Trillion Common Light Chain platform addresses a key challenge in bispecific antibody development: manufacturing complexity. By engineering a common light chain across diverse heavy chains, Sanyou's platform enables discovery of bispecific antibodies that are inherently manufacturable \u2014 combining diversity with developability from the outset.",keywords:["Antibody Discovery","Bispecific Antibodies","Common Light Chain","ADC","Drug Discovery"],tags:["antibody"],badge:"Antibody Platform",badgeClass:"badge-antibody",seeking:"Licence OUT \xB7 Research",geo:""},
+  {id:821,name:"OBI Pharma",location:"Taipei, Taiwan",platform:"GlycOBI\xAE Glycan ADC Platform",summary:"GlycOBI\xAE is a unique glycan-based ADC platform delivering precise, site-specific conjugation of cytotoxic payloads to antibodies \u2014 improving therapeutic index and manufacturability of antibody-drug conjugates.",description:"Antibody-drug conjugates are one of the most exciting frontiers in oncology, but their manufacturing complexity limits their potential. OBI Pharma's GlycOBI\xAE platform uses glycan engineering to achieve precise, homogeneous conjugation \u2014 resulting in ADCs with superior pharmacokinetics and a cleaner safety profile.",keywords:["ADC","Glycan Engineering","Site-Specific Conjugation","Oncology","Antibody Drug Conjugates"],tags:["antibody"],badge:"ADC Platform",badgeClass:"badge-antibody",seeking:"Licence OUT \xB7 Co-Development",geo:""},
+  {id:644,name:"Absci",location:"Vancouver, USA",platform:"Integrated Drug Creation\u2122 Platform",summary:"Absci's Integrated Drug Creation\u2122 platform enables simultaneous multi-parameter optimisation of affinity, specificity, manufacturability, and safety \u2014 de-risking biologic drug discovery from day one.",description:"Conventional biologic drug discovery optimises parameters sequentially \u2014 leading to late-stage failures. Absci's Integrated Drug Creation\u2122 platform collapses this into a single AI-powered workflow, enabling partners to explore a broader solution space and select candidates that work on all dimensions simultaneously.",keywords:["AI Biologics","Drug Design","Antibody Discovery","Manufacturability","Immuno-oncology"],tags:["AI","antibody"],badge:"AI Biologics Platform",badgeClass:"badge-ai",seeking:"Licence OUT \xB7 Co-Development",geo:""},
+  {id:492,name:"Schr\xF6dinger",location:"New York, USA",platform:"Physics-Based Computational Drug Design Platform",summary:"Schr\xF6dinger's leading computational platform for molecular discovery has enabled two FDA-approved drugs and multiple clinical programmes \u2014 available for research collaborations and licensing.",description:"Schr\xF6dinger's platform applies physics-based simulation to predict how molecules will behave in biological systems \u2014 with a level of accuracy that has transformed early drug discovery. Partners gain access to a validated platform that has already generated FDA-approved medicines, alongside a collaborative team with a track record of co-founding startups and partnering with leading global pharma companies.",keywords:["Computational Chemistry","Molecular Design","Small Molecules","Drug Discovery","AI"],tags:["AI"],badge:"Computational Platform",badgeClass:"badge-ai",seeking:"Licence OUT \xB7 Research",geo:""},
+  {id:826,name:"Valo Health",location:"Boston, USA",platform:"Opal\u2122 Computational Platform",summary:"Opal\u2122 is a groundbreaking closed-loop AI platform combining multi-omic data, computational modelling, and experimental validation \u2014 driving next-generation drug discovery and development.",description:"Valo Health's Opal\u2122 platform represents a fundamental reimagining of how drug discovery is conducted. By closing the loop between computation and experiment, Opal\u2122 continuously learns and improves \u2014 enabling partners to identify and develop drug candidates faster and with higher probability of success than conventional approaches.",keywords:["AI Drug Discovery","Computational Platform","Multi-omic Data","Drug Development","Closed-Loop AI"],tags:["AI"],badge:"AI Platform",badgeClass:"badge-ai",seeking:"Licence OUT \xB7 Research",geo:""}
+  ,{id:843,name:"Orna Therapeutics",location:"Cambridge, USA",platform:"oRNA\u2122 Circular RNA Platform",summary:"Orna's oRNA\u2122 platform engineers circular RNA for persistent protein expression \u2014 enabling a new class of RNA medicines with superior durability over linear mRNA for immunotherapy and genetic disease.",description:"Linear mRNA degrades rapidly, limiting its therapeutic utility. Orna's oRNA\u2122 circular RNA platform overcomes this fundamental limitation by creating RNA molecules that resist exonuclease degradation and provide sustained, tunable protein expression. The platform enables a broad range of applications from in vivo cell reprogramming to durable protein replacement therapies.",keywords:["Circular RNA","oRNA","Gene Therapy","Immunotherapy","RNA Medicine"],tags:["rna","cell"],badge:"Circular RNA Platform",badgeClass:"badge-rna",seeking:"Licence OUT \xB7 Co-Development",geo:""},
+  {id:844,name:"Larimar Therapeutics",location:"Bala Cynwyd, USA",platform:"Cell-Penetrating Peptide Platform",summary:"Larimar's proprietary cell-penetrating peptide platform enables intracellular delivery of large therapeutic molecules \u2014 opening targets previously inaccessible to biologics.",description:"The ability to get large molecules inside cells has long been the holy grail of biologics drug delivery. Larimar's cell-penetrating peptide platform provides a validated, licensable solution that has been demonstrated across multiple disease areas, with particular strength in rare mitochondrial diseases.",keywords:["Cell-Penetrating Peptides","Intracellular Delivery","Rare Disease","Biologics","Drug Delivery"],tags:["cell"],badge:"Cell Delivery Platform",badgeClass:"badge-cell",seeking:"Licence OUT",geo:""},
+  {id:845,name:"Cardior Pharmaceuticals",location:"Hannover, Germany",platform:"ncRNA Cardiovascular Platform",summary:"Cardior's non-coding RNA platform targets cardiovascular disease at the RNA level \u2014 developing first-in-class therapeutics for heart failure and cardiac fibrosis using proprietary ncRNA technology.",description:"Non-coding RNAs regulate gene expression without encoding proteins, making them highly attractive therapeutic targets. Cardior's platform is focused exclusively on cardiovascular applications of ncRNA biology \u2014 an area of major unmet need where conventional small molecules and biologics have failed to deliver transformative outcomes.",keywords:["Non-coding RNA","Cardiovascular","Heart Failure","RNA Therapeutics","ncRNA"],tags:["rna"],badge:"RNA Therapeutics Platform",badgeClass:"badge-rna",seeking:"Licence OUT \xB7 Co-Development",geo:"europe"},
+  {id:846,name:"Cellectis",location:"Paris, France",platform:"TALEN\xAE Gene Editing Platform",summary:"Cellectis pioneered allogeneic CAR-T cell therapy using their proprietary TALEN\xAE gene editing technology \u2014 offering a differentiated and validated alternative to CRISPR for cell therapy manufacturing.",description:"TALEN\xAE (Transcription Activator-Like Effector Nucleases) technology was pioneered by Cellectis and represents a highly specific, proprietary approach to gene editing with particular advantages in the manufacturing of allogeneic cell therapies. The platform is validated in clinical programmes and offers partners an alternative to CRISPR with a distinct IP landscape.",keywords:["TALEN Gene Editing","Allogeneic CAR-T","Cell Therapy","Gene Engineering","Immunotherapy"],tags:["cell","gene"],badge:"Gene Editing Platform",badgeClass:"badge-gene",seeking:"Licence OUT \xB7 Co-Development",geo:"europe"},
+  {id:847,name:"Merus",location:"Utrecht, Netherlands",platform:"Biclonics\xAE Bispecific Antibody Platform",summary:"Merus's Biclonics\xAE platform generates full-length bispecific antibodies using common light chain technology \u2014 producing development-ready candidates with natural antibody architecture and excellent manufacturability.",description:"Bispecific antibodies offer transformative potential across oncology and immunology, but their manufacture has historically been technically challenging. Merus's Biclonics\xAE platform produces genuine full-length bispecific IgGs using common light chain engineering \u2014 resulting in antibodies with natural architecture, excellent biophysical properties, and straightforward CMC development.",keywords:["Bispecific Antibodies","Biclonics","Common Light Chain","Oncology","Full-Length IgG"],tags:["antibody"],badge:"Bispecific Antibody Platform",badgeClass:"badge-antibody",seeking:"Licence OUT \xB7 Co-Development",geo:"europe"}
 ];
 
 // Remove duplicate Intellia (id 444 appears twice) 
@@ -682,7 +1613,7 @@ function closeModal() {
 
 document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
 render();
-</script>
+<\/script>
 
 <div id="listing-modal" style="display:none;position:fixed;inset:0;background:rgba(15,35,24,0.75);z-index:300;backdrop-filter:blur(4px);padding:60px 20px;overflow-y:auto;" onclick="if(event.target===this)closeListingForm()">
   <div style="background:#fff;border-radius:20px;max-width:580px;width:100%;margin:0 auto;position:relative;overflow:hidden;">
@@ -726,21 +1657,29 @@ function submitListingForm(){
   if(!name||!company||!email||!platform){err.textContent='Please fill in all required fields.';err.style.display='block';return;}
   err.style.display='none';
   var subject='Platform Listing Request: '+company+' - '+platform;
-  var body='Name: '+name+'\nCompany: '+company+'\nEmail: '+email+'\nPlatform: '+platform+'\nSeeking: '+seeking;
+  var body='Name: '+name+'
+Company: '+company+'
+Email: '+email+'
+Platform: '+platform+'
+Seeking: '+seeking;
   window.location.href='mailto:paul@thepartnershiptree.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
   document.getElementById('listing-form-fields').style.display='none';
   document.getElementById('listing-success').style.display='block';
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeListingForm();});
-</script>
+<\/script>
 </body>
 </html>`;
     return new Response(html, {
       headers: {
-        'Content-Type': 'text/html; charset=utf-8',
-        'Cache-Control': 'public, max-age=3600',
-        'X-Robots-Tag': 'index, follow'
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "public, max-age=3600",
+        "X-Robots-Tag": "index, follow"
       }
     });
   }
 };
+export {
+  worker_default as default
+};
+//# sourceMappingURL=worker.js.map
