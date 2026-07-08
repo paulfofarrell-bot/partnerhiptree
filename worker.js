@@ -930,10 +930,42 @@ globalThis.process = process_default;
 
 // worker.js
 var worker_default = {
-  async fetch(request) {
+  async fetch(request, env) {
     const url = new URL(request.url);
     if (url.hostname === "www.thepartnershiptree.com") {
       return Response.redirect("https://thepartnershiptree.com" + url.pathname + url.search, 301);
+    }
+    if (url.pathname === "/api/companies") {
+      const { results } = await env.DB.prepare(
+        `SELECT m.cos_id, c.company_name, c.location, c.directory_url,
+                m.type, m.logo, m.color, m.score, m.alerts, m.alert_url, m.alert_info,
+                m.upd, m.partner_type, m.caps, m.regions, m.sites
+         FROM featured_id_map m
+         JOIN companies c ON c.id = m.company_id
+         WHERE c.featured = 1
+         ORDER BY m.cos_id`
+      ).all();
+      const companies = results.map((row) => ({
+        id: row.cos_id,
+        name: row.company_name,
+        type: row.type,
+        loc: row.location,
+        logo: row.logo,
+        color: row.color,
+        score: row.score,
+        alerts: row.alerts,
+        ...(row.alert_url ? { alertUrl: row.alert_url } : {}),
+        ...(row.alert_info ? { alertInfo: row.alert_info } : {}),
+        upd: row.upd,
+        ...(row.partner_type ? { partnerType: row.partner_type } : {}),
+        caps: JSON.parse(row.caps || "[]"),
+        regions: JSON.parse(row.regions || "[]"),
+        sites: JSON.parse(row.sites || "[]"),
+        dirUrl: row.directory_url
+      }));
+      return Response.json(companies, {
+        headers: { "Cache-Control": "public, max-age=300" }
+      });
     }
     if (url.pathname === "/robots.txt") {
       return new Response("User-agent: *\nAllow: /\nSitemap: https://thepartnershiptree.com/sitemap.xml\n", {
