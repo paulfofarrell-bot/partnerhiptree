@@ -1,0 +1,16 @@
+.git
+.wrangler
+.claude
+.github
+migrations
+node_modules
+*.sql
+*.md
+.gitignore
+.dev.vars
+.dev.vars.*
+netlify.toml
+functions
+llms.txt
+package.json
+package-lock.json
