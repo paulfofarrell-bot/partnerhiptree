@@ -1689,11 +1689,11 @@ function submitListingForm(){
   if(!name||!company||!email||!platform){err.textContent='Please fill in all required fields.';err.style.display='block';return;}
   err.style.display='none';
   var subject='Platform Listing Request: '+company+' - '+platform;
-  var body='Name: '+name+'
-Company: '+company+'
-Email: '+email+'
-Platform: '+platform+'
-Seeking: '+seeking;
+  var body = `Name: ${name}
+Company: ${company}
+Email: ${email}
+Platform: ${platform}
+Seeking: ${seeking}`;
   window.location.href='mailto:paul@thepartnershiptree.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
   document.getElementById('listing-form-fields').style.display='none';
   document.getElementById('listing-success').style.display='block';
